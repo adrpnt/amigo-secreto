@@ -17,11 +17,16 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email');
+            $table->string('password');
             $table->enum('gender', ['male', 'female']);
             $table->date('birthday');
             $table->string('avatar');
             $table->boolean('status');
+            $table->string('api_token')->nullable();
+            $table->string('verification_token')->nullable()
             $table->timestamps();
+            $table->timestamp('expired_at')->nullable();
+            $table->timestamp('verified_at')->nullable();
         });
     }
 
