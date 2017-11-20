@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->enum('gender', ['male', 'female']);
             $table->date('birthday');
             $table->string('avatar');
-            $table->boolean('status');
+            $table->boolean('status')->nullable();
             $table->string('api_token')->nullable();
             $table->string('verification_token')->nullable();
             $table->timestamps();

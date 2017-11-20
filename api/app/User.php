@@ -4,29 +4,31 @@ namespace App;
 
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable;
+    use Authenticatable, Authorizable, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email',
-    ];
+    protected $fillable = ['name', 'email', 'password', 'gender', 'birthday', 'avatar', 'status'];
+    protected $hidden = ['password', 'api_token', 'verification_token', 'expired_at', 'verified_at'];
+    protected $dates = ['expired_at', 'verified_at'];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function gifts()
+    {
+        return $this->hasMany('App\Gift');
+    }
+
+    public function draws()
+    {
+        return $this->belongsToMany('App\Draw');
+    }
 }
