@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar');
             $table->boolean('status');
             $table->string('api_token')->nullable();
-            $table->string('verification_token')->nullable()
+            $table->string('verification_token')->nullable();
             $table->timestamps();
             $table->timestamp('expired_at')->nullable();
             $table->timestamp('verified_at')->nullable();
