@@ -18,9 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('password');
-            $table->enum('gender', ['male', 'female']);
-            $table->date('birthday');
-            $table->string('avatar');
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->date('birthday')->nullable();
+            $table->string('avatar')->nullable();
             $table->boolean('status')->nullable();
             $table->string('api_token')->nullable();
             $table->string('verification_token')->nullable();
