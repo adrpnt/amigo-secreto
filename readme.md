@@ -1,4 +1,5 @@
 # Amigo Secreto
-## React + Lumen
+
+## React + Adonis
 
 Plataforma para participações em amigos secretos.
