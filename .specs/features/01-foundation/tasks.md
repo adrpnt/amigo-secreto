@@ -342,9 +342,9 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Testes `request id > devolve o x-request-id recebido e o usa nos logs da requisição` e `> gera um UUID quando a requisição não traz x-request-id`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 22 tests pass
+- [x] Testes `request id > devolve o x-request-id recebido e o usa nos logs da requisição` e `> gera um UUID quando a requisição não traz x-request-id`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 22 tests pass
 
 **Tests**: integration
 **Gate**: full
