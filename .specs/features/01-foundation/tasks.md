@@ -320,10 +320,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `main.ts` usa `AppLogger` (JSON quando `NODE_ENV=production`)
-- [ ] Testes `AppLogger > escreve uma linha JSON com level, timestamp e message em produção`, `> inclui o requestId do contexto na linha` e `> escreve texto legível fora de produção`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 20 tests pass
+- [x] `main.ts` usa `AppLogger` (JSON quando `NODE_ENV=production`)
+- [x] Testes `AppLogger > escreve uma linha JSON com level, timestamp e message em produção`, `> inclui o requestId do contexto na linha` e `> escreve texto legível fora de produção`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 20 tests pass
 
 **Tests**: unit
 **Gate**: quick
