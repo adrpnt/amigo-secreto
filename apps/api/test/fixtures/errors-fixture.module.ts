@@ -2,8 +2,10 @@ import {
   BadRequestException,
   Controller,
   Get,
+  InternalServerErrorException,
   Module,
   NotFoundException,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 
 export const INTERNAL_DETAIL = 'senha do banco recusada em db.interno:5432';
@@ -13,6 +15,16 @@ class ErrorsFixtureController {
   @Get('unhandled')
   unhandled(): never {
     throw new Error(INTERNAL_DETAIL);
+  }
+
+  @Get('internal-with-message')
+  internalWithMessage(): never {
+    throw new InternalServerErrorException(INTERNAL_DETAIL);
+  }
+
+  @Get('unavailable')
+  unavailable(): never {
+    throw new ServiceUnavailableException('Banco indisponível');
   }
 
   @Get('bad-request')

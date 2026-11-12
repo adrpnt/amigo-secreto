@@ -107,15 +107,16 @@
 - **Trade-off**: Uma fase espera o merge da anterior. O nome de branch do Linear contém o ticket e "fase-N"; o usuário escolheu esse nome em troca do vínculo automático com a issue. A verificação de fim de feature (provas, Verifier) roda depois do PR da última fase.
 - **Scope**: Todas as features, a partir da `01-foundation`. Complementa o AD-009 (Linear) e substitui a pergunta "sub-agente por lote ou na conversa".
 - **Date**: 2026-11-12
+- **Revised**: 2026-11-12 - na última fase de uma feature, o fechamento (`check_proofs.py`, provas por walk, Verifier, correções, `validate_verification.py` com saída 0 e lições) acontece na branch da fase, antes do push; o PR só abre com a feature inteira finalizada. Pedido do usuário depois do PR #6 da `01-foundation`, aberto antes do fechamento: "O fechamento devia ter sido feito antes de abrir o PR, abrindo somente com tudo da feature finalizado."
 - **Status**: active
 
 ## Handoff
 
 - **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Execute. Todas as fases concluídas (T1 a T24). Fases 1 a 5 mergeadas na `main` (PRs #1 a #5). Fase 6 com push e PR aberto a partir de `pntadr/per-62-fase-6-web-pagina-rewrite-sentry`; PER-62 em In Progress, com os cinco checkboxes marcados; PER-61 em Done.
-- **Completed**: T1 a T24
+- **Phase / Task**: Execute concluído. T1 a T24 feitas; fases 1 a 6 mergeadas na `main` (PRs #1 a #6). Fechamento feito na branch `pntadr/per-70-verificacao-da-foundation`: walk, Verifier (FAIL, 10 achados, todos fechados por commit), `check_proofs.py` em `8695c72` com 99 pass e 0 fail, `validate_verification.py` com saída 0 e 10 lições candidatas em `.specs/lessons.json`.
+- **Completed**: T1 a T24, verificação da feature
 - **In-progress** (file:line): none
-- **Next step**: Conferir no PR da fase 6 que o workflow de CI roda os cinco comandos (C55) e fica verde. Depois do merge: perguntar o status final da PER-62, atualizar a `main` e fechar a feature: `check_proofs.py 01-foundation`, as provas por walk (C4, C5, C6, C8, C10, C13, C14, C55, C56, C57) com o `**Walked:**` do tasks.md, o Verifier num sub-agente novo (escrito no `**Dispatched:**` antes de enviar), uma rodada de correções e `validate_verification.py 01-foundation` com saída 0; depois as lições. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`). Na fase 6 o AD-006 foi revisado (repasse por `src/proxy.ts`, porque o Next 16 grava o destino dos `rewrites()` no build) e entraram o FND-04 AC6 e a C60.
-- **Blockers**: merge do PR da fase 6.
+- **Next step**: push da branch de verificação e PR contra a `main` (AD-010); depois do merge, perguntar o status final da PER-70 e abrir a feature `02-email-jobs` pelo Specify, carregando as lições confirmadas (nenhuma ainda).
+- **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-62-fase-6-web-pagina-rewrite-sentry
+- **Branch**: pntadr/per-70-verificacao-da-foundation

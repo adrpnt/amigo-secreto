@@ -51,6 +51,20 @@ describe('AllExceptionsFilter', () => {
     expect(response.text).not.toMatch(/\bat .+:\d+:\d+/);
   });
 
+  it('responde Erro interno quando o handler lança InternalServerErrorException com mensagem', async () => {
+    const response = await request(server).get(
+      '/fixtures/errors/internal-with-message',
+    );
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({
+      statusCode: 500,
+      message: 'Erro interno',
+      error: 'Internal Server Error',
+    });
+    expect(response.text).not.toContain(INTERNAL_DETAIL);
+  });
+
   it('envia ao Sentry a exceção que resulta em 500', async () => {
     await request(server).get('/fixtures/errors/unhandled');
     await Sentry.flush(2000);
@@ -60,6 +74,30 @@ describe('AllExceptionsFilter', () => {
       type: 'Error',
       value: INTERNAL_DETAIL,
     });
+  });
+
+  it('envia ao Sentry a InternalServerErrorException lançada com mensagem', async () => {
+    await request(server).get('/fixtures/errors/internal-with-message');
+    await Sentry.flush(2000);
+
+    expect(sentEvents).toHaveLength(1);
+    expect(sentEvents[0]?.exception?.values?.[0]).toMatchObject({
+      type: 'InternalServerErrorException',
+      value: INTERNAL_DETAIL,
+    });
+  });
+
+  it('repassa o corpo de um 503 e não o envia ao Sentry', async () => {
+    const response = await request(server).get('/fixtures/errors/unavailable');
+    await Sentry.flush(2000);
+
+    expect(response.status).toBe(503);
+    expect(response.body).toEqual({
+      statusCode: 503,
+      message: 'Banco indisponível',
+      error: 'Service Unavailable',
+    });
+    expect(sentEvents).toEqual([]);
   });
 
   it('não envia ao Sentry erros que resultam em 4xx', async () => {

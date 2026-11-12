@@ -4,15 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nest start --watch",
+    "dev": "nest start --watch --exec \"node --import ./dist/instrument.js\"",
     "build": "nest build",
     "start": "node --import ./dist/instrument.js dist/main.js",
     "lint": "eslint . --max-warnings 0 && prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "migration:generate": "pnpm build && typeorm migration:generate -d dist/database/data-source.js",
-    "migration:run": "typeorm migration:run -d dist/database/data-source.js",
-    "migration:revert": "typeorm migration:revert -d dist/database/data-source.js"
+    "migration:run": "pnpm build && typeorm migration:run -d dist/database/data-source.js",
+    "migration:revert": "pnpm build && typeorm migration:revert -d dist/database/data-source.js"
   },
   "dependencies": {
     "@amigo-secreto/shared": "workspace:*",

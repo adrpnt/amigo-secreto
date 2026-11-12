@@ -84,13 +84,31 @@ describe('getApiStatus', () => {
   }, 10_000);
 
   it('devolve unavailable quando a API responde 200 sem status ok', async () => {
+    const responses = [
+      {
+        contentType: 'text/html',
+        body: '<html><body>Página de manutenção</body></html>',
+      },
+      { contentType: 'application/json', body: '{"status":"error"}' },
+      { contentType: 'application/json', body: '{}' },
+    ];
+    let served = 0;
     const url = await startApi((_request, response) => {
-      response.writeHead(200, { 'content-type': 'text/html' });
-      response.end('<html><body>Página de manutenção</body></html>');
+      const { contentType, body } = responses[served];
+      served += 1;
+      response.writeHead(200, { 'content-type': contentType });
+      response.end(body);
     });
     vi.stubEnv('API_INTERNAL_URL', url);
 
-    await expect(getApiStatus()).resolves.toBe('unavailable');
+    const statuses = [
+      await getApiStatus(),
+      await getApiStatus(),
+      await getApiStatus(),
+    ];
+
+    expect(statuses).toEqual(['unavailable', 'unavailable', 'unavailable']);
+    expect(served).toBe(responses.length);
   });
 
   it('lança erro que nomeia API_INTERNAL_URL quando ela falta', async () => {

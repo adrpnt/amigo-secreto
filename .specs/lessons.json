@@ -1,0 +1,189 @@
+{
+  "schema": 1,
+  "promote_threshold": 2,
+  "window_days": 45,
+  "quarantine_threshold": 2,
+  "next_id": 11,
+  "lessons": [
+    {
+      "id": "L-001",
+      "key": "ac_gap::testar a inicializacao de sdks de observabilidade pelo processo real dev e start com a configuracao lida do env e nao so chamando a funcao de init",
+      "text": "Testar a inicialização de SDKs de observabilidade pelo processo real (dev e start), com a configuração lida do .env, e não só chamando a função de init.",
+      "signal": "ac_gap",
+      "scope": "observability",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/package.json:7; apps/api/src/instrument.ts (observability)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-002",
+      "key": "ac_gap::script que le saida compilada roda num clone sem build compilar antes no proprio script e testar sem a pasta dist",
+      "text": "Script que lê saída compilada roda num clone sem build: compilar antes no próprio script e testar sem a pasta dist.",
+      "signal": "ac_gap",
+      "scope": "scripts",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/package.json:14 (scripts)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-003",
+      "key": "weak_test::comparar respostas repassadas sem os campos que mudam a cada requisicao como tempos de resposta",
+      "text": "Comparar respostas repassadas sem os campos que mudam a cada requisição, como tempos de resposta.",
+      "signal": "weak_test",
+      "scope": "e2e",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C23 apps/web/e2e/api-rewrite.spec.ts:13 (e2e)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-004",
+      "key": "weak_test::provar uma mensagem por regra violada com um campo que viola duas regras ao mesmo tempo",
+      "text": "Provar uma mensagem por regra violada com um campo que viola duas regras ao mesmo tempo.",
+      "signal": "weak_test",
+      "scope": "validation",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C25 apps/api/test/validation.int-spec.ts:46 (validation)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-005",
+      "key": "weak_test::cobrir cada condicao de uma checagem com uma entrada que passa pelas anteriores e falha so nela",
+      "text": "Cobrir cada condição de uma checagem com uma entrada que passa pelas anteriores e falha só nela.",
+      "signal": "weak_test",
+      "scope": "",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C48 apps/web/src/lib/api-status.test.ts:86"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-006",
+      "key": "ac_gap::testar o corpo generico do 500 tambem com a excecao http do framework lancada com mensagem nao so com error",
+      "text": "Testar o corpo genérico do 500 também com a exceção HTTP do framework lançada com mensagem, não só com Error.",
+      "signal": "ac_gap",
+      "scope": "errors",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/observability/all-exceptions.filter.ts:38 (errors)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-007",
+      "key": "ac_gap::proteger atributos de log estruturado contra os nomes que o logger ja ocupa",
+      "text": "Proteger atributos de log estruturado contra os nomes que o logger já ocupa.",
+      "signal": "ac_gap",
+      "scope": "observability",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/observability/business-events.service.ts:15 (observability)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-008",
+      "key": "weak_test::conferir cada familia de tokens do design system em elementos renderizados nao um valor de amostra",
+      "text": "Conferir cada família de tokens do design system em elementos renderizados, não um valor de amostra.",
+      "signal": "weak_test",
+      "scope": "design-system",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C40 apps/web/e2e/theme.spec.ts:142 (design-system)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-009",
+      "key": "spec_precision_gap::escrever criterios de comando pelo que o grafo de tarefas roda de fato incluindo builds de dependencias e arquivos gerados",
+      "text": "Escrever critérios de comando pelo que o grafo de tarefas roda de fato, incluindo builds de dependências e arquivos gerados.",
+      "signal": "spec_precision_gap",
+      "scope": "tooling",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C6 turbo.json:16 (tooling)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-010",
+      "key": "ac_gap::mandar ao monitoramento de erros so os 500 5xx esperados como o 503 do health ficam no log",
+      "text": "Mandar ao monitoramento de erros só os 500; 5xx esperados, como o 503 do health, ficam no log.",
+      "signal": "ac_gap",
+      "scope": "observability",
+      "status": "candidate",
+      "features": [
+        "01-foundation"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/observability/all-exceptions.filter.ts:30 (observability)"
+      ],
+      "created": "2026-11-12T17:13:28Z",
+      "last_seen": "2026-11-12T17:13:28Z"
+    }
+  ]
+}

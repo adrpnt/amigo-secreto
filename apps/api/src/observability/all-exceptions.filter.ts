@@ -27,17 +27,26 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    const isInternalError =
+      status === (HttpStatus.INTERNAL_SERVER_ERROR as number);
+
     if (status >= 500) {
       this.logger.error(
         exception instanceof Error ? exception.message : String(exception),
         exception instanceof Error ? exception.stack : undefined,
       );
+    }
+
+    // Só o 500 vai ao Sentry: os outros 5xx (ex.: o 503 do health com o banco fora) são esperados.
+    if (isInternalError) {
       Sentry.captureException(exception);
     }
 
-    const body = isHttpException
-      ? httpExceptionBody(exception)
-      : INTERNAL_ERROR;
+    // Um 500 nunca devolve a mensagem original, mesmo vinda de uma HttpException.
+    const body =
+      isHttpException && !isInternalError
+        ? httpExceptionBody(exception)
+        : INTERNAL_ERROR;
     this.adapterHost.httpAdapter.reply(
       host.switchToHttp().getResponse(),
       body,
