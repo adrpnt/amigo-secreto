@@ -715,6 +715,7 @@ Proof: `node -e "const s=require('./apps/api/package.json').scripts; process.exi
 
 **C18** - `migration:run` num banco vazio cria a tabela de controle de migrations e termina com código 0 (FND-03, AC 5)
 Proof: run api | ✓ migration:run > cria a tabela de controle de migrations num banco vazio
+Proof: run api | ✓ migration:run > roda num clone sem build, sem a pasta dist
 
 **C19** - `GET /health` com o banco respondendo devolve 200 e `status: "ok"` (FND-04, AC 1)
 Proof: run api | ✓ GET /health > responde 200 com status ok quando o banco responde
@@ -739,6 +740,7 @@ Proof: run api | ✓ validação de entrada > responde 400 com uma mensagem por 
 
 **C26** - Erro não tratado vira 500 com `message: "Erro interno"`, sem stack nem mensagem original (FND-05, AC 3)
 Proof: run api | ✓ AllExceptionsFilter > responde 500 com Erro interno sem stack nem mensagem original
+Proof: run api | ✓ AllExceptionsFilter > responde Erro interno quando o handler lança InternalServerErrorException com mensagem
 
 **C27** - Erros da API seguem `{ statusCode, message, error }` (FND-05, AC 4)
 Proof: run api | ✓ validação de entrada > responde no formato statusCode, message e error
@@ -763,9 +765,14 @@ Proof: run api | ✓ request id > gera um UUID quando a requisição não traz x
 
 **C34** - Um evento de negócio gera log com `event` no formato `dominio.acao`, `timestamp` e os atributos (FND-07, AC 4)
 Proof: run api | ✓ BusinessEventsService > registra event, timestamp e os atributos no log
+Proof: run api | ✓ BusinessEventsService > rejeita em tempo de compilação atributos com os nomes que o log ocupa
+Proof: run typecheck | @amigo-secreto/api:typecheck: $ tsc --noEmit
 
 **C35** - Com `SENTRY_DSN`, toda exceção que resulta em 500 vai ao Sentry (FND-07, AC 5)
 Proof: run api | ✓ AllExceptionsFilter > envia ao Sentry a exceção que resulta em 500
+Proof: run api | ✓ AllExceptionsFilter > envia ao Sentry a InternalServerErrorException lançada com mensagem
+Proof: run api | ✓ AllExceptionsFilter > repassa o corpo de um 503 e não o envia ao Sentry
+Proof: run api | ✓ instrument > inicializa o Sentry com o SENTRY_DSN posto só no .env
 
 **C36** - Com `SENTRY_DSN`, erros 4xx não vão ao Sentry (FND-07, AC 6)
 Proof: run api | ✓ AllExceptionsFilter > não envia ao Sentry erros que resultam em 4xx
