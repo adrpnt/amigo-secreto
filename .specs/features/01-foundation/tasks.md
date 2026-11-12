@@ -132,10 +132,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `package.json` com `"type": "module"`, `exports` para `dist`, scripts `build`, `dev`, `lint`, `typecheck` e `test` (`vitest run --passWithNoTests`)
-- [ ] `src/index.ts` exporta os três tipos com união de strings (`'ok' | 'error'`, `'up' | 'down'`)
-- [ ] `eslint.config.mjs` com `typescript-eslint` (com tipos) e `eslint-config-prettier`
-- [ ] Gate check passes: `pnpm install && pnpm build && pnpm typecheck && pnpm lint`
+- [x] `package.json` com `"type": "module"`, `exports` para `dist`, scripts `build`, `dev`, `lint`, `typecheck` e `test` (`vitest run --passWithNoTests`)
+- [x] `src/index.ts` exporta os três tipos com união de strings (`'ok' | 'error'`, `'up' | 'down'`)
+- [x] `eslint.config.mjs` com `typescript-eslint` (com tipos) e `eslint-config-prettier`
+- [x] Gate check passes: `pnpm install && pnpm build && pnpm typecheck && pnpm lint`
 
 **Tests**: none
 **Gate**: build
