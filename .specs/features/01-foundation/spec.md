@@ -80,6 +80,7 @@ O repositório não tem código: o backend antigo em Lumen foi removido e a stac
 7. WHEN o dev roda `pnpm test` na raiz THEN o sistema SHALL rodar os testes Vitest, unitários e de integração, dos três pacotes.
 8. WHEN o dev roda `pnpm format` na raiz THEN o Prettier SHALL reescrever os arquivos fora do padrão.
 9. The repositório SHALL declarar a versão do Node em `.nvmrc` e no campo `engines` do `package.json` da raiz, com o mesmo valor.
+10. WHEN o dev roda `pnpm typecheck` na raiz THEN o Turborepo SHALL compilar antes as dependências de workspace de cada pacote (`^build`) e o web SHALL gerar os tipos de rota do Next (`next typegen`); os `tsc --noEmit` dos três pacotes SHALL não emitir arquivos.
 
 **Independent Test**: Num clone limpo, `pnpm install`, `pnpm build`, `pnpm lint`, `pnpm typecheck` e `pnpm test` terminam com código 0; introduzir um erro de tipo faz `pnpm typecheck` falhar.
 
