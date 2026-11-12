@@ -93,10 +93,10 @@
 ## Handoff
 
 - **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Tasks aprovadas em 2026-11-12; Execute não iniciado (usuário: "Não executar nada agora.")
+- **Phase / Task**: Execute, antes da T1. Modo escolhido: só o lote 1 (T1 a T6), com parada para revisão antes do lote 2.
 - **Completed**: none
 - **In-progress** (file:line): none
-- **Next step**: Quando o usuário pedir, perguntar o modo de execução (um sub-agente por lote ou tudo na conversa), ler `implement.md`, rodar `validate_tasks.py 01-foundation --execute` (o Build vermelho antes da T1 já foi autorizado e está no `tasks.md`) e começar pela T1.
-- **Blockers**: none
-- **Uncommitted files**: none
+- **Next step**: Quando o usuário confirmar o Node 26 instalado e o Docker rodando, conferir `node -v` e `docker info`, rodar `validate_tasks.py 01-foundation --execute` (Build vermelho antes da T1 já autorizado) e começar pela T1.
+- **Blockers**: Node 26 (a máquina tem v24.17.0) e daemon do Docker, ambos com o usuário.
+- **Uncommitted files**: `.specs/features/01-foundation/tasks.md` (Settled mid-build), `.specs/STATE.md` (Handoff)
 - **Branch**: chore/monorepo-foundation

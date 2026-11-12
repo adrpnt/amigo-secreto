@@ -28,3 +28,13 @@ Temporary Items
 # Claude Code
 .claude/
 skills-lock.json
+
+# Node e ferramentas
+node_modules
+dist
+.next
+.turbo
+coverage
+playwright-report
+test-results
+.env

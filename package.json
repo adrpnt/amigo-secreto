@@ -1,0 +1,21 @@
+{
+  "name": "amigo-secreto",
+  "private": true,
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": "26"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "3.10.1",
+    "turbo": "2.11.11"
+  }
+}

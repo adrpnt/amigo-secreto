@@ -108,12 +108,12 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `package.json` com `packageManager: "pnpm@12.18.0"`, `engines.node: "26"` e scripts `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e` (via `turbo run`) e `format`
-- [ ] `.nvmrc` com `26`
-- [ ] `pnpm-workspace.yaml` com `apps/*` e `packages/*`; `turbo.json` com as tarefas do design
-- [ ] `tsconfig.base.json`, `.prettierrc.json`, `.prettierignore`
-- [ ] `.gitignore` ganha `node_modules`, `dist`, `.next`, `.turbo`, `coverage`, `playwright-report`, `test-results` e `.env`
-- [ ] Gate check passes: `pnpm install && pnpm build`
+- [x] `package.json` com `packageManager: "pnpm@12.18.0"`, `engines.node: "26"` e scripts `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e` (via `turbo run`) e `format`
+- [x] `.nvmrc` com `26`
+- [x] `pnpm-workspace.yaml` com `apps/*` e `packages/*`; `turbo.json` com as tarefas do design
+- [x] `tsconfig.base.json`, `.prettierrc.json`, `.prettierignore`
+- [x] `.gitignore` ganha `node_modules`, `dist`, `.next`, `.turbo`, `coverage`, `playwright-report`, `test-results` e `.env`
+- [x] Gate check passes: `pnpm install && pnpm build`
 
 **Tests**: none
 **Gate**: build
@@ -852,7 +852,7 @@ Proof: `grep -q 'node-version-file: .nvmrc' .github/workflows/ci.yml`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora."
+**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 

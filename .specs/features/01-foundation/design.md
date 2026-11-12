@@ -97,12 +97,12 @@ Não há código de aplicação no repositório (o Lumen foi removido em `4ce025
 - **Purpose**: Workspaces, tarefas do Turborepo, configuração comum de TypeScript e Prettier, Compose e CI.
 - **Location**: `/`
 - **Interfaces**:
-  - `package.json`: `packageManager: "pnpm@12.18.0"`, `engines.node: ">=26.13.0 <27"`, scripts `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e` (todos `turbo run <tarefa>`) e `format` (`prettier --write .`)
-  - `.nvmrc`: `26.13.1`
+  - `package.json`: `packageManager: "pnpm@12.18.0"`, `engines.node: "26"`, scripts `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e` (todos `turbo run <tarefa>`) e `format` (`prettier --write .`)
+  - `.nvmrc`: `26`
   - `pnpm-workspace.yaml`: `apps/*`, `packages/*`
-  - `turbo.json`: `build` (`dependsOn: ["^build"]`, outputs `dist/**`, `.next/**` sem `.next/cache/**`); `dev` (`persistent`, sem cache, `dependsOn: ["^build"]`); `lint`; `typecheck` e `test` (`dependsOn: ["^build"]`); `test:e2e` (`dependsOn: ["build"]`, sem cache)
+  - `turbo.json`: `build` (`dependsOn: ["^build"]`, outputs `dist/**`, `.next/**` sem `.next/cache/**`); `dev` (`persistent`, sem cache, `dependsOn: ["^build"]`); `lint`, `typecheck` e `test` (`dependsOn: ["^build"]`); `test:e2e` (`dependsOn: ["build"]`, sem cache)
   - `tsconfig.base.json`: `strict`, `target` ES2024, `module`/`moduleResolution` `nodenext`, `verbatimModuleSyntax`, `skipLibCheck`
-  - `.prettierrc.json` e `.prettierignore` (ignora `dist`, `.next`, `coverage`, `pnpm-lock.yaml`, `playwright-report`)
+  - `.prettierrc.json` (`singleQuote: true`, `trailingComma: "all"`, resto no padrão) e `.prettierignore` (ignora `dist`, `.next`, `coverage`, `pnpm-lock.yaml`, `playwright-report`)
   - `docker-compose.yml`: serviço `postgres` (`postgres:18`, porta 5432, volume nomeado, healthcheck `pg_isready`)
 - **Dependencies**: `turbo`, `prettier`
 - **Reuses**: nada
