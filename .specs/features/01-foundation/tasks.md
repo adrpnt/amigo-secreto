@@ -276,10 +276,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Filtro registrado em `configureApp`
-- [ ] Testes `AllExceptionsFilter > responde 500 com Erro interno sem stack nem mensagem original`, `> envia ao Sentry a exceção que resulta em 500` e `> não envia ao Sentry erros que resultam em 4xx`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 14 tests pass
+- [x] Filtro registrado em `configureApp`
+- [x] Testes `AllExceptionsFilter > responde 500 com Erro interno sem stack nem mensagem original`, `> envia ao Sentry a exceção que resulta em 500` e `> não envia ao Sentry erros que resultam em 4xx`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 14 tests pass
 
 **Tests**: integration
 **Gate**: full
