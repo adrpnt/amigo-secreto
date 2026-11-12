@@ -57,6 +57,20 @@ describe('validação de entrada', () => {
         'age must not be less than 0',
       ]),
     );
+
+    const twoRulesOnOneField = await request(server)
+      .post(ROUTE)
+      .send({ name: 42, age: 30 });
+
+    expect(twoRulesOnOneField.status).toBe(400);
+    const twoRulesBody = twoRulesOnOneField.body as { message: string[] };
+    expect(twoRulesBody.message).toHaveLength(2);
+    expect(twoRulesBody.message).toEqual(
+      expect.arrayContaining([
+        'name must be longer than or equal to 3 characters',
+        'name must be a string',
+      ]),
+    );
     expect(receivedBodies).toEqual([]);
   });
 
