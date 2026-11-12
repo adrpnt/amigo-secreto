@@ -1,7 +1,7 @@
 # Foundation Design
 
-**Spec**: `.specs/features/foundation/spec.md`
-**Context**: `.specs/features/foundation/context.md`
+**Spec**: `.specs/features/01-foundation/spec.md`
+**Context**: `.specs/features/01-foundation/context.md`
 **Status**: Approved
 **Approved**: 2026-11-12 - user: "Tudo aprovado, sobre a decisão pendente pode fazer como recomendado."
 

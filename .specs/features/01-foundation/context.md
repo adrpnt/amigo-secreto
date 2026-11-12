@@ -1,7 +1,7 @@
 # Foundation Context
 
 **Gathered:** 2026-11-12
-**Spec:** `.specs/features/foundation/spec.md`
+**Spec:** `.specs/features/01-foundation/spec.md`
 **Status:** Spec aprovada em 2026-11-12; pronto para design
 
 ---

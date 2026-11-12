@@ -283,7 +283,7 @@ O repositório não tem código: o backend antigo em Lumen foi removido e a stac
 ## Sources
 
 - `.specs/docs/scope.md` - 7.1 a 7.5 (stack, módulos e estrutura do repositório) e 8 (requisitos não funcionais: segurança, acessibilidade, observabilidade, testes).
-- `.specs/features/foundation/context.md` - decisões do usuário de 2026-11-12, com as palavras dele.
+- `.specs/features/01-foundation/context.md` - decisões do usuário de 2026-11-12, com as palavras dele.
 - `.specs/STATE.md` - AD-001 (divisão em features), AD-004 (migrations), AD-005 (métricas por log de evento).
 - Design system "Cristal e Gelo" (artifact privado no claude.ai) - tokens de cor claro e escuro, Plus Jakarta Sans, espaçamento, raios, sombras e o bloco de `globals.css` para shadcn/ui. É a referência visual; não há captura de tela para a página provisória.
 

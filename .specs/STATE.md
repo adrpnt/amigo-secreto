@@ -81,13 +81,22 @@
 - **Date**: 2026-11-12
 - **Status**: active
 
+### AD-008
+
+- **Decision**: A pasta de cada feature em `.specs/features/` leva o número de ordem da feature no AD-001, com dois dígitos e hífen: `01-foundation`, `02-email-jobs`, `03-auth`, `04-groups`, `05-invites`, `06-draw`, `07-wishlist`, `08-wall`, `09-secret-messages`, `10-lifecycle`, `11-account-deletion`, `12-public-pages`. O nome da feature e o prefixo dos IDs de requisito não mudam (`foundation`, `FND-01`).
+- **Reason**: A ordem das pastas acompanha o histórico de construção. Pedido do usuário em 2026-11-12: "Para as features adotar a convenção de adicionar um ordem no nome da pasta, para facilitar a companhar o histórico. Exemplo: 01-foundation".
+- **Trade-off**: Uma feature que entrar depois no plano, mesmo que fique entre duas já numeradas, recebe o próximo número livre (ex.: `13-nome`); nenhuma pasta é renumerada. O número conta a ordem de entrada no plano, não a posição na sequência de construção. Pergunta ao usuário em 2026-11-12: "Se surgir uma feature nova entre duas já numeradas, como numerar?", resposta "Próximo número livre (Recomendado)", entre "próximo número livre" e "renumerar as seguintes". Os scripts da skill recebem o nome da pasta (`validate_spec.py 01-foundation`).
+- **Scope**: Todas as features. Complementa o AD-003 (nomes em inglês) e o AD-001 (ordem).
+- **Date**: 2026-11-12
+- **Status**: active
+
 ## Handoff
 
-- **Feature**: foundation (`.specs/features/foundation/`)
+- **Feature**: 01-foundation (`.specs/features/01-foundation/`)
 - **Phase / Task**: Tasks aprovadas em 2026-11-12; Execute não iniciado (usuário: "Não executar nada agora.")
 - **Completed**: none
 - **In-progress** (file:line): none
-- **Next step**: Quando o usuário pedir, perguntar o modo de execução (um sub-agente por lote ou tudo na conversa), ler `implement.md`, rodar `validate_tasks.py foundation --execute` (o Build vermelho antes da T1 já foi autorizado e está no `tasks.md`) e começar pela T1.
+- **Next step**: Quando o usuário pedir, perguntar o modo de execução (um sub-agente por lote ou tudo na conversa), ler `implement.md`, rodar `validate_tasks.py 01-foundation --execute` (o Build vermelho antes da T1 já foi autorizado e está no `tasks.md`) e começar pela T1.
 - **Blockers**: none
-- **Uncommitted files**: none (planejamento commitado na branch abaixo)
+- **Uncommitted files**: none
 - **Branch**: chore/monorepo-foundation

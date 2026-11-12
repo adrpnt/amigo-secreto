@@ -8,7 +8,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 
 ---
 
-**Design**: `.specs/features/foundation/design.md`
+**Design**: `.specs/features/01-foundation/design.md`
 **Status**: Approved
 **Approved**: 2026-11-12 - user: "Aprovo as tasks"
 **Build**: `pnpm build; pnpm typecheck; pnpm lint`
