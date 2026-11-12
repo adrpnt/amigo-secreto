@@ -139,6 +139,28 @@ async function expectDesignTokens(page: Page, theme: Theme) {
   await expect(body).toHaveCSS('background-color', colors.background.expected);
   await expect(body).toHaveCSS('color', colors.foreground.expected);
 
+  // Escala de espaçamento de 4px do design system.
+  const spacingUnit = await page.evaluate(() => {
+    const probe = document.createElement('div');
+    probe.style.width = 'calc(var(--spacing) * 1)';
+    document.body.append(probe);
+    const width = getComputedStyle(probe).width;
+    probe.remove();
+    return width;
+  });
+  expect(spacingUnit, '--spacing').toBe('4px');
+
+  // Raios e espaçamentos que a página usa hoje (Desktop Chrome, 1280px de largura).
+  const header = page.getByRole('banner');
+  await expect(header).toHaveCSS('padding-top', '8px');
+  await expect(header).toHaveCSS('padding-right', '8px');
+  await expect(header).toHaveCSS('padding-bottom', '8px');
+  await expect(header).toHaveCSS('padding-left', '24px');
+  await expect(header).toHaveCSS('column-gap', '8px');
+
+  const homeLink = header.getByRole('link', { name: 'Amigo Secreto' });
+  await expect(homeLink).toHaveCSS('border-radius', '8px');
+
   const toggle = page.getByRole('button', { name: /Ativar tema/ });
   await expect(toggle).toHaveCSS('border-radius', '10px');
   await expect(toggle).toHaveCSS('width', '44px');
