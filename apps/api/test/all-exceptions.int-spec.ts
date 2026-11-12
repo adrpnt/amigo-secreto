@@ -87,6 +87,19 @@ describe('AllExceptionsFilter', () => {
     });
   });
 
+  it('repassa o corpo de um 503 e não o envia ao Sentry', async () => {
+    const response = await request(server).get('/fixtures/errors/unavailable');
+    await Sentry.flush(2000);
+
+    expect(response.status).toBe(503);
+    expect(response.body).toEqual({
+      statusCode: 503,
+      message: 'Banco indisponível',
+      error: 'Service Unavailable',
+    });
+    expect(sentEvents).toEqual([]);
+  });
+
   it('não envia ao Sentry erros que resultam em 4xx', async () => {
     const badRequest = await request(server).get(
       '/fixtures/errors/bad-request',

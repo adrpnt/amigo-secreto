@@ -35,6 +35,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         exception instanceof Error ? exception.message : String(exception),
         exception instanceof Error ? exception.stack : undefined,
       );
+    }
+
+    // Só o 500 vai ao Sentry: os outros 5xx (ex.: o 503 do health com o banco fora) são esperados.
+    if (isInternalError) {
       Sentry.captureException(exception);
     }
 
