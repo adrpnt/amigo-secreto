@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Controller,
   Get,
+  InternalServerErrorException,
   Module,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,6 +14,11 @@ class ErrorsFixtureController {
   @Get('unhandled')
   unhandled(): never {
     throw new Error(INTERNAL_DETAIL);
+  }
+
+  @Get('internal-with-message')
+  internalWithMessage(): never {
+    throw new InternalServerErrorException(INTERNAL_DETAIL);
   }
 
   @Get('bad-request')
