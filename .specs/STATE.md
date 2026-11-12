@@ -107,6 +107,7 @@
 - **Trade-off**: Uma fase espera o merge da anterior. O nome de branch do Linear contém o ticket e "fase-N"; o usuário escolheu esse nome em troca do vínculo automático com a issue. A verificação de fim de feature (provas, Verifier) roda depois do PR da última fase.
 - **Scope**: Todas as features, a partir da `01-foundation`. Complementa o AD-009 (Linear) e substitui a pergunta "sub-agente por lote ou na conversa".
 - **Date**: 2026-11-12
+- **Revised**: 2026-11-12 - na última fase de uma feature, o fechamento (`check_proofs.py`, provas por walk, Verifier, correções, `validate_verification.py` com saída 0 e lições) acontece na branch da fase, antes do push; o PR só abre com a feature inteira finalizada. Pedido do usuário depois do PR #6 da `01-foundation`, aberto antes do fechamento: "O fechamento devia ter sido feito antes de abrir o PR, abrindo somente com tudo da feature finalizado."
 - **Status**: active
 
 ## Handoff
