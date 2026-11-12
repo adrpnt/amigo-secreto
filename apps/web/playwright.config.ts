@@ -2,13 +2,15 @@ import { defineConfig, devices } from '@playwright/test';
 
 const API_URL = 'http://localhost:3001';
 const CLOSED_API_URL = 'http://localhost:3999';
+const IS_CI = Boolean(process.env.CI);
 
 export default defineConfig({
   testDir: 'e2e',
-  reporter: 'list',
+  reporter: IS_CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   retries: 0,
   use: {
     baseURL: 'http://localhost:3000',
+    trace: IS_CI ? 'retain-on-failure' : 'off',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: [

@@ -65,11 +65,12 @@
 
 ### AD-006
 
-- **Decision**: O navegador fala com a API pela mesma origem do web: chama `/api/*` no site e o Next.js repassa para a API por `rewrites` no `next.config`; o servidor do Next (Server Components, route handlers) chama a API direto por uma URL interna (`API_INTERNAL_URL`). As rotas da API não têm prefixo.
+- **Decision**: O navegador fala com a API pela mesma origem do web: chama `/api/*` no site e o Next.js repassa para a API por um `src/proxy.ts` (`NextResponse.rewrite`, lendo `API_INTERNAL_URL` a cada requisição); o servidor do Next (Server Components, route handlers) chama a API direto por uma URL interna (`API_INTERNAL_URL`). As rotas da API não têm prefixo.
 - **Reason**: Cookies de sessão ficam first-party, sem CORS nem preflight, e o CSRF fica mais simples. Pergunta ao usuário em 2026-11-12: "Como o navegador do Amigo Secreto vai falar com a API?", resposta "Mesma origem via rewrites (Recomendado)", entre "mesma origem via rewrites", "origens separadas com CORS" e "BFF no Next".
 - **Trade-off**: As chamadas feitas pelo navegador passam pelo servidor do Next, um salto a mais; o Next precisa estar de pé para o navegador alcançar a API.
 - **Scope**: `apps/web`, `apps/api` e toda feature com chamada do navegador à API (sessão, CSRF e cookies da feature `auth`).
 - **Date**: 2026-11-12
+- **Revised**: 2026-11-12 - o mecanismo era `rewrites()` no `next.config`. No Next 16.4.6 o destino dos `rewrites()` fica gravado no build (`routes-manifest.json`), o `next start` ignora o `API_INTERNAL_URL` de execução e o build falha sem a variável. O `proxy.ts` lê a URL em tempo de requisição, e um build serve qualquer ambiente; a mesma origem não muda. Pergunta ao usuário: "Como repassar /api/* para a API?", resposta "proxy.ts em tempo de requisição (Recomendado)", entre "proxy.ts em tempo de requisição", "rewrites() com a URL no build" e "rewrites() com padrão localhost".
 - **Status**: active
 
 ### AD-007
@@ -111,10 +112,10 @@
 ## Handoff
 
 - **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Execute. Fases 1 a 5 concluídas (T1 a T19). Fases 1 a 4 mergeadas na `main` (PRs #1 a #4). Fase 5 com push e PR aberto a partir de `pntadr/per-61-fase-5-web-esqueleto-e2e-e-tema`; PER-61 em In Progress, com os cinco checkboxes marcados.
-- **Completed**: T1 a T19
+- **Phase / Task**: Execute. Todas as fases concluídas (T1 a T24). Fases 1 a 5 mergeadas na `main` (PRs #1 a #5). Fase 6 com push e PR aberto a partir de `pntadr/per-62-fase-6-web-pagina-rewrite-sentry`; PER-62 em In Progress, com os cinco checkboxes marcados; PER-61 em Done.
+- **Completed**: T1 a T24
 - **In-progress** (file:line): none
-- **Next step**: Depois do merge do PR da fase 5: perguntar o status final da PER-61, atualizar a `main`, criar a branch da PER-62 (conferir o `gitBranchName`) a partir dela, mover PER-62 para In Progress (AD-009) e começar pela T20. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`). Na fase 5 o FND-08 ganhou o AC12 e o AC9 passou a exigir `status` "ok" no corpo; por isso as contagens de testes de componente da T20 (11) e da T22 (15) subiram 2. A T22 (Sentry no web) usa o `dataCollection` mínimo, decidido na T9 (ver `**Settled mid-build:**` do tasks.md).
-- **Blockers**: merge do PR da fase 5.
+- **Next step**: Conferir no PR da fase 6 que o workflow de CI roda os cinco comandos (C55) e fica verde. Depois do merge: perguntar o status final da PER-62, atualizar a `main` e fechar a feature: `check_proofs.py 01-foundation`, as provas por walk (C4, C5, C6, C8, C10, C13, C14, C55, C56, C57) com o `**Walked:**` do tasks.md, o Verifier num sub-agente novo (escrito no `**Dispatched:**` antes de enviar), uma rodada de correções e `validate_verification.py 01-foundation` com saída 0; depois as lições. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`). Na fase 6 o AD-006 foi revisado (repasse por `src/proxy.ts`, porque o Next 16 grava o destino dos `rewrites()` no build) e entraram o FND-04 AC6 e a C60.
+- **Blockers**: merge do PR da fase 6.
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-61-fase-5-web-esqueleto-e2e-e-tema
+- **Branch**: pntadr/per-62-fase-6-web-pagina-rewrite-sentry

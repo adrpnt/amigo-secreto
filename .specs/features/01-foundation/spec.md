@@ -133,6 +133,7 @@ O repositório não tem código: o backend antigo em Lumen foi removido e a stac
 3. The `GET /health` SHALL responder sem autenticação.
 4. The `@amigo-secreto/shared` SHALL exportar o tipo da resposta de `GET /health`, e a API e o web SHALL importar esse tipo em vez de redeclará-lo.
 5. WHEN o navegador faz `GET /api/health` no web THEN o web SHALL repassar a requisição para `GET /health` da API e devolver o mesmo status HTTP e o mesmo corpo (AD-006).
+6. IF `API_INTERNAL_URL` não estiver definida no servidor do web THEN o repasse de `/api/*` SHALL falhar com um erro que nomeia a variável.
 
 **Independent Test**: Com o banco de pé, `curl -i localhost:3001/health` devolve 200 e `"status":"ok"`; com o container do PostgreSQL parado, devolve 503 e `"status":"error"`.
 
