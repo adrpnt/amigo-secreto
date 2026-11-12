@@ -363,10 +363,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Serviço exportado por um módulo global de observabilidade
-- [ ] Testes `BusinessEventsService > registra event, timestamp e os atributos no log` e `> inclui o requestId quando há requisição`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 24 tests pass
+- [x] Serviço exportado por um módulo global de observabilidade
+- [x] Testes `BusinessEventsService > registra event, timestamp e os atributos no log` e `> inclui o requestId quando há requisição`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 24 tests pass
 
 **Tests**: unit
 **Gate**: quick

@@ -6,7 +6,7 @@ type JsonLogOptions = Parameters<ConsoleLogger['getJsonLogObject']>[1];
 
 export class AppLogger extends ConsoleLogger {
   constructor(nodeEnv: NodeEnvironment) {
-    super({ json: nodeEnv === 'production' });
+    super({ json: nodeEnv === 'production', flattenParams: true });
   }
 
   protected override getJsonLogObject(
