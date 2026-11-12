@@ -10,3 +10,8 @@ minimumReleaseAgeExclude:
   - '@turbo/windows-arm64@2.11.11'
   - prettier@3.10.1
   - turbo@2.11.11
+allowBuilds:
+  '@swc/core': false
+  cpu-features: false
+  protobufjs: false
+  ssh2: false

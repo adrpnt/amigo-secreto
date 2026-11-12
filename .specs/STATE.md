@@ -90,13 +90,31 @@
 - **Date**: 2026-11-12
 - **Status**: active
 
+### AD-009
+
+- **Decision**: O andamento é espelhado no Linear (projeto Amigo Secreto, P-PER-4, time Personal), onde cada fase de `tasks.md` tem uma issue (ex.: `01-foundation` fase 1 = PER-57, fase 2 = PER-58, fase 3 = PER-59, fase 4 = PER-60, fase 5 = PER-61, fase 6 = PER-62). Ao começar a primeira task de uma fase, a issue dela vai para In Progress. A cada task commitada, o checkbox da task na descrição da issue é marcado. Ao terminar a fase, o usuário é perguntado sobre o status final. O ticket não entra nas mensagens de commit.
+- **Reason**: Pedido do usuário em 2026-11-12, depois que as issues de PER-57 e PER-58 ficaram em Backlog durante o lote 1. Respostas: "In Progress ao iniciar a fase (Recomendado)", "Sim, a cada commit (Recomendado)" e "Não adicionar o ticket nas mensagens de commit."
+- **Trade-off**: Cada task ganha uma escrita no Linear; um sub-agente de lote precisa receber essa regra junto das tasks.
+- **Scope**: Todas as features. Sobrepõe-se ao CLAUDE.md global só no ponto do prefixo de ticket: neste projeto, os commits não levam ticket.
+- **Date**: 2026-11-12
+- **Status**: active
+
+### AD-010
+
+- **Decision**: A execução é inline (sem sub-agentes de lote), uma fase de `tasks.md` por vez, e cada fase vira um PR contra a `main`. A branch da fase usa o `gitBranchName` da issue no Linear (ex.: `pntadr/per-57-fase-1-raiz-e-shared`) e sai da `main` atualizada; a fase seguinte só começa depois do merge da anterior. Com a última task da fase commitada e o gate de build verde, faço push e abro o PR sem perguntar, e paro esperando a revisão. Título do PR em inglês no padrão Conventional Commits; descrição em português, sem citar o processo nem seus artefatos e sem linhas de atribuição de IA.
+- **Reason**: Pedido do usuário em 2026-11-12: "A execução será inline, fase por fase, e cada fase deve ter seu PR." Respostas: "Uma por vez, a partir da main (Recomendado)", "Nome do Linear", "Separar em duas branches (Recomendado)", "Push e PR direto" e "Título EN, descrição PT (Recomendado)".
+- **Trade-off**: Uma fase espera o merge da anterior. O nome de branch do Linear contém o ticket e "fase-N"; o usuário escolheu esse nome em troca do vínculo automático com a issue. A verificação de fim de feature (provas, Verifier) roda depois do PR da última fase.
+- **Scope**: Todas as features, a partir da `01-foundation`. Complementa o AD-009 (Linear) e substitui a pergunta "sub-agente por lote ou na conversa".
+- **Date**: 2026-11-12
+- **Status**: active
+
 ## Handoff
 
 - **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Execute, antes da T1. Modo escolhido: só o lote 1 (T1 a T6), com parada para revisão antes do lote 2.
-- **Completed**: none
+- **Phase / Task**: Execute. Fases 1 e 2 concluídas (T1 a T6). Fase 1 mergeada na `main` (PR #1). Fase 2 rebaseada sobre a `main`, com push e PR aberto a partir de `pntadr/per-58-fase-2-api-esqueleto-e-banco`.
+- **Completed**: T1, T2, T3, T4, T5, T6
 - **In-progress** (file:line): none
-- **Next step**: Quando o usuário confirmar o Node 26 instalado e o Docker rodando, conferir `node -v` e `docker info`, rodar `validate_tasks.py 01-foundation --execute` (Build vermelho antes da T1 já autorizado) e começar pela T1.
-- **Blockers**: Node 26 (a máquina tem v24.17.0) e daemon do Docker, ambos com o usuário.
-- **Uncommitted files**: `.specs/features/01-foundation/tasks.md` (Settled mid-build), `.specs/STATE.md` (Handoff)
-- **Branch**: chore/monorepo-foundation
+- **Next step**: Depois do merge do PR da fase 2: atualizar a `main`, criar `pntadr/per-59-fase-3-api-base-http-e-observabilidade` a partir dela, mover PER-59 para In Progress (AD-009) e começar pela T7. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`), porque o shell das ferramentas pega o Node 24 de `/usr/local/bin`.
+- **Blockers**: merge do PR da fase 2.
+- **Uncommitted files**: none
+- **Branch**: pntadr/per-58-fase-2-api-esqueleto-e-banco
