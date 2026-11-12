@@ -1,0 +1,200 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.75rem;
+  --background: #f1f5f9;
+  --foreground: #1e293b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #0369a1;
+  --primary-foreground: #ffffff;
+  --secondary: #cbd5e1;
+  --secondary-foreground: #1e293b;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --accent: #e2e8f0;
+  --accent-foreground: #1e293b;
+  --destructive: #b91c1c;
+  --destructive-foreground: #ffffff;
+  --border: #cbd5e1;
+  --input: #64748b;
+  --ring: #0284c7;
+
+  --brand: #0284c7;
+  --festive: #fbbf24;
+  --festive-foreground: #1e293b;
+  --success: #15803d;
+  --success-foreground: #ffffff;
+  --warning: #c2410c;
+  --warning-foreground: #ffffff;
+  --info-subtle: #e0f2fe;
+  --info-subtle-foreground: #075985;
+  --festive-subtle: #fef3c7;
+  --festive-subtle-foreground: #92400e;
+  --success-subtle: #dcfce7;
+  --success-subtle-foreground: #166534;
+  --warning-subtle: #ffedd5;
+  --warning-subtle-foreground: #9a3412;
+  --destructive-subtle: #fee2e2;
+  --destructive-subtle-foreground: #991b1b;
+  --glass: rgb(255 255 255 / 0.7);
+  --glass-border: rgb(255 255 255 / 0.6);
+  --reveal-from: #0f172a;
+  --reveal-to: #082f49;
+  --reveal-foreground: #f8fafc;
+  --reveal-particle: #bae6fd;
+  --reveal-glass: rgb(255 255 255 / 0.08);
+
+  --elevation-sm: 0 1px 2px rgb(15 23 42 / 0.06);
+  --elevation-md: 0 4px 12px rgb(15 23 42 / 0.08);
+}
+
+.dark {
+  --background: #0b1120;
+  --foreground: #e2e8f0;
+  --card: #1e293b;
+  --card-foreground: #e2e8f0;
+  --popover: #1e293b;
+  --popover-foreground: #e2e8f0;
+  --primary: #38bdf8;
+  --primary-foreground: #0b1120;
+  --secondary: #334155;
+  --secondary-foreground: #e2e8f0;
+  --muted: #283548;
+  --muted-foreground: #94a3b8;
+  --accent: #334155;
+  --accent-foreground: #e2e8f0;
+  --destructive: #f87171;
+  --destructive-foreground: #0b1120;
+  --border: #334155;
+  --input: #64748b;
+  --ring: #38bdf8;
+
+  --brand: #38bdf8;
+  --success: #4ade80;
+  --success-foreground: #0b1120;
+  --warning: #fb923c;
+  --warning-foreground: #0b1120;
+  --info-subtle: #0c4a6e;
+  --info-subtle-foreground: #7dd3fc;
+  --festive-subtle: #78350f;
+  --festive-subtle-foreground: #fcd34d;
+  --success-subtle: #14532d;
+  --success-subtle-foreground: #86efac;
+  --warning-subtle: #7c2d12;
+  --warning-subtle-foreground: #fdba74;
+  --destructive-subtle: #7f1d1d;
+  --destructive-subtle-foreground: #fca5a5;
+  --glass: rgb(30 41 59 / 0.6);
+  --glass-border: rgb(226 232 240 / 0.12);
+
+  --elevation-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --elevation-md: 0 4px 12px rgb(0 0 0 / 0.5);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-festive: var(--festive);
+  --color-festive-foreground: var(--festive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info-subtle: var(--info-subtle);
+  --color-info-subtle-foreground: var(--info-subtle-foreground);
+  --color-festive-subtle: var(--festive-subtle);
+  --color-festive-subtle-foreground: var(--festive-subtle-foreground);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-subtle-foreground: var(--warning-subtle-foreground);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+  --color-reveal-from: var(--reveal-from);
+  --color-reveal-to: var(--reveal-to);
+  --color-reveal-foreground: var(--reveal-foreground);
+  --color-reveal-particle: var(--reveal-particle);
+  --color-reveal-glass: var(--reveal-glass);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-sm: var(--elevation-sm);
+  --shadow-md: var(--elevation-md);
+  --shadow-glow: 0 0 32px rgb(56 189 248 / 0.35);
+
+  --font-sans:
+    var(--font-plus-jakarta-sans), system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+
+  --text-display: 2.25rem;
+  --text-display--line-height: 2.5rem;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 800;
+  --text-h1: 1.875rem;
+  --text-h1--line-height: 2.25rem;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 700;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 2rem;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h2--font-weight: 700;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.75rem;
+  --text-h3--font-weight: 600;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75rem;
+  --text-body-lg--font-weight: 400;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-body--font-weight: 400;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.25rem;
+  --text-body-sm--font-weight: 400;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 600;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  --text-caption--font-weight: 500;
+
+  --spacing-touch-target: 2.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground;
+  }
+}
