@@ -111,10 +111,10 @@
 ## Handoff
 
 - **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Execute. Fases 1 e 2 concluídas (T1 a T6). Fase 1 mergeada na `main` (PR #1). Fase 2 rebaseada sobre a `main`, com push e PR aberto a partir de `pntadr/per-58-fase-2-api-esqueleto-e-banco`.
-- **Completed**: T1, T2, T3, T4, T5, T6
+- **Phase / Task**: Execute. Fases 1, 2 e 3 concluídas (T1 a T12). Fases 1 e 2 mergeadas na `main` (PRs #1 e #2). Fase 3 com push e PR aberto a partir de `pntadr/per-59-fase-3-api-base-http-e-observabilidade`; PER-59 em In Progress, com os seis checkboxes marcados.
+- **Completed**: T1 a T12
 - **In-progress** (file:line): none
-- **Next step**: Depois do merge do PR da fase 2: atualizar a `main`, criar `pntadr/per-59-fase-3-api-base-http-e-observabilidade` a partir dela, mover PER-59 para In Progress (AD-009) e começar pela T7. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`), porque o shell das ferramentas pega o Node 24 de `/usr/local/bin`.
-- **Blockers**: merge do PR da fase 2.
+- **Next step**: Depois do merge do PR da fase 3: perguntar o status final da PER-59, atualizar a `main`, criar `pntadr/per-60-fase-4-api-health-e-swagger` (conferir o `gitBranchName` da PER-60) a partir dela, mover PER-60 para In Progress (AD-009) e começar pela T13. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`). A T22 (Sentry no web) usa o `dataCollection` mínimo, decidido na T9 (ver `**Settled mid-build:**` do tasks.md).
+- **Blockers**: merge do PR da fase 3.
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-58-fase-2-api-esqueleto-e-banco
+- **Branch**: pntadr/per-59-fase-3-api-base-http-e-observabilidade
