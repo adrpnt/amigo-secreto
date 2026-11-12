@@ -9,7 +9,7 @@
 
 ## Architecture Overview
 
-Monorepo pnpm 12 + Turborepo 2.11 com três pacotes. O web (Next.js 16) atende o navegador; o servidor do Next chama a API (NestJS 12) por uma URL interna, e as chamadas do navegador a `/api/*` chegam à API por `rewrites` (AD-006). A API fala com o PostgreSQL 18 por TypeORM 1.1. O `@amigo-secreto/shared` é compilado antes dos apps e só exporta tipos.
+Monorepo pnpm 12 + Turborepo 2.11 com três pacotes. O web (Next.js 16) atende o navegador; o servidor do Next chama a API (NestJS 12) por uma URL interna, e as chamadas do navegador a `/api/*` chegam à API pelo `proxy.ts` do Next (AD-006). A API fala com o PostgreSQL 18 por TypeORM 1.1. O `@amigo-secreto/shared` é compilado antes dos apps e só exporta tipos.
 
 ```mermaid
 flowchart LR
@@ -176,7 +176,7 @@ Não há código de aplicação no repositório (o Lumen foi removido em `4ce025
   - `components/theme-toggle.tsx`: botão que alterna `light`/`dark`; o nome acessível vem de dois textos `sr-only`, um visível só no claro ("Ativar tema escuro") e outro só no escuro ("Ativar tema claro"), escolhidos por CSS a partir da classe `dark`, sem depender de estado montado no cliente (sem divergência de hidratação)
   - `lib/api-status.ts`: `getApiStatus(): Promise<'online' | 'unavailable'>`, faz `fetch(\`${API_INTERNAL_URL}/health\`, { cache: 'no-store', signal: AbortSignal.timeout(5000) })` e devolve `online` só com 200
   - `app/page.tsx`: Server Component que chama `getApiStatus()` e mostra "API online" ou "API indisponível"
-  - `next.config.ts`: `rewrites()` com `/api/:path*` → `${API_INTERNAL_URL}/:path*` (AD-006)
+  - `proxy.ts`: matcher `/api/:path*` e `NextResponse.rewrite` para `${API_INTERNAL_URL}/:path*`, com a URL lida a cada requisição; sem `API_INTERNAL_URL`, lança erro que nomeia a variável (AD-006)
   - `instrumentation.ts` (`register` + `onRequestError = Sentry.captureRequestError`), `sentry.server.config.ts` e `instrumentation-client.ts`: `Sentry.init` só com `NEXT_PUBLIC_SENTRY_DSN`, mesmas restrições de PII da API, sem replay, sem tracing
 - **Dependencies**: `next`, `react`, `react-dom`, `tailwindcss`, `@tailwindcss/postcss`, `next-themes`, `@sentry/nextjs`, `@amigo-secreto/shared`; shadcn/ui inicializado (`components.json`) sem componentes adicionados além do necessário
 - **Reuses**: tokens e guia do design system
@@ -288,4 +288,4 @@ Variáveis de ambiente:
 | e2e do estado "API indisponível" | Segundo `next start` na porta 3100 com `API_INTERNAL_URL` para uma porta fechada | Testa o estado real sem derrubar a API das outras specs |
 | Nome dos testes de integração | `*.int-spec.ts` em `apps/api/test/` | Diferencia de unitários (`*.spec.ts`) e do e2e do Playwright |
 
-> Decisões de projeto desta fase: AD-006 (mesma origem via rewrites) e AD-007 (ESM) em `.specs/STATE.md`.
+> Decisões de projeto desta fase: AD-006 (mesma origem via `proxy.ts`) e AD-007 (ESM) em `.specs/STATE.md`.

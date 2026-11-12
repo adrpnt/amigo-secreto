@@ -65,11 +65,12 @@
 
 ### AD-006
 
-- **Decision**: O navegador fala com a API pela mesma origem do web: chama `/api/*` no site e o Next.js repassa para a API por `rewrites` no `next.config`; o servidor do Next (Server Components, route handlers) chama a API direto por uma URL interna (`API_INTERNAL_URL`). As rotas da API não têm prefixo.
+- **Decision**: O navegador fala com a API pela mesma origem do web: chama `/api/*` no site e o Next.js repassa para a API por um `src/proxy.ts` (`NextResponse.rewrite`, lendo `API_INTERNAL_URL` a cada requisição); o servidor do Next (Server Components, route handlers) chama a API direto por uma URL interna (`API_INTERNAL_URL`). As rotas da API não têm prefixo.
 - **Reason**: Cookies de sessão ficam first-party, sem CORS nem preflight, e o CSRF fica mais simples. Pergunta ao usuário em 2026-11-12: "Como o navegador do Amigo Secreto vai falar com a API?", resposta "Mesma origem via rewrites (Recomendado)", entre "mesma origem via rewrites", "origens separadas com CORS" e "BFF no Next".
 - **Trade-off**: As chamadas feitas pelo navegador passam pelo servidor do Next, um salto a mais; o Next precisa estar de pé para o navegador alcançar a API.
 - **Scope**: `apps/web`, `apps/api` e toda feature com chamada do navegador à API (sessão, CSRF e cookies da feature `auth`).
 - **Date**: 2026-11-12
+- **Revised**: 2026-11-12 - o mecanismo era `rewrites()` no `next.config`. No Next 16.4.6 o destino dos `rewrites()` fica gravado no build (`routes-manifest.json`), o `next start` ignora o `API_INTERNAL_URL` de execução e o build falha sem a variável. O `proxy.ts` lê a URL em tempo de requisição, e um build serve qualquer ambiente; a mesma origem não muda. Pergunta ao usuário: "Como repassar /api/* para a API?", resposta "proxy.ts em tempo de requisição (Recomendado)", entre "proxy.ts em tempo de requisição", "rewrites() com a URL no build" e "rewrites() com padrão localhost".
 - **Status**: active
 
 ### AD-007
