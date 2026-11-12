@@ -2,6 +2,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@custom-variant no-backdrop-blur {
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    @slot;
+  }
+}
+
+@custom-variant reduced-transparency {
+  @media (prefers-reduced-transparency: reduce) {
+    @slot;
+  }
+}
+
 :root {
   --radius: 0.75rem;
   --background: #f1f5f9;

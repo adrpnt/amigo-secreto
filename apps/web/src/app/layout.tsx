@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { AppHeader } from '@/components/app-header';
 import { ThemeProvider } from '@/components/theme-provider';
-import { ThemeToggle } from '@/components/theme-toggle';
 import './globals.css';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeToggle />
+          <AppHeader />
           {children}
         </ThemeProvider>
       </body>
