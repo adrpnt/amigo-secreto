@@ -209,9 +209,10 @@ O repositório não tem código: o backend antigo em Lumen foi removido e a stac
 6. WHEN um visitante com tema salvo abre uma página THEN o web SHALL pintar o primeiro quadro já no tema salvo, sem exibir o outro tema antes.
 7. WHILE o tema claro estiver ativo o botão de tema SHALL ter o nome acessível "Ativar tema escuro", e WHILE o escuro estiver ativo, "Ativar tema claro".
 8. WHEN um visitante abre `/` e a API responde 200 em `GET /health` THEN o web SHALL mostrar "API online".
-9. IF a API não responder ou responder com status diferente de 200 em `GET /health` THEN o web SHALL mostrar "API indisponível" em `/`, com o cabeçalho e o botão de tema funcionando.
+9. IF a API não responder, responder com status diferente de 200 ou responder 200 sem `status` igual a `"ok"` em `GET /health` THEN o web SHALL mostrar "API indisponível" em `/`, com o cabeçalho e o botão de tema funcionando.
 10. WHILE a largura da janela estiver entre 360 px e 1440 px a página `/` SHALL ser exibida sem rolagem horizontal.
 11. The página `/` SHALL ter zero violações WCAG 2.1 A/AA detectadas pelo axe, no tema claro e no escuro.
+12. IF `API_INTERNAL_URL` não estiver definida no servidor do web THEN a consulta ao status da API SHALL falhar com um erro que nomeia a variável.
 
 **Independent Test**: Abrir `http://localhost:3000` com o sistema em modo escuro mostra o tema escuro e "API online"; acionar o botão troca para o claro, e recarregar mantém o claro sem piscar; parar a API e recarregar mostra "API indisponível".
 
