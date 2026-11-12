@@ -54,7 +54,7 @@ O repositório não tem código: o backend antigo em Lumen foi removido e a stac
 | Larguras suportadas | 360 px a 1440 px sem rolagem horizontal | Mobile first (`scope.md` 1.1); 360 px cobre os Android menores em uso | y - aprovado com a spec, user: "Tudo aprovado." |
 | Formato de erro da API | Formato padrão do NestJS: `{ statusCode, message, error }` | Sem camada extra; `message` vira lista de mensagens nos erros de validação | y - aprovado com a spec, user: "Tudo aprovado." |
 | Logs fora de produção | Texto legível no terminal; JSON só em produção | Leitura no desenvolvimento; JSON para o provedor de logs | y - aprovado com a spec, user: "Tudo aprovado." |
-| Sentry e dados pessoais | `sendDefaultPii` desligado, sem corpo de requisição, sem cookies, sem Session Replay e sem tracing de performance | LGPD e cota do plano gratuito | y - aprovado com a spec, user: "Tudo aprovado." |
+| Sentry e dados pessoais | Coleta de dados pessoais desligada por `dataCollection` mínimo (sem dados de usuário, cookies, cabeçalhos, corpos HTTP, query params, variáveis locais da stack nem dados de consultas ao banco), sem Session Replay e sem tracing de performance | LGPD e cota do plano gratuito | y - aprovado com a spec, user: "Tudo aprovado."; em 2026-11-12 o `sendDefaultPii`, removido no Sentry 11, foi trocado pelo `dataCollection` mínimo, user: "dataCollection mínimo (Recomendado)" |
 | Versões de Node, pnpm, TypeScript, NestJS, Next.js, TypeORM e PostgreSQL | Escolhidas no Design com a documentação atual e aprovadas pelo usuário | Decisão técnica com lock-in; o Design traz as opções | y - aprovado com a spec, user: "Tudo aprovado." |
 
 **Open questions:** none - all resolved or logged above. Os padrões propostos pelo agente foram confirmados na aprovação da spec, inclusive os nomes `@amigo-secreto/*` depois da explicação sobre escopo de pacote.
@@ -187,7 +187,7 @@ O repositório não tem código: o backend antigo em Lumen foi removido e a stac
 6. WHERE `SENTRY_DSN` estiver definido, a API SHALL não enviar ao Sentry os erros que resultem em resposta 4xx.
 7. WHERE `SENTRY_DSN` não estiver definido, a API SHALL iniciar sem inicializar o Sentry.
 8. WHERE `NEXT_PUBLIC_SENTRY_DSN` estiver definido, o web SHALL enviar ao Sentry os erros não tratados do navegador e do servidor.
-9. The integração com o Sentry, na API e no web, SHALL rodar com `sendDefaultPii` desligado, sem enviar corpo de requisição nem cookies, sem Session Replay e sem tracing de performance.
+9. The integração com o Sentry, na API e no web, SHALL rodar com a coleta de dados pessoais desligada por `dataCollection` mínimo (sem dados de usuário, cookies, cabeçalhos, corpos HTTP, query params, variáveis locais da stack nem dados de consultas ao banco), sem enviar corpo de requisição nem cookies, sem Session Replay e sem tracing de performance.
 
 **Independent Test**: Um teste de integração faz uma requisição com `x-request-id: abc` e encontra `abc` no cabeçalho da resposta e nos logs capturados; um teste com um transporte falso do Sentry mostra uma exceção 500 enviada e um 400 não enviado.
 

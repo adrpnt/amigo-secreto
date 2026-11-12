@@ -253,11 +253,11 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `main.ts` chama `configureApp`
-- [ ] Controller de teste com DTO em `test/fixtures/`, registrado só nos testes
-- [ ] Testes `validação de entrada > responde 400 e não executa o handler quando o corpo tem campo não declarado`, `> responde 400 com uma mensagem por regra violada` e `> responde no formato statusCode, message e error`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 11 tests pass
+- [x] `main.ts` chama `configureApp`
+- [x] Controller de teste com DTO em `test/fixtures/`, registrado só nos testes
+- [x] Testes `validação de entrada > responde 400 e não executa o handler quando o corpo tem campo não declarado`, `> responde 400 com uma mensagem por regra violada` e `> responde no formato statusCode, message e error`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 11 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -276,10 +276,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Filtro registrado em `configureApp`
-- [ ] Testes `AllExceptionsFilter > responde 500 com Erro interno sem stack nem mensagem original`, `> envia ao Sentry a exceção que resulta em 500` e `> não envia ao Sentry erros que resultam em 4xx`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 14 tests pass
+- [x] Filtro registrado em `configureApp`
+- [x] Testes `AllExceptionsFilter > responde 500 com Erro interno sem stack nem mensagem original`, `> envia ao Sentry a exceção que resulta em 500` e `> não envia ao Sentry erros que resultam em 4xx`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 14 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -290,7 +290,7 @@ T20 → T21 → T22 → T23 → T24
 
 #### T9: Inicializar o Sentry da API
 
-**What**: `instrument.ts` com `initSentry(env)`: só chama `Sentry.init` com `SENTRY_DSN`, com `sendDefaultPii: false`, sem tracing nem profiling, e `beforeSend` que remove corpo e cookies; `start` usa `node --import ./dist/instrument.js dist/main.js`.
+**What**: `instrument.ts` com `initSentry(env)`: só chama `Sentry.init` com `SENTRY_DSN`, com o `dataCollection` mínimo, sem tracing nem profiling, e `beforeSend` que remove corpo e cookies; `start` usa `node --import ./dist/instrument.js dist/main.js`.
 **Where**: `apps/api/src/instrument.ts`
 **Depends on**: T8
 **Reuses**: `@sentry/nestjs`
@@ -298,10 +298,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Script `start` com `--import ./dist/instrument.js`
-- [ ] Testes `initSentry > não inicializa o Sentry sem SENTRY_DSN`, `> inicializa o Sentry quando SENTRY_DSN existe` e `> usa sendDefaultPii falso, sem tracing e remove corpo e cookies do evento`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 17 tests pass
+- [x] Script `start` com `--import ./dist/instrument.js`
+- [x] Testes `initSentry > não inicializa o Sentry sem SENTRY_DSN`, `> inicializa o Sentry quando SENTRY_DSN existe` e `> desliga a coleta de dados pessoais, sem tracing e remove corpo e cookies do evento`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 17 tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -320,10 +320,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `main.ts` usa `AppLogger` (JSON quando `NODE_ENV=production`)
-- [ ] Testes `AppLogger > escreve uma linha JSON com level, timestamp e message em produção`, `> inclui o requestId do contexto na linha` e `> escreve texto legível fora de produção`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 20 tests pass
+- [x] `main.ts` usa `AppLogger` (JSON quando `NODE_ENV=production`)
+- [x] Testes `AppLogger > escreve uma linha JSON com level, timestamp e message em produção`, `> inclui o requestId do contexto na linha` e `> escreve texto legível fora de produção`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 20 tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -342,9 +342,9 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Testes `request id > devolve o x-request-id recebido e o usa nos logs da requisição` e `> gera um UUID quando a requisição não traz x-request-id`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 22 tests pass
+- [x] Testes `request id > devolve o x-request-id recebido e o usa nos logs da requisição` e `> gera um UUID quando a requisição não traz x-request-id`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 22 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -363,10 +363,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Serviço exportado por um módulo global de observabilidade
-- [ ] Testes `BusinessEventsService > registra event, timestamp e os atributos no log` e `> inclui o requestId quando há requisição`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 24 tests pass
+- [x] Serviço exportado por um módulo global de observabilidade
+- [x] Testes `BusinessEventsService > registra event, timestamp e os atributos no log` e `> inclui o requestId quando há requisição`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 24 tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -591,7 +591,7 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Testes `sentryOptions > liga o Sentry no navegador e no servidor quando NEXT_PUBLIC_SENTRY_DSN existe`, `> desliga o Sentry sem NEXT_PUBLIC_SENTRY_DSN`, `> usa sendDefaultPii falso, sem replay e sem tracing` e `instrumentation > exporta onRequestError do Sentry`
+- [ ] Testes `sentryOptions > liga o Sentry no navegador e no servidor quando NEXT_PUBLIC_SENTRY_DSN existe`, `> desliga o Sentry sem NEXT_PUBLIC_SENTRY_DSN`, `> desliga a coleta de dados pessoais, sem replay e sem tracing` e `instrumentation > exporta onRequestError do Sentry`
 - [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/web`
 - [ ] Test count: 13 component/unit tests pass
 
@@ -776,9 +776,9 @@ Proof: run api | ✓ initSentry > não inicializa o Sentry sem SENTRY_DSN
 Proof: run web | ✓ sentryOptions > liga o Sentry no navegador e no servidor quando NEXT_PUBLIC_SENTRY_DSN existe
 Proof: run web | ✓ instrumentation > exporta onRequestError do Sentry
 
-**C39** - O Sentry roda com `sendDefaultPii` desligado, sem corpo de requisição nem cookies, sem Session Replay e sem tracing, na API e no web (FND-07, AC 9)
-Proof: run api | ✓ initSentry > usa sendDefaultPii falso, sem tracing e remove corpo e cookies do evento
-Proof: run web | ✓ sentryOptions > usa sendDefaultPii falso, sem replay e sem tracing
+**C39** - O Sentry roda com a coleta de dados pessoais desligada (`dataCollection` mínimo), sem corpo de requisição nem cookies, sem Session Replay e sem tracing, na API e no web (FND-07, AC 9)
+Proof: run api | ✓ initSentry > desliga a coleta de dados pessoais, sem tracing e remove corpo e cookies do evento
+Proof: run web | ✓ sentryOptions > desliga a coleta de dados pessoais, sem replay e sem tracing
 
 **C40** - O web aplica os tokens do design system (cor, Plus Jakarta Sans, espaçamento, raios e sombras) nos temas claro e escuro (FND-08, AC 1)
 Proof: run e2e | ✓ tema › aplica os tokens do design system no tema claro
@@ -852,7 +852,7 @@ Proof: `grep -q 'node-version-file: .nvmrc' .github/workflows/ci.yml`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)". 2026-11-12 - o pnpm 12 bloqueia scripts de instalação fora de `allowBuilds`; `@swc/core: false`, porque o binário nativo já vem por dependência opcional - user: "Negar (Recomendado)"; cada pacote novo que pedir script é perguntado ao usuário - user: "Perguntar a cada caso (Recomendado)". O bloco `minimumReleaseAgeExclude` que o pnpm acrescentou na T1 fica; exceções novas são avisadas no commit - user: "Manter (Recomendado)". 2026-11-12 - `cpu-features`, `protobufjs` e `ssh2` (dependências do Testcontainers) ficam com `false` em `allowBuilds` - user: "Negar os três (Recomendado)". 2026-11-12 - execução inline, uma fase por vez, um PR por fase (AD-010); substitui a escolha do lote 1 - user: "A execução será inline, fase por fase, e cada fase deve ter seu PR."
+**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)". 2026-11-12 - o pnpm 12 bloqueia scripts de instalação fora de `allowBuilds`; `@swc/core: false`, porque o binário nativo já vem por dependência opcional - user: "Negar (Recomendado)"; cada pacote novo que pedir script é perguntado ao usuário - user: "Perguntar a cada caso (Recomendado)". O bloco `minimumReleaseAgeExclude` que o pnpm acrescentou na T1 fica; exceções novas são avisadas no commit - user: "Manter (Recomendado)". 2026-11-12 - `cpu-features`, `protobufjs` e `ssh2` (dependências do Testcontainers) ficam com `false` em `allowBuilds` - user: "Negar os três (Recomendado)". 2026-11-12 - execução inline, uma fase por vez, um PR por fase (AD-010); substitui a escolha do lote 1 - user: "A execução será inline, fase por fase, e cada fase deve ter seu PR." 2026-11-12 - o Sentry 11.12 removeu `sendDefaultPii` e o novo `dataCollection` coleta tudo por padrão; a API e o web usam o `dataCollection` mínimo e mantêm o `beforeSend`; FND-07 AC9, C39, T9 e T22 atualizados - user: "dataCollection mínimo (Recomendado)". 2026-11-12 - o `instrument.ts` roda antes do `ConfigModule` ler o `.env`, então um `SENTRY_DSN` só no `apps/api/.env` não liga o Sentry no `start` local; o DSN vem do ambiente do processo, como em produção - user: "Deixar como está (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
