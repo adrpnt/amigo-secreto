@@ -13,6 +13,14 @@ export default defineConfig({
           include: ['src/**/*.spec.ts'],
         },
       },
+      {
+        test: {
+          name: 'integration',
+          include: ['test/**/*.int-spec.ts'],
+          globalSetup: ['test/global-setup.ts'],
+          testTimeout: 60_000,
+        },
+      },
     ],
   },
 });

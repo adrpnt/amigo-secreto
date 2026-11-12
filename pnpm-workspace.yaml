@@ -12,3 +12,6 @@ minimumReleaseAgeExclude:
   - turbo@2.11.11
 allowBuilds:
   '@swc/core': false
+  cpu-features: false
+  protobufjs: false
+  ssh2: false

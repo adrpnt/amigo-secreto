@@ -227,12 +227,12 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Projeto `integration` (`test/**/*.int-spec.ts`) no `vitest.config.ts`; tarefa `test` da API depende do próprio `build` no `turbo.json`
-- [ ] `ensureDocker()` falha com "Os testes de integração precisam do Docker em execução." quando o Docker não responde
-- [ ] Testes `ensureDocker > falha com a mensagem sobre o Docker quando ele não está disponível` e `migration:run > cria a tabela de controle de migrations num banco vazio`
-- [ ] Nenhum container `postgres:18` do Testcontainers fica de pé depois do `pnpm test`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 8 tests pass
+- [x] Projeto `integration` (`test/**/*.int-spec.ts`) no `vitest.config.ts`; tarefa `test` da API depende do próprio `build` no `turbo.json`
+- [x] `ensureDocker()` falha com "Os testes de integração precisam do Docker em execução." quando o Docker não responde
+- [x] Testes `ensureDocker > falha com a mensagem sobre o Docker quando ele não está disponível` e `migration:run > cria a tabela de controle de migrations num banco vazio`
+- [x] Nenhum container `postgres:18` do Testcontainers fica de pé depois do `pnpm test`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 8 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -852,7 +852,7 @@ Proof: `grep -q 'node-version-file: .nvmrc' .github/workflows/ci.yml`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)". 2026-11-12 - o pnpm 12 bloqueia scripts de instalação fora de `allowBuilds`; `@swc/core: false`, porque o binário nativo já vem por dependência opcional - user: "Negar (Recomendado)"; cada pacote novo que pedir script é perguntado ao usuário - user: "Perguntar a cada caso (Recomendado)". O bloco `minimumReleaseAgeExclude` que o pnpm acrescentou na T1 fica; exceções novas são avisadas no commit - user: "Manter (Recomendado)".
+**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)". 2026-11-12 - o pnpm 12 bloqueia scripts de instalação fora de `allowBuilds`; `@swc/core: false`, porque o binário nativo já vem por dependência opcional - user: "Negar (Recomendado)"; cada pacote novo que pedir script é perguntado ao usuário - user: "Perguntar a cada caso (Recomendado)". O bloco `minimumReleaseAgeExclude` que o pnpm acrescentou na T1 fica; exceções novas são avisadas no commit - user: "Manter (Recomendado)". 2026-11-12 - `cpu-features`, `protobufjs` e `ssh2` (dependências do Testcontainers) ficam com `false` em `allowBuilds` - user: "Negar os três (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
