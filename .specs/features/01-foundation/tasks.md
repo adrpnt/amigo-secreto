@@ -253,11 +253,11 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `main.ts` chama `configureApp`
-- [ ] Controller de teste com DTO em `test/fixtures/`, registrado só nos testes
-- [ ] Testes `validação de entrada > responde 400 e não executa o handler quando o corpo tem campo não declarado`, `> responde 400 com uma mensagem por regra violada` e `> responde no formato statusCode, message e error`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 11 tests pass
+- [x] `main.ts` chama `configureApp`
+- [x] Controller de teste com DTO em `test/fixtures/`, registrado só nos testes
+- [x] Testes `validação de entrada > responde 400 e não executa o handler quando o corpo tem campo não declarado`, `> responde 400 com uma mensagem por regra violada` e `> responde no formato statusCode, message e error`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 11 tests pass
 
 **Tests**: integration
 **Gate**: full
