@@ -432,12 +432,12 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `package.json` com scripts `dev` (porta 3000), `build`, `start`, `lint`, `typecheck`, `test` (`vitest run --passWithNoTests`) e `test:e2e`
-- [ ] `apps/web/.env.example` com `API_INTERNAL_URL` e `NEXT_PUBLIC_SENTRY_DSN`
-- [ ] `globals.css` com os tokens claro em `:root` e escuro em `.dark`
-- [ ] `src/app/page.tsx` provisório renderiza
-- [ ] Os testes do layout ficam em T16 (e2e), a primeira task em que o navegador roda
-- [ ] Gate check passes: `pnpm install && pnpm build && pnpm typecheck && pnpm lint`
+- [x] `package.json` com scripts `dev` (porta 3000), `build`, `start`, `lint`, `typecheck`, `test` (`vitest run --passWithNoTests`) e `test:e2e`
+- [x] `apps/web/.env.example` com `API_INTERNAL_URL` e `NEXT_PUBLIC_SENTRY_DSN`
+- [x] `globals.css` com os tokens claro em `:root` e escuro em `.dark`
+- [x] `src/app/page.tsx` provisório renderiza
+- [x] Os testes do layout ficam em T16 (e2e), a primeira task em que o navegador roda
+- [x] Gate check passes: `pnpm install && pnpm build && pnpm typecheck && pnpm lint`
 
 **Tests**: none
 **Gate**: build
@@ -456,12 +456,12 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `test:e2e` do web depende de `build` e de `@amigo-secreto/api#build` no `turbo.json`
-- [ ] `playwright.config.ts` e `@axe-core/playwright` instalados; navegador `chromium` instalado
-- [ ] Testes `página inicial › declara lang pt-BR`
-- [ ] Nenhum container `postgres:18` do Testcontainers fica de pé depois do `pnpm test:e2e`
-- [ ] Gate check passes: `pnpm test && pnpm test:e2e`
-- [ ] Test count: 1 e2e test passes
+- [x] `test:e2e` do web depende de `build` e de `@amigo-secreto/api#build` no `turbo.json`
+- [x] `playwright.config.ts` e `@axe-core/playwright` instalados; navegador `chromium` instalado
+- [x] Testes `página inicial › declara lang pt-BR`
+- [x] Nenhum container `postgres:18` do Testcontainers fica de pé depois do `pnpm test:e2e`
+- [x] Gate check passes: `pnpm test && pnpm test:e2e`
+- [x] Test count: 1 e2e test passes
 
 **Tests**: e2e
 **Gate**: E2E
@@ -480,11 +480,11 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `ThemeProvider` no `layout.tsx`
-- [ ] Teste de componente `ThemeToggle > troca para o tema escuro quando o claro está ativo` e `> troca para o tema claro quando o escuro está ativo`
-- [ ] Testes e2e `tema › segue o tema escuro do sistema quando não há tema salvo`, `› segue o tema claro do sistema quando não há tema salvo`, `› o botão troca o tema e a escolha sobrevive ao recarregar`, `› pinta o primeiro quadro no tema salvo`, `› o botão se chama Ativar tema escuro no claro e Ativar tema claro no escuro`, `› aplica os tokens do design system no tema claro` e `› aplica os tokens do design system no tema escuro`
-- [ ] Gate check passes: `pnpm test && pnpm test:e2e`
-- [ ] Test count: 2 component tests e 8 e2e tests pass
+- [x] `ThemeProvider` no `layout.tsx`
+- [x] Teste de componente `ThemeToggle > troca para o tema escuro quando o claro está ativo` e `> troca para o tema claro quando o escuro está ativo`
+- [x] Testes e2e `tema › segue o tema escuro do sistema quando não há tema salvo`, `› segue o tema claro do sistema quando não há tema salvo`, `› o botão troca o tema e a escolha sobrevive ao recarregar`, `› pinta o primeiro quadro no tema salvo`, `› o botão se chama Ativar tema escuro no claro e Ativar tema claro no escuro`, `› aplica os tokens do design system no tema claro` e `› aplica os tokens do design system no tema escuro`
+- [x] Gate check passes: `pnpm test && pnpm test:e2e`
+- [x] Test count: 2 component tests e 8 e2e tests pass
 
 **Tests**: e2e
 **Gate**: E2E
@@ -503,10 +503,10 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Teste de componente `AppHeader > mostra o nome Amigo Secreto e o botão de tema`
-- [ ] Teste e2e `página inicial › mostra o cabeçalho com Amigo Secreto e o botão de tema`
-- [ ] Gate check passes: `pnpm test && pnpm test:e2e`
-- [ ] Test count: 3 component tests e 9 e2e tests pass
+- [x] Teste de componente `AppHeader > mostra o nome Amigo Secreto e o botão de tema`
+- [x] Teste e2e `página inicial › mostra o cabeçalho com Amigo Secreto e o botão de tema`
+- [x] Gate check passes: `pnpm test && pnpm test:e2e`
+- [x] Test count: 3 component tests e 9 e2e tests pass
 
 **Tests**: e2e
 **Gate**: E2E
@@ -525,9 +525,9 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Testes `getApiStatus > devolve online quando a API responde 200`, `> devolve unavailable quando a API responde 503`, `> devolve unavailable quando a API não responde` e `> devolve unavailable quando a API passa de 5 segundos`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/web`
-- [ ] Test count: 7 component/unit tests pass
+- [x] Testes `getApiStatus > devolve online quando a API responde 200`, `> devolve unavailable quando a API responde 503`, `> devolve unavailable quando a API não responde`, `> devolve unavailable quando a API passa de 5 segundos`, `> devolve unavailable quando a API responde 200 sem status ok` e `> lança erro que nomeia API_INTERNAL_URL quando ela falta`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/web`
+- [x] Test count: 9 component/unit tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -551,7 +551,7 @@ T20 → T21 → T22 → T23 → T24
 - [ ] Testes de componente `HomePage > mostra API online quando o status é online` e `> mostra API indisponível quando o status é unavailable`
 - [ ] Testes e2e `página inicial › mostra API online quando a API responde` e `› mostra API indisponível e o tema funciona quando a API não responde`
 - [ ] Gate check passes: `pnpm test && pnpm test:e2e`
-- [ ] Test count: 9 component/unit tests e 11 e2e tests pass
+- [ ] Test count: 11 component/unit tests e 11 e2e tests pass
 
 **Tests**: e2e
 **Gate**: E2E
@@ -593,7 +593,7 @@ T20 → T21 → T22 → T23 → T24
 
 - [ ] Testes `sentryOptions > liga o Sentry no navegador e no servidor quando NEXT_PUBLIC_SENTRY_DSN existe`, `> desliga o Sentry sem NEXT_PUBLIC_SENTRY_DSN`, `> desliga a coleta de dados pessoais, sem replay e sem tracing` e `instrumentation > exporta onRequestError do Sentry`
 - [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/web`
-- [ ] Test count: 13 component/unit tests pass
+- [ ] Test count: 15 component/unit tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -812,6 +812,7 @@ Proof: run e2e | ✓ página inicial › mostra API online quando a API responde
 **C48** - Com a API fora do ar ou respondendo outro status, `/` mostra "API indisponível" com o cabeçalho e o tema funcionando (FND-08, AC 9)
 Proof: run web | ✓ getApiStatus > devolve unavailable quando a API responde 503
 Proof: run web | ✓ getApiStatus > devolve unavailable quando a API não responde
+Proof: run web | ✓ getApiStatus > devolve unavailable quando a API responde 200 sem status ok
 Proof: run e2e | ✓ página inicial › mostra API indisponível e o tema funciona quando a API não responde
 
 **C49** - Entre 360 px e 1440 px, `/` não tem rolagem horizontal (FND-08, AC 10)
@@ -846,13 +847,16 @@ Proof: walk - um commit com erro de lint num PR deixa o check vermelho
 **C58** - O workflow usa o Node do `.nvmrc` (FND-10, AC 4)
 Proof: `grep -q 'node-version-file: .nvmrc' .github/workflows/ci.yml`
 
+**C59** - Sem `API_INTERNAL_URL`, a consulta ao status da API falha com erro que nomeia a variável (FND-08, AC 12)
+Proof: run web | ✓ getApiStatus > lança erro que nomeia API_INTERNAL_URL quando ela falta
+
 ---
 
 ## Handoff
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)". 2026-11-12 - o pnpm 12 bloqueia scripts de instalação fora de `allowBuilds`; `@swc/core: false`, porque o binário nativo já vem por dependência opcional - user: "Negar (Recomendado)"; cada pacote novo que pedir script é perguntado ao usuário - user: "Perguntar a cada caso (Recomendado)". O bloco `minimumReleaseAgeExclude` que o pnpm acrescentou na T1 fica; exceções novas são avisadas no commit - user: "Manter (Recomendado)". 2026-11-12 - `cpu-features`, `protobufjs` e `ssh2` (dependências do Testcontainers) ficam com `false` em `allowBuilds` - user: "Negar os três (Recomendado)". 2026-11-12 - execução inline, uma fase por vez, um PR por fase (AD-010); substitui a escolha do lote 1 - user: "A execução será inline, fase por fase, e cada fase deve ter seu PR." 2026-11-12 - o Sentry 11.12 removeu `sendDefaultPii` e o novo `dataCollection` coleta tudo por padrão; a API e o web usam o `dataCollection` mínimo e mantêm o `beforeSend`; FND-07 AC9, C39, T9 e T22 atualizados - user: "dataCollection mínimo (Recomendado)". 2026-11-12 - o `instrument.ts` roda antes do `ConfigModule` ler o `.env`, então um `SENTRY_DSN` só no `apps/api/.env` não liga o Sentry no `start` local; o DSN vem do ambiente do processo, como em produção - user: "Deixar como está (Recomendado)". 2026-11-12 - versões da fase 4: `@nestjs/terminus` 12.1.0, `@nestjs/swagger` 12.1.1 e `@amigo-secreto/shared` como `workspace:*`, todas exatas - user: "Mais recentes (Recomendado)". O 503 do `GET /health` continua indo ao Sentry e ao log de erro pelo filtro global - user: "Manter como está (Recomendado)". O teste do banco sem resposta usa um proxy TCP em `test/` que congela o tráfego entre a API e o Postgres - user: "Proxy TCP congelável (Recomendado)". O `GET /health` devolve o corpo do Terminus (`status`, `info`, `error`, `details`) no 200 e no 503, tipado como `HealthResponse` - user: "Corpo do Terminus (Recomendado)". 2026-11-12 - `@scarf/scarf` (dependência do `swagger-ui-dist`) fica com `false` em `allowBuilds` - user: "Negar (Recomendado)". O `configureApp(app)` lê o `NODE_ENV` de `process.env`, onde o `ConfigModule` grava o valor validado - user: "process.env (Recomendado)". O documento OpenAPI tem título "Amigo Secreto API" e versão "0.0.0", sem descrição - user: "Título e versão (Recomendado)".
+**Settled mid-build:** 2026-11-12 - o gate Build fica vermelho antes da T1 porque o repositório está vazio; o usuário autorizou seguir mesmo assim - user: "Seguir mesmo assim (Recomendado)". A partir da T1 o Build precisa ficar verde em toda task. 2026-11-12 - modo de execução ainda não escolhido; o usuário pediu para não executar agora - user: "Não executar nada agora." 2026-11-12 - execução começa só pelo lote 1 (fases 1 e 2, T1 a T6), com parada para revisão antes do lote 2 - user: "Só o lote 1 agora". A máquina tem Node v24.17.0; o usuário instala o Node 26 antes da T1, sem mudar a spec - user: "Eu instalo o Node 26". O daemon do Docker estava parado; o usuário o inicia - user: "Eu abro o Docker agora". 2026-11-12 - o design dizia `.nvmrc` `26.13.1` e `engines.node` `">=26.13.0 <27"`, contra FND-01 AC 9 e a C9; vale `26` nos dois, como na T1, e o design foi corrigido - user: "26 nos dois (Recomendado)". 2026-11-12 - `.prettierrc.json` com `singleQuote: true` e `trailingComma: "all"`, resto no padrão do Prettier - user: "Padrão do Nest (Recomendado)". 2026-11-12 - a tarefa `lint` do Turborepo passa a depender de `^build`, porque o lint com tipos lê o `dist/` do shared e o CI roda lint antes do build; design corrigido - user: "lint depende de ^build (Recomendado)". 2026-11-12 - o pnpm 12 bloqueia scripts de instalação fora de `allowBuilds`; `@swc/core: false`, porque o binário nativo já vem por dependência opcional - user: "Negar (Recomendado)"; cada pacote novo que pedir script é perguntado ao usuário - user: "Perguntar a cada caso (Recomendado)". O bloco `minimumReleaseAgeExclude` que o pnpm acrescentou na T1 fica; exceções novas são avisadas no commit - user: "Manter (Recomendado)". 2026-11-12 - `cpu-features`, `protobufjs` e `ssh2` (dependências do Testcontainers) ficam com `false` em `allowBuilds` - user: "Negar os três (Recomendado)". 2026-11-12 - execução inline, uma fase por vez, um PR por fase (AD-010); substitui a escolha do lote 1 - user: "A execução será inline, fase por fase, e cada fase deve ter seu PR." 2026-11-12 - o Sentry 11.12 removeu `sendDefaultPii` e o novo `dataCollection` coleta tudo por padrão; a API e o web usam o `dataCollection` mínimo e mantêm o `beforeSend`; FND-07 AC9, C39, T9 e T22 atualizados - user: "dataCollection mínimo (Recomendado)". 2026-11-12 - o `instrument.ts` roda antes do `ConfigModule` ler o `.env`, então um `SENTRY_DSN` só no `apps/api/.env` não liga o Sentry no `start` local; o DSN vem do ambiente do processo, como em produção - user: "Deixar como está (Recomendado)". 2026-11-12 - versões da fase 4: `@nestjs/terminus` 12.1.0, `@nestjs/swagger` 12.1.1 e `@amigo-secreto/shared` como `workspace:*`, todas exatas - user: "Mais recentes (Recomendado)". O 503 do `GET /health` continua indo ao Sentry e ao log de erro pelo filtro global - user: "Manter como está (Recomendado)". O teste do banco sem resposta usa um proxy TCP em `test/` que congela o tráfego entre a API e o Postgres - user: "Proxy TCP congelável (Recomendado)". O `GET /health` devolve o corpo do Terminus (`status`, `info`, `error`, `details`) no 200 e no 503, tipado como `HealthResponse` - user: "Corpo do Terminus (Recomendado)". 2026-11-12 - `@scarf/scarf` (dependência do `swagger-ui-dist`) fica com `false` em `allowBuilds` - user: "Negar (Recomendado)". O `configureApp(app)` lê o `NODE_ENV` de `process.env`, onde o `ConfigModule` grava o valor validado - user: "process.env (Recomendado)". O documento OpenAPI tem título "Amigo Secreto API" e versão "0.0.0", sem descrição - user: "Título e versão (Recomendado)". 2026-11-12 - versões da fase 5: as mais recentes do npm, exatas (Next 16.4.6, React 19.3.1, Tailwind 4.3.5, eslint-config-next 16.4.6, jsdom 31.0.0, @vitejs/plugin-react 6.3.0), com ESLint 9.39.5, TypeScript 6.0.3 e Vitest 5.1.0 iguais aos outros pacotes - user: "Mais recentes (Recomendado)". O `apps/web` é escrito à mão, sem `create-next-app` nem `shadcn init` - user: "Arquivos à mão (Recomendado)". O shadcn/ui usa Base UI como primitivos - user: "Base UI (Recomendado)". Na T15 entram só `components.json` e `lib/utils.ts` (`cn`) com `clsx` e `tailwind-merge`; `class-variance-authority`, `lucide-react`, `tw-animate-css` e `shadcn` entram com o primeiro componente que pedir - user: "Mínimo (Recomendado)". Estilo do shadcn/ui `base-vega` - user: "Vega (Recomendado)". O `globals.css` completa o bloco do guia com `shadow-sm`, `shadow-md` e `shadow-glow` por tema, `--font-sans` da Plus Jakarta Sans, a escala `display` a `caption` como `--text-*` e `--spacing-touch-target` de 44px; a escala de 4px é a padrão do Tailwind - user: "Completar no globals.css (Recomendado)". ESLint do web: `eslint-config-next` (`core-web-vitals` e `typescript`) + `typescript-eslint` `recommendedTypeChecked` + `eslint-config-prettier` - user: "Next + regras com tipos (Recomendado)". Padrões menores da T15: `"type": "module"`; scripts `dev`/`start` na porta 3000, `typecheck` = `next typegen && tsc --noEmit`, `test:e2e` = `node scripts/e2e.ts`; tsconfig com `moduleResolution` `bundler`, `jsx` `react-jsx`, plugin `next` e `@/*`; `next-env.d.ts` no `.gitignore`; Vitest com jsdom e `@vitejs/plugin-react`, Testing Library na T17; `next.config.ts` vazio até a T21; `components.json` com `baseColor` `slate` e `iconLibrary` `lucide`; fonte por `next/font/google`, subset `latin`, variável; página provisória com `<h1>Amigo Secreto` até a T20; `.env.example` com `API_INTERNAL_URL=http://localhost:3001` e `NEXT_PUBLIC_SENTRY_DSN` vazio - user: "Confirmo todos (Recomendado)". Funções de componente em PascalCase (`HomePage`, `RootLayout`, `AppHeader`); a linha "Função de componente em camelCase" da regra do web vale para funções dentro do componente - user: "PascalCase (Recomendado)". As sombras por tema ficam em `--elevation-sm` e `--elevation-md`, ligadas a `--shadow-sm` e `--shadow-md` no `@theme inline` - user: "--elevation-* (Recomendado)". O layout define `metadata.title` "Amigo Secreto" - user: "Manter (Recomendado)". 2026-11-12 - versões da T16: `@playwright/test` 1.65.0, `@axe-core/playwright` 4.14.0, `testcontainers` e `@testcontainers/postgresql` 12.2.1, exatas - user: "Essas versões (Recomendado)". O `scripts/e2e.ts` tem a própria checagem do Docker, copiada do `ensureDocker` da API, com a mensagem "Os testes e2e precisam do Docker em execução."; não importa arquivos de teste da API - user: "Copiar com mensagem própria (Recomendado)". A API sobe no e2e com `NODE_ENV=production` - user: "production (Recomendado)". Padrões da T16: `playwright.config.ts` com `testDir` `e2e`, reporter `list`, só chromium, `baseURL` `http://localhost:3000`, `retries` 0 e `reuseExistingServer: false`; o web da porta 3100 usa `API_INTERNAL_URL=http://localhost:3999` (porta fechada); o `scripts/e2e.ts` repassa argumentos extras ao `playwright test` e sai com o código dele; `@amigo-secreto/web#test:e2e` no `turbo.json` depende de `build` e `@amigo-secreto/api#build`, sem cache; spec em `e2e/home.spec.ts` - user: "Confirmo todos (Recomendado)". 2026-11-12 - dependências da T17, exatas: `next-themes` 0.4.6, `@testing-library/react` 16.3.3, `@testing-library/dom` 10.4.2, `@testing-library/user-event` 14.6.10 e `@testing-library/jest-dom` 7.0.1 - user: "Todas (Recomendado)". O botão de tema é um `<button>` próprio de 44×44 px, `radius-md`, hover em `accent`, anel de foco de 2px em `ring`, com ícone Lucide (`Moon` no claro, `Sun` no escuro) por `lucide-react` 1.72.0; sem o Button do shadcn ainda - user: "Ícone em <button> próprio (Recomendado)". Os testes e2e de tokens leem no `:root` cada cor e as sombras (`--elevation-*`) e comparam com o design system, e conferem a fonte do `body` e o botão de tema (raio de 10 px e 44×44 px) - user: "Variáveis + elementos (Recomendado)". Padrões da T17: o botão fica no início do `<body>` do layout até a T18 movê-lo para o `AppHeader`; `next-themes` com a chave padrão `theme`; `components/theme-provider.tsx` como wrapper client; teste de componente em `src/components/theme-toggle.test.tsx` com `vitest.setup.ts` (jest-dom e `matchMedia` falso); e2e em `e2e/theme.spec.ts`, tema do sistema por `page.emulateMedia` - user: "Confirmo todos (Recomendado)". 2026-11-12 - o cabeçalho é `sticky` no topo, largura toda, sem raio, em vidro (`bg-glass`, borda inferior `glass-border`, desfoque de 12px), trocando para `card` sem suporte a `backdrop-filter` ou com `prefers-reduced-transparency` - user: "Vidro fixo no topo (Recomendado)". A `shadow-md` depois da rolagem fica para a primeira tela que rola (ideia adiada no context.md) - user: "Depois (Recomendado)". O nome "Amigo Secreto" é link para `/` até existir "Meus grupos" - user: "Link para / (Recomendado)". Padrões da T18: `<header>` com o nome e o `ThemeToggle` (o botão sai do início do `<body>`); medidas do `bundle.css` do design system (padding 8px, 16px à esquerda e 24px a partir de 768px, gap 8px, nome com `flex-1`, 18px/28px, peso 800, tracking -0.02em, cor `foreground`, sem sublinhado); teste de componente em `src/components/app-header.test.tsx`; e2e em `e2e/home.spec.ts`, buscando dentro do papel `banner` - user: "Confirmo todos (Recomendado)". 2026-11-12 - o `getApiStatus` lê o corpo como `HealthResponse` e devolve `online` só com 200 e `status` "ok"; um 200 com outro corpo vira `unavailable` (FND-08 AC9 ajustado, teste a mais na T19) - user: "200 e status ok no corpo (Recomendado)". Os testes do `getApiStatus` usam um servidor `node:http` real e uma porta fechada; o teste dos 5 s espera de verdade - user: "Servidor HTTP real (Recomendado)". Sem `API_INTERNAL_URL`, o `getApiStatus` lança erro que nomeia a variável (FND-08 AC12 novo, C59, teste a mais na T19) - user: "Lança erro com o nome (Recomendado)". Padrões da T19: `ApiStatus` exportado de `src/lib/api-status.ts`; a URL é lida na chamada; erro de rede ou timeout vira `unavailable`; sem o pacote `server-only`; teste em `src/lib/api-status.test.ts` com ambiente `node` - user: "Confirmo todos (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 

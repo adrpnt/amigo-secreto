@@ -25,6 +25,10 @@
     "test:e2e": {
       "dependsOn": ["build"],
       "cache": false
+    },
+    "@amigo-secreto/web#test:e2e": {
+      "dependsOn": ["build", "@amigo-secreto/api#build"],
+      "cache": false
     }
   }
 }

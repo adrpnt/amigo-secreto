@@ -88,4 +88,4 @@ Nenhuma até agora.
 
 ## Deferred Ideas
 
-Nenhuma até agora.
+- `shadow-md` no cabeçalho depois que a página rola, como pede o AppHeader do design system. Entra com a primeira tela que rola, com teste próprio (decidido em 2026-11-12, na T18).
