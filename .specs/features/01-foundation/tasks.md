@@ -180,12 +180,12 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] `databaseOptions(config)` usado pelo `DatabaseModule` e pelo `data-source.ts`
-- [ ] Scripts `migration:generate`, `migration:run` e `migration:revert` no `package.json` da API, rodando sobre `dist/database/data-source.js`
-- [ ] Pasta `src/database/migrations/` existe
-- [ ] Testes `databaseOptions > desliga synchronize em development, test e production` e `> não roda migrations ao iniciar`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 5 tests pass
+- [x] `databaseOptions(config)` usado pelo `DatabaseModule` e pelo `data-source.ts`
+- [x] Scripts `migration:generate`, `migration:run` e `migration:revert` no `package.json` da API, rodando sobre `dist/database/data-source.js`
+- [x] Pasta `src/database/migrations/` existe
+- [x] Testes `databaseOptions > desliga synchronize em development, test e production` e `> não roda migrations ao iniciar`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 5 tests pass
 
 **Tests**: unit
 **Gate**: quick
