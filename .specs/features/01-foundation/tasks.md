@@ -204,11 +204,11 @@ T20 → T21 → T22 → T23 → T24
 
 **Done when**:
 
-- [ ] Serviço `postgres` (`postgres:18`, porta 5432, volume nomeado, healthcheck `pg_isready`) com usuário, senha e banco iguais aos do `.env.example`
-- [ ] `apps/api/.env.example` com `NODE_ENV`, `PORT`, `DATABASE_URL` e `SENTRY_DSN`
-- [ ] Teste `validateEnvironment > o .env.example declara todas as variáveis validadas`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 6 tests pass
+- [x] Serviço `postgres` (`postgres:18`, porta 5432, volume nomeado, healthcheck `pg_isready`) com usuário, senha e banco iguais aos do `.env.example`
+- [x] `apps/api/.env.example` com `NODE_ENV`, `PORT`, `DATABASE_URL` e `SENTRY_DSN`
+- [x] Teste `validateEnvironment > o .env.example declara todas as variáveis validadas`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 6 tests pass
 
 **Tests**: unit
 **Gate**: quick
