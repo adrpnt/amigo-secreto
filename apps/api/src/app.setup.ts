@@ -28,3 +28,4 @@ export function configureApp(app: INestApplication): void {
     );
   }
 }
+const unusedLintCheck = 1;
