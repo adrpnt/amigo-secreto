@@ -30,4 +30,12 @@ export function initSentry(
   });
 }
 
+// Roda pelo --import, antes de a aplicação carregar o .env pelo ConfigModule.
+try {
+  process.loadEnvFile();
+} catch (error) {
+  // Sem .env, vale só o ambiente (ex.: CI e produção).
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+}
+
 initSentry(process.env);
