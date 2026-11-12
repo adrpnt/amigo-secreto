@@ -112,10 +112,10 @@
 ## Handoff
 
 - **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Execute. Fases 1 a 5 concluídas (T1 a T19). Fases 1 a 4 mergeadas na `main` (PRs #1 a #4). Fase 5 com push e PR aberto a partir de `pntadr/per-61-fase-5-web-esqueleto-e2e-e-tema`; PER-61 em In Progress, com os cinco checkboxes marcados.
-- **Completed**: T1 a T19
+- **Phase / Task**: Execute. Todas as fases concluídas (T1 a T24). Fases 1 a 5 mergeadas na `main` (PRs #1 a #5). Fase 6 com push e PR aberto a partir de `pntadr/per-62-fase-6-web-pagina-rewrite-sentry`; PER-62 em In Progress, com os cinco checkboxes marcados; PER-61 em Done.
+- **Completed**: T1 a T24
 - **In-progress** (file:line): none
-- **Next step**: Depois do merge do PR da fase 5: perguntar o status final da PER-61, atualizar a `main`, criar a branch da PER-62 (conferir o `gitBranchName`) a partir dela, mover PER-62 para In Progress (AD-009) e começar pela T20. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`). Na fase 5 o FND-08 ganhou o AC12 e o AC9 passou a exigir `status` "ok" no corpo; por isso as contagens de testes de componente da T20 (11) e da T22 (15) subiram 2. A T22 (Sentry no web) usa o `dataCollection` mínimo, decidido na T9 (ver `**Settled mid-build:**` do tasks.md).
-- **Blockers**: merge do PR da fase 5.
+- **Next step**: Conferir no PR da fase 6 que o workflow de CI roda os cinco comandos (C55) e fica verde. Depois do merge: perguntar o status final da PER-62, atualizar a `main` e fechar a feature: `check_proofs.py 01-foundation`, as provas por walk (C4, C5, C6, C8, C10, C13, C14, C55, C56, C57) com o `**Walked:**` do tasks.md, o Verifier num sub-agente novo (escrito no `**Dispatched:**` antes de enviar), uma rodada de correções e `validate_verification.py 01-foundation` com saída 0; depois as lições. Comandos rodam com o nvm carregado (`. ~/.nvm/nvm.sh`). Na fase 6 o AD-006 foi revisado (repasse por `src/proxy.ts`, porque o Next 16 grava o destino dos `rewrites()` no build) e entraram o FND-04 AC6 e a C60.
+- **Blockers**: merge do PR da fase 6.
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-61-fase-5-web-esqueleto-e2e-e-tema
+- **Branch**: pntadr/per-62-fase-6-web-pagina-rewrite-sentry
