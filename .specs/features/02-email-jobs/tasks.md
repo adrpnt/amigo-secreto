@@ -193,9 +193,9 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Testes em `test/job-runner.int-spec.ts`: `JobRunner > devolve a PENDING com as esperas de 1, 5, 25 e 125 minutos`, `> marca FAILED quando a quinta tentativa falha`, `> marca FAILED na hora um erro definitivo`, `> marca FAILED o job de tipo sem handler com Tipo de job desconhecido`, `> emite job.failed com jobId, type e attempts quando o job vira FAILED`, `> envia ao Sentry o job que vira FAILED com jobId e type` e `> escreve um aviso sem Sentry quando o job volta a PENDING`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 65 tests pass
+- [x] Testes em `test/job-runner.int-spec.ts`: `JobRunner > devolve a PENDING com as esperas de 1, 5, 25 e 125 minutos`, `> marca FAILED quando a quinta tentativa falha`, `> marca FAILED na hora um erro definitivo`, `> marca FAILED o job de tipo sem handler com Tipo de job desconhecido`, `> emite job.failed com jobId, type e attempts quando o job vira FAILED`, `> envia ao Sentry o job que vira FAILED com jobId e type` e `> escreve um aviso sem Sentry quando o job volta a PENDING`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 65 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -573,7 +573,7 @@ Proof: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)".
+**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)". (2026-11-18, T6) O instante da falha que entra no `nextRunAt` é o `now` da rodada somado ao tempo real decorrido desde o início dela, fiel ao JOB-04 AC 1 com rodada longa e testável com relógio controlado - user: "now + tempo decorrido (Recomendado)". Tipo sem handler grava o `lastError` exato "Tipo de job desconhecido: <type>", sem passar pelo `toLastError`; o mesmo vale para "Processamento interrompido" na T7 - user: "Texto exato do AC (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 

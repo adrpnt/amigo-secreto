@@ -2,11 +2,14 @@ import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import type { INestApplicationContext } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as Sentry from '@sentry/nestjs';
 import { DataSource } from 'typeorm';
 import type { Job, JobStatus } from '../src/jobs/job.entity.js';
+import { PermanentJobError } from '../src/jobs/job-errors.js';
 import { JobHandlerRegistry } from '../src/jobs/job-handler.registry.js';
 import { JobQueue } from '../src/jobs/job-queue.service.js';
 import { JobRunner } from '../src/jobs/job-runner.service.js';
+import { AppLogger } from '../src/observability/app-logger.js';
 import { createIsolatedDatabase } from './isolated-database.js';
 
 const NOW = new Date('2030-03-10T12:00:00.000Z');
@@ -17,11 +20,13 @@ async function createContext(): Promise<INestApplicationContext> {
   const { JobsFixtureModule } =
     await import('./fixtures/jobs-fixture.module.js');
   return NestFactory.createApplicationContext(JobsFixtureModule, {
-    logger: false,
+    logger: new AppLogger('production'),
   });
 }
 
 describe('JobRunner', () => {
+  const output: string[] = [];
+  const sentEvents: Sentry.ErrorEvent[] = [];
   let app: INestApplicationContext;
   let dataSource: DataSource;
   let queue: JobQueue;
@@ -29,6 +34,18 @@ describe('JobRunner', () => {
   let runner: JobRunner;
 
   beforeAll(async () => {
+    vi.spyOn(process.stdout, 'write').mockImplementation((chunk) => {
+      output.push(String(chunk));
+      return true;
+    });
+    Sentry.init({
+      dsn: 'https://public@sentry.example.com/1',
+      defaultIntegrations: false,
+      beforeSend(event) {
+        sentEvents.push(event);
+        return null;
+      },
+    });
     // O ConfigModule valida o ambiente quando o módulo é importado.
     vi.stubEnv('DATABASE_URL', await createIsolatedDatabase('job_runner'));
     app = await createContext();
@@ -40,12 +57,32 @@ describe('JobRunner', () => {
 
   afterAll(async () => {
     await app.close();
+    await Sentry.close();
     vi.unstubAllEnvs();
+    vi.restoreAllMocks();
   });
 
   beforeEach(async () => {
     await dataSource.query('DELETE FROM job');
+    output.length = 0;
+    sentEvents.length = 0;
   });
+
+  function logRecords(): Record<string, unknown>[] {
+    return output
+      .flatMap((chunk) => chunk.split('\n'))
+      .filter((line) => line.startsWith('{'))
+      .map((line) => JSON.parse(line) as Record<string, unknown>);
+  }
+
+  // Registra um handler que sempre lança o erro informado.
+  function failingHandler(error: () => Error) {
+    const type = `job-runner.${randomUUID()}`;
+    handlers.register(type, {
+      handle: () => Promise.reject(error()),
+    });
+    return type;
+  }
 
   // Registra um handler num tipo novo e devolve o tipo e os ids executados.
   function recordingHandler(onHandle?: (job: Job) => Promise<void>) {
@@ -66,6 +103,26 @@ describe('JobRunner', () => {
     >('SELECT status, attempts, "lockedAt" FROM job WHERE id = $1', [id]);
     return row;
   };
+
+  const findOutcome = async (id: string) => {
+    const [row] = await dataSource.query<
+      {
+        status: JobStatus;
+        attempts: number;
+        lastError: string | null;
+        runAt: Date;
+      }[]
+    >('SELECT status, attempts, "lastError", "runAt" FROM job WHERE id = $1', [
+      id,
+    ]);
+    return row;
+  };
+
+  const setAttempts = (id: string, attempts: number) =>
+    dataSource.query('UPDATE job SET attempts = $2 WHERE id = $1', [
+      id,
+      attempts,
+    ]);
 
   it('pega no máximo 50 jobs vencidos, do runAt mais antigo ao mais novo', async () => {
     const { type, handled } = recordingHandler();
@@ -227,5 +284,121 @@ describe('JobRunner', () => {
       status: 'FAILED',
       attempts: 0,
     });
+  });
+
+  it('devolve a PENDING com as esperas de 1, 5, 25 e 125 minutos', async () => {
+    const type = failingHandler(() => new Error('Resend 500 internal_error'));
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+
+    let roundAt = NOW;
+    const waits: number[] = [];
+    for (const attempts of [1, 2, 3, 4]) {
+      await runner.runRound(roundAt);
+
+      const outcome = await findOutcome(job.id);
+      expect(outcome).toMatchObject({
+        status: 'PENDING',
+        attempts,
+        lastError: 'Error: Resend 500 internal_error',
+      });
+      const waitMs = outcome.runAt.getTime() - roundAt.getTime();
+      const minutes = Math.floor(waitMs / 60_000);
+      // O instante da falha é o da rodada mais o tempo que ela levou.
+      expect(waitMs - minutes * 60_000).toBeLessThan(5_000);
+      waits.push(minutes);
+      roundAt = outcome.runAt;
+    }
+
+    expect(waits).toEqual([1, 5, 25, 125]);
+  });
+
+  it('marca FAILED quando a quinta tentativa falha', async () => {
+    const type = failingHandler(() => new Error('Resend 503 unavailable'));
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+    await setAttempts(job.id, 4);
+
+    await runner.runRound(NOW);
+
+    expect(await findOutcome(job.id)).toMatchObject({
+      status: 'FAILED',
+      attempts: 5,
+      lastError: 'Error: Resend 503 unavailable',
+    });
+  });
+
+  it('marca FAILED na hora um erro definitivo', async () => {
+    const type = failingHandler(
+      () => new PermanentJobError('Resend 422 validation_error'),
+    );
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+
+    await runner.runRound(NOW);
+
+    expect(await findOutcome(job.id)).toMatchObject({
+      status: 'FAILED',
+      attempts: 1,
+      lastError: 'PermanentJobError: Resend 422 validation_error',
+    });
+  });
+
+  it('marca FAILED o job de tipo sem handler com Tipo de job desconhecido', async () => {
+    const type = `job-runner.sem-handler.${randomUUID()}`;
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+
+    await runner.runRound(NOW);
+
+    expect(await findOutcome(job.id)).toMatchObject({
+      status: 'FAILED',
+      attempts: 1,
+      lastError: `Tipo de job desconhecido: ${type}`,
+    });
+  });
+
+  it('emite job.failed com jobId, type e attempts quando o job vira FAILED', async () => {
+    const type = failingHandler(() => new Error('Resend 500 internal_error'));
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+    await setAttempts(job.id, 4);
+
+    await runner.runRound(NOW);
+
+    expect(
+      logRecords().filter((record) => record.event === 'job.failed'),
+    ).toEqual([expect.objectContaining({ jobId: job.id, type, attempts: 5 })]);
+  });
+
+  it('envia ao Sentry o job que vira FAILED com jobId e type', async () => {
+    const type = failingHandler(
+      () => new PermanentJobError('Resend 401 missing_api_key'),
+    );
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+
+    await runner.runRound(NOW);
+    await Sentry.flush(2000);
+
+    expect(sentEvents).toHaveLength(1);
+    expect(sentEvents[0]?.tags).toEqual({ jobId: job.id, type });
+    expect(sentEvents[0]?.exception?.values?.[0]?.value).toBe(
+      `Job ${type} falhou`,
+    );
+  });
+
+  it('escreve um aviso sem Sentry quando o job volta a PENDING', async () => {
+    const type = failingHandler(() => new Error('Tempo esgotado'));
+    const job = await queue.enqueue(type, {}, { runAt: NOW });
+
+    await runner.runRound(NOW);
+    await Sentry.flush(2000);
+
+    const { runAt } = await findOutcome(job.id);
+    expect(logRecords().filter((record) => record.level === 'warn')).toEqual([
+      expect.objectContaining({
+        context: 'Jobs',
+        jobId: job.id,
+        type,
+        attempts: 1,
+        runAt: runAt.toISOString(),
+      }),
+    ]);
+    expect(sentEvents).toHaveLength(0);
   });
 });
