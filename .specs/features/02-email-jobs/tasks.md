@@ -214,9 +214,9 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Testes em `test/job-runner.int-spec.ts`: `JobRunner > retoma o job RUNNING travado há mais de 10 minutos com menos de 5 tentativas` e `> marca FAILED com Processamento interrompido o job travado com 5 tentativas`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 67 tests pass
+- [x] Testes em `test/job-runner.int-spec.ts`: `JobRunner > retoma o job RUNNING travado há mais de 10 minutos com menos de 5 tentativas` e `> marca FAILED com Processamento interrompido o job travado com 5 tentativas`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 67 tests pass
 
 **Tests**: integration
 **Gate**: full

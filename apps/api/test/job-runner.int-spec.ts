@@ -401,4 +401,56 @@ describe('JobRunner', () => {
     ]);
     expect(sentEvents).toHaveLength(0);
   });
+
+  const markRunning = (id: string, lockedAt: Date, attempts: number) =>
+    dataSource.query(
+      `UPDATE job SET status = 'RUNNING', "lockedAt" = $2, attempts = $3
+       WHERE id = $1`,
+      [id, lockedAt, attempts],
+    );
+
+  it('retoma o job RUNNING travado há mais de 10 minutos com menos de 5 tentativas', async () => {
+    const { type, handled } = recordingHandler();
+    const stuck = await queue.enqueue(type, {}, { runAt: minutesBefore(30) });
+    const running = await queue.enqueue(type, {}, { runAt: minutesBefore(30) });
+    await markRunning(stuck.id, new Date(minutesBefore(10).getTime() - 1), 4);
+    // Exatamente 10 minutos ainda não é travado.
+    await markRunning(running.id, minutesBefore(10), 2);
+
+    await runner.runRound(NOW);
+
+    expect(handled).toEqual([stuck.id]);
+    expect(await findJob(stuck.id)).toEqual({
+      status: 'DONE',
+      attempts: 5,
+      lockedAt: NOW,
+    });
+    expect(await findJob(running.id)).toEqual({
+      status: 'RUNNING',
+      attempts: 2,
+      lockedAt: minutesBefore(10),
+    });
+  });
+
+  it('marca FAILED com Processamento interrompido o job travado com 5 tentativas', async () => {
+    const { type, handled } = recordingHandler();
+    const job = await queue.enqueue(type, {}, { runAt: minutesBefore(30) });
+    await markRunning(job.id, minutesBefore(11), 5);
+
+    await runner.runRound(NOW);
+    await Sentry.flush(2000);
+
+    expect(handled).toEqual([]);
+    expect(await findOutcome(job.id)).toMatchObject({
+      status: 'FAILED',
+      attempts: 5,
+      lastError: 'Processamento interrompido',
+    });
+    expect(
+      logRecords().filter((record) => record.event === 'job.failed'),
+    ).toEqual([expect.objectContaining({ jobId: job.id, type, attempts: 5 })]);
+    expect(sentEvents.map((event) => event.tags)).toEqual([
+      { jobId: job.id, type },
+    ]);
+  });
 });

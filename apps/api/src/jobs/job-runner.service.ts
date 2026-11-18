@@ -9,8 +9,11 @@ import {
   BATCH_SIZE,
   MAX_ATTEMPTS,
   nextRunAt,
+  STUCK_AFTER_MS,
   toLastError,
 } from './job-retry.js';
+
+const stuckBefore = (now: Date) => new Date(now.getTime() - STUCK_AFTER_MS);
 
 @Injectable()
 export class JobRunner {
@@ -28,6 +31,7 @@ export class JobRunner {
     // Instante atual no relógio da rodada: now mais o tempo que ela já levou.
     const clock = () => new Date(now.getTime() + Date.now() - startedAt);
     try {
+      await this.failInterrupted(now);
       const jobs = await this.dataSource.transaction((manager) =>
         this.claim(manager, now),
       );
@@ -42,15 +46,46 @@ export class JobRunner {
     }
   }
 
+  // Job travado em RUNNING sem tentativa sobrando: a instância caiu no meio
+  // da última tentativa.
+  private async failInterrupted(now: Date): Promise<void> {
+    const result = await this.dataSource
+      .createQueryBuilder()
+      .update(Job)
+      .set({ status: 'FAILED', lastError: 'Processamento interrompido' })
+      .where(
+        'status = :running AND "lockedAt" < :stuckBefore AND attempts >= :max',
+        {
+          running: 'RUNNING',
+          stuckBefore: stuckBefore(now),
+          max: MAX_ATTEMPTS,
+        },
+      )
+      .returning(['id', 'type', 'attempts'])
+      .execute();
+    for (const job of result.raw as Pick<Job, 'id' | 'type' | 'attempts'>[]) {
+      this.reportFailed(job);
+    }
+  }
+
   // FOR UPDATE SKIP LOCKED: outra instância pegando jobs ao mesmo tempo pula
-  // as linhas travadas aqui em vez de esperar por elas.
+  // as linhas travadas aqui em vez de esperar por elas. Um job RUNNING
+  // travado há mais de 10 minutos é pego de novo como um PENDING vencido.
   private async claim(manager: EntityManager, now: Date): Promise<Job[]> {
     const jobs = await manager
       .createQueryBuilder(Job, 'job')
-      .where('job.status = :pending AND job.runAt <= :now', {
-        pending: 'PENDING',
-        now,
-      })
+      .where(
+        `(job.status = :pending AND job.runAt <= :now)
+         OR (job.status = :running AND job.lockedAt < :stuckBefore
+             AND job.attempts < :max)`,
+        {
+          pending: 'PENDING',
+          running: 'RUNNING',
+          now,
+          stuckBefore: stuckBefore(now),
+          max: MAX_ATTEMPTS,
+        },
+      )
       .orderBy('job.runAt', 'ASC')
       .limit(BATCH_SIZE)
       .setLock('pessimistic_write')
@@ -131,7 +166,7 @@ export class JobRunner {
   }
 
   // Nada do payload sai daqui: ele pode ter dados pessoais.
-  private reportFailed(job: Job): void {
+  private reportFailed(job: Pick<Job, 'id' | 'type' | 'attempts'>): void {
     this.businessEvents.record('job.failed', {
       jobId: job.id,
       type: job.type,
