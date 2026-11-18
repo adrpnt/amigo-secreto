@@ -259,10 +259,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Teste existente `validateEnvironment > o .env.example declara todas as variáveis validadas` continua verde com as três variáveis
-- [ ] Testes em `src/config/env.validation.spec.ts`: `validateEnvironment > lança erro que nomeia RESEND_API_KEY quando ela falta em production`, `> lança erro que nomeia EMAIL_FROM quando ela falta em production` e `> aceita RESEND_API_KEY e EMAIL_FROM ausentes fora de production`
-- [ ] Gate check passes: `pnpm test && pnpm test:e2e`
-- [ ] Test count: 73 tests pass na API; e2e do web verde
+- [x] Teste existente `validateEnvironment > o .env.example declara todas as variáveis validadas` continua verde com as três variáveis
+- [x] Testes em `src/config/env.validation.spec.ts`: `validateEnvironment > lança erro que nomeia RESEND_API_KEY quando ela falta em production`, `> lança erro que nomeia EMAIL_FROM quando ela falta em production` e `> aceita RESEND_API_KEY e EMAIL_FROM ausentes fora de production`
+- [x] Gate check passes: `pnpm test && pnpm test:e2e`
+- [x] Test count: 73 tests pass na API; e2e do web verde
 
 **Tests**: unit
 **Gate**: e2e
@@ -573,7 +573,7 @@ Proof: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)". (2026-11-18, T6) O instante da falha que entra no `nextRunAt` é o `now` da rodada somado ao tempo real decorrido desde o início dela, fiel ao JOB-04 AC 1 com rodada longa e testável com relógio controlado - user: "now + tempo decorrido (Recomendado)". Tipo sem handler grava o `lastError` exato "Tipo de job desconhecido: <type>", sem passar pelo `toLastError`; o mesmo vale para "Processamento interrompido" na T7 - user: "Texto exato do AC (Recomendado)".
+**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)". (2026-11-18, T6) O instante da falha que entra no `nextRunAt` é o `now` da rodada somado ao tempo real decorrido desde o início dela, fiel ao JOB-04 AC 1 com rodada longa e testável com relógio controlado - user: "now + tempo decorrido (Recomendado)". Tipo sem handler grava o `lastError` exato "Tipo de job desconhecido: <type>", sem passar pelo `toLastError`; o mesmo vale para "Processamento interrompido" na T7 - user: "Texto exato do AC (Recomendado)". (2026-11-18, T9) O `test/swagger.int-spec.ts` sobe o `AppModule` com `NODE_ENV=production` e passou a abortar sem as variáveis de e-mail; o `beforeAll` dele ganha `RESEND_API_KEY=re_test` e `EMAIL_FROM=Amigo Secreto <test@example.com>`, só preparação do ambiente, sem mudar asserção - user: "Stub no beforeAll (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 

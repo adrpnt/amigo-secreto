@@ -20,7 +20,12 @@ export default defineConfig({
       cwd: '../api',
       url: `${API_URL}/health`,
       reuseExistingServer: false,
-      env: { NODE_ENV: 'production', PORT: '3001' },
+      env: {
+        NODE_ENV: 'production',
+        PORT: '3001',
+        RESEND_API_KEY: 're_e2e',
+        EMAIL_FROM: 'Amigo Secreto <e2e@example.com>',
+      },
     },
     {
       name: 'web',

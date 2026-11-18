@@ -28,6 +28,51 @@ describe('validateEnvironment', () => {
     expect(env.NODE_ENV).toBe('development');
   });
 
+  it('lança erro que nomeia RESEND_API_KEY quando ela falta em production', () => {
+    const production = {
+      NODE_ENV: 'production',
+      DATABASE_URL: VALID_DATABASE_URL,
+      EMAIL_FROM: 'Amigo Secreto <nao-responda@example.com>',
+    };
+
+    expect(() => validateEnvironment(production)).toThrow(/RESEND_API_KEY/);
+    expect(() =>
+      validateEnvironment({ ...production, RESEND_API_KEY: '' }),
+    ).toThrow(/RESEND_API_KEY/);
+    expect(() =>
+      validateEnvironment({ ...production, RESEND_API_KEY: '' }),
+    ).not.toThrow(/EMAIL_FROM/);
+  });
+
+  it('lança erro que nomeia EMAIL_FROM quando ela falta em production', () => {
+    const production = {
+      NODE_ENV: 'production',
+      DATABASE_URL: VALID_DATABASE_URL,
+      RESEND_API_KEY: 're_123',
+    };
+
+    expect(() => validateEnvironment(production)).toThrow(/EMAIL_FROM/);
+    expect(() =>
+      validateEnvironment({ ...production, EMAIL_FROM: '' }),
+    ).toThrow(/EMAIL_FROM/);
+    expect(() =>
+      validateEnvironment({ ...production, EMAIL_FROM: '' }),
+    ).not.toThrow(/RESEND_API_KEY/);
+  });
+
+  it('aceita RESEND_API_KEY e EMAIL_FROM ausentes fora de production', () => {
+    for (const nodeEnv of ['development', 'test']) {
+      const env = validateEnvironment({
+        NODE_ENV: nodeEnv,
+        DATABASE_URL: VALID_DATABASE_URL,
+      });
+
+      expect(env.NODE_ENV).toBe(nodeEnv);
+      expect(env.RESEND_API_KEY).toBeUndefined();
+      expect(env.EMAIL_FROM).toBeUndefined();
+    }
+  });
+
   it('o .env.example declara todas as variáveis validadas', () => {
     const validated = new Set(
       getMetadataStorage()

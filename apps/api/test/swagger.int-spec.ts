@@ -31,6 +31,8 @@ describe('Swagger', () => {
   beforeAll(() => {
     // O ConfigModule valida o ambiente quando o AppModule é importado.
     vi.stubEnv('DATABASE_URL', inject('databaseUrl'));
+    vi.stubEnv('RESEND_API_KEY', 're_test');
+    vi.stubEnv('EMAIL_FROM', 'Amigo Secreto <test@example.com>');
   });
 
   afterAll(async () => {

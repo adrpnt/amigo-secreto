@@ -3,11 +3,13 @@ import { plainToInstance } from 'class-transformer';
 import {
   IsIn,
   IsInt,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
   Max,
   Min,
+  ValidateIf,
   validateSync,
 } from 'class-validator';
 
@@ -38,6 +40,27 @@ export class EnvironmentVariables {
   @IsOptional()
   @IsString()
   SENTRY_DSN?: string;
+
+  @ValidateIf(isProduction)
+  @IsString()
+  @IsNotEmpty()
+  RESEND_API_KEY?: string;
+
+  @ValidateIf(isProduction)
+  @IsString()
+  @IsNotEmpty()
+  EMAIL_FROM?: string;
+
+  @IsUrl({
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    require_tld: false,
+  })
+  RESEND_BASE_URL: string = 'https://api.resend.com';
+}
+
+function isProduction(env: EnvironmentVariables): boolean {
+  return env.NODE_ENV === 'production';
 }
 
 export function validateEnvironment(
