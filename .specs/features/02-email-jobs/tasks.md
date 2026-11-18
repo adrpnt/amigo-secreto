@@ -370,9 +370,9 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Testes `sigilo do e-mail > não escreve destinatário, assunto nem conteúdo em logs, eventos ou Sentry em production` e `> não grava destinatário, assunto nem conteúdo no lastError`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 100 tests pass
+- [x] Testes `sigilo do e-mail > não escreve destinatário, assunto nem conteúdo em logs, eventos ou Sentry em production` e `> não grava destinatário, assunto nem conteúdo no lastError`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 100 tests pass
 
 **Tests**: integration
 **Gate**: full

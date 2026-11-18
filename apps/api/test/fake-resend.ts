@@ -7,7 +7,11 @@ export type FakeResendRequest = {
   body: Record<string, unknown>;
 };
 
-export type FakeResendReply = { status: number; name?: string };
+export type FakeResendReply = {
+  status: number;
+  name?: string;
+  message?: string;
+};
 
 export type FakeResend = {
   url: string;
@@ -36,11 +40,15 @@ export async function startFakeResend(): Promise<FakeResend> {
           unknown
         >,
       });
-      const { status, name } = replies.shift() ?? { status: 200 };
+      const {
+        status,
+        name,
+        message = 'Erro do Resend falso',
+      } = replies.shift() ?? { status: 200 };
       const body =
         status < 300
           ? { id: `resend-${requests.length}` }
-          : { statusCode: status, name, message: 'Erro do Resend falso' };
+          : { statusCode: status, name, message };
       response.writeHead(status, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify(body));
     });
