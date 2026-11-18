@@ -281,10 +281,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/email/email.types.ts` criado
-- [ ] Testes em `src/email/email-layout.spec.ts`: `renderEmail > produz HTML e texto com o mesmo conteúdo`, `> monta o HTML com lang pt-BR, o nome no cabeçalho, o conteúdo e o rodapé`, `> começa o texto com Amigo Secreto e termina com o rodapé`, `> usa as cores do tema claro nos estilos do HTML`, `> troca para as cores do tema escuro em prefers-color-scheme dark`, `> mostra como texto os caracteres especiais de HTML do conteúdo` e `> mostra o botão como link no HTML e como rótulo: URL no texto`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 80 tests pass
+- [x] `apps/api/src/email/email.types.ts` criado
+- [x] Testes em `src/email/email-layout.spec.ts`: `renderEmail > produz HTML e texto com o mesmo conteúdo`, `> monta o HTML com lang pt-BR, o nome no cabeçalho, o conteúdo e o rodapé`, `> começa o texto com Amigo Secreto e termina com o rodapé`, `> usa as cores do tema claro nos estilos do HTML`, `> troca para as cores do tema escuro em prefers-color-scheme dark`, `> mostra como texto os caracteres especiais de HTML do conteúdo` e `> mostra o botão como link no HTML e como rótulo: URL no texto`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 80 tests pass
 
 **Tests**: unit
 **Gate**: quick
