@@ -1,10 +1,37 @@
-import { Module } from '@nestjs/common';
+import { Module, type OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import type { EnvironmentVariables } from '../config/env.validation.js';
+import { JobHandlerRegistry } from '../jobs/job-handler.registry.js';
 import { JobsModule } from '../jobs/jobs.module.js';
-import { EmailService } from './email.service.js';
+import { EMAIL_TRANSPORT } from './email-transport.js';
+import { EMAIL_SEND_JOB, EmailService } from './email.service.js';
+import { LogTransport } from './log.transport.js';
+import { ResendTransport } from './resend.transport.js';
+import { SendEmailHandler } from './send-email.handler.js';
 
 @Module({
   imports: [JobsModule],
-  providers: [EmailService],
+  providers: [
+    EmailService,
+    SendEmailHandler,
+    {
+      provide: EMAIL_TRANSPORT,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) =>
+        config.get('RESEND_API_KEY', { infer: true })
+          ? new ResendTransport(config)
+          : new LogTransport(),
+    },
+  ],
   exports: [EmailService],
 })
-export class EmailModule {}
+export class EmailModule implements OnModuleInit {
+  constructor(
+    private readonly handlers: JobHandlerRegistry,
+    private readonly sendEmail: SendEmailHandler,
+  ) {}
+
+  onModuleInit(): void {
+    this.handlers.register(EMAIL_SEND_JOB, this.sendEmail);
+  }
+}
