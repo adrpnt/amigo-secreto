@@ -147,9 +147,9 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Testes em `src/jobs/job-handler.registry.spec.ts`: `JobHandlerRegistry > devolve o handler registrado para o tipo`, `> devolve undefined para tipo sem handler` e `> lança erro ao registrar o mesmo tipo duas vezes`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 52 tests pass
+- [x] Testes em `src/jobs/job-handler.registry.spec.ts`: `JobHandlerRegistry > devolve o handler registrado para o tipo`, `> devolve undefined para tipo sem handler` e `> lança erro ao registrar o mesmo tipo duas vezes`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 52 tests pass
 
 **Tests**: unit
 **Gate**: quick
