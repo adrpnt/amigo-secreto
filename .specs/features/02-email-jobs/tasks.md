@@ -103,10 +103,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/jobs/jobs.module.ts` criado
-- [ ] Testes em `test/job-queue.int-spec.ts`: `JobQueue > grava o job PENDING com attempts 0 e runAt do momento da chamada`, `> usa o runAt informado`, `> não deixa job quando a transação de origem é desfeita` e `> deixa o job quando a transação de origem é confirmada`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 46 tests pass
+- [x] `apps/api/src/jobs/jobs.module.ts` criado
+- [x] Testes em `test/job-queue.int-spec.ts`: `JobQueue > grava o job PENDING com attempts 0 e runAt do momento da chamada`, `> usa o runAt informado`, `> não deixa job quando a transação de origem é desfeita` e `> deixa o job quando a transação de origem é confirmada`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 46 tests pass
 
 **Tests**: integration
 **Gate**: full
