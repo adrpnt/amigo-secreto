@@ -108,7 +108,9 @@ describe('EmailService', () => {
     for (const to of ['', 'ana', 'ana@', '@example.com', 'ana example.com']) {
       const message = messageWith({ to });
 
-      const error: unknown = await emails.enqueue(message).catch((e: unknown) => e);
+      const error: unknown = await emails
+        .enqueue(message)
+        .catch((e: unknown) => e);
 
       expect(error).toBeInstanceOf(Error);
       expect((error as Error).message).toBe('Destinatário de e-mail inválido.');

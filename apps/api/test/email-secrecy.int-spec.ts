@@ -162,8 +162,6 @@ describe('sigilo do e-mail', () => {
       status: 'FAILED',
       lastError: 'PermanentJobError: Resend 422 validation_error',
     });
-    expect(leakedMarks(`${retried.lastError} ${failed.lastError}`)).toEqual(
-      [],
-    );
+    expect(leakedMarks(`${retried.lastError} ${failed.lastError}`)).toEqual([]);
   });
 });

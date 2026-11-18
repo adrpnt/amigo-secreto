@@ -210,7 +210,8 @@ describe('envio de e-mail', () => {
 
     expect(resend.requests).toHaveLength(0);
     const logged = logRecords().filter(
-      (record) => record.message === 'E-mail não enviado: RESEND_API_KEY ausente',
+      (record) =>
+        record.message === 'E-mail não enviado: RESEND_API_KEY ausente',
     );
     expect(logged).toHaveLength(1);
     expect(logged[0]).toMatchObject({

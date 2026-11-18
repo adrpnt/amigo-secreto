@@ -53,9 +53,10 @@ function inlineStyle(tag: string): string {
 
 function darkDeclarations(html: string, tag: string): string {
   const style = /<style[^>]*>([\s\S]*?)<\/style>/.exec(html)?.[1] ?? '';
-  const media = /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{([\s\S]*)\}/.exec(
-    style,
-  )?.[1];
+  const media =
+    /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{([\s\S]*)\}/.exec(
+      style,
+    )?.[1];
   if (media === undefined) {
     throw new Error('Bloco prefers-color-scheme: dark não encontrado');
   }
@@ -167,7 +168,11 @@ describe('renderEmail', () => {
       ...MESSAGE,
       blocks: [
         { type: 'paragraph', text: special },
-        { type: 'button', label: '<i>Abrir</i>', url: 'https://e.com/?a=1&b="2"' },
+        {
+          type: 'button',
+          label: '<i>Abrir</i>',
+          url: 'https://e.com/?a=1&b="2"',
+        },
       ],
     });
 
@@ -175,7 +180,9 @@ describe('renderEmail', () => {
       '&lt;b&gt;Ana &amp; Bia&lt;/b&gt; &quot;aspas&quot; &#39;apóstrofo&#39;',
     );
     expect(email.html).toContain('&lt;i&gt;Abrir&lt;/i&gt;');
-    expect(email.html).toContain('href="https://e.com/?a=1&amp;b=&quot;2&quot;"');
+    expect(email.html).toContain(
+      'href="https://e.com/?a=1&amp;b=&quot;2&quot;"',
+    );
     expect(email.html).not.toContain('<b>');
     expect(email.html).not.toContain('<i>');
     expect(visibleLines(email.html)).toContain(special);
