@@ -117,7 +117,7 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 #### T3: Criar a política de retry dos jobs
 
-**What**: `MAX_ATTEMPTS` 5, `STUCK_AFTER_MS` 10 min, `BATCH_SIZE` 50, `nextRunAt(attempts, failedAt)` (`failedAt` + 5^(attempts-1) min), `toLastError(error)` (mensagem cortada em 500 caracteres) e `PermanentJobError` em `job-errors.ts`.
+**What**: `MAX_ATTEMPTS` 5, `STUCK_AFTER_MS` 10 min, `BATCH_SIZE` 50, `nextRunAt(attempts, failedAt)` (`failedAt` + 5^(attempts-1) min), `toLastError(error)` (`<name>: <message>` cortado em 500 caracteres) e `PermanentJobError` em `job-errors.ts`.
 **Where**: `apps/api/src/jobs/job-retry.ts`
 **Depends on**: T2
 **Reuses**: nada
@@ -125,10 +125,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/jobs/job-errors.ts` com `PermanentJobError`
-- [ ] Testes em `src/jobs/job-retry.spec.ts`: `nextRunAt > soma 1, 5, 25 e 125 minutos ao instante da falha nas tentativas 1 a 4`, `toLastError > corta a mensagem em 500 caracteres` e `toLastError > usa String do valor quando o erro não é Error`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 49 tests pass
+- [x] `apps/api/src/jobs/job-errors.ts` com `PermanentJobError`
+- [x] Testes em `src/jobs/job-retry.spec.ts`: `nextRunAt > soma 1, 5, 25 e 125 minutos ao instante da falha nas tentativas 1 a 4`, `toLastError > corta a mensagem em 500 caracteres` e `toLastError > usa String do valor quando o erro não é Error`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 49 tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -573,7 +573,7 @@ Proof: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)".
+**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 

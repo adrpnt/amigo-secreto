@@ -124,7 +124,7 @@ sequenceDiagram
   - `class PermanentJobError extends Error` - o handler lança para falha definitiva; qualquer outro erro é passageiro.
   - `MAX_ATTEMPTS = 5`, `STUCK_AFTER_MS = 10 * 60_000`, `BATCH_SIZE = 50`
   - `nextRunAt(attempts: number, failedAt: Date): Date` - `failedAt + 5^(attempts-1)` minutos.
-  - `toLastError(error: unknown): string` - `error.message` (ou `String(error)`), cortado em 500 caracteres.
+  - `toLastError(error: unknown): string` - `<error.name>: <error.message>` (ou `String(error)` quando não é `Error`), cortado em 500 caracteres. `PermanentJobError` tem `name` próprio.
 
 ### `JobRunner`
 
