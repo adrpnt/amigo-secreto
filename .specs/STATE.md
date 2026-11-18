@@ -98,6 +98,7 @@
 - **Trade-off**: Cada task ganha uma escrita no Linear; um sub-agente de lote precisa receber essa regra junto das tasks.
 - **Scope**: Todas as features. Sobrepõe-se ao CLAUDE.md global só no ponto do prefixo de ticket: neste projeto, os commits não levam ticket.
 - **Date**: 2026-11-12
+- **Revised**: 2026-11-12 - In Review e Done são movidos por automações do Linear (PR aberto e PR mergeado); o status final não é alterado nem perguntado. Pedido do usuário depois do merge do PR #8: "O In Review e Done são controlados através de automações no linear, não precisa você alterar nada."
 - **Status**: active
 
 ### AD-010
@@ -112,11 +113,11 @@
 
 ## Handoff
 
-- **Feature**: 01-foundation (`.specs/features/01-foundation/`)
-- **Phase / Task**: Execute concluído. T1 a T24 feitas; fases 1 a 6 mergeadas na `main` (PRs #1 a #6). Fechamento feito na branch `pntadr/per-70-verificacao-da-foundation`: walk, Verifier (FAIL, 10 achados, todos fechados por commit), `check_proofs.py` em `8695c72` com 99 pass e 0 fail, `validate_verification.py` com saída 0 e 10 lições candidatas em `.specs/lessons.json`.
-- **Completed**: T1 a T24, verificação da feature
+- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), em execução
+- **Phase / Task**: fase 1 (T1 a T4) concluída na branch `pntadr/per-87-fase-1-tabela-e-fila`, gate Build verde (52 testes na API); PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
+- **Completed**: T1 a T4
 - **In-progress** (file:line): none
-- **Next step**: push da branch de verificação e PR contra a `main` (AD-010); depois do merge, perguntar o status final da PER-70 e abrir a feature `02-email-jobs` pelo Specify, carregando as lições confirmadas (nenhuma ainda).
+- **Next step**: depois do merge do PR da fase 1, atualizar a `main`, criar a branch `pntadr/per-88-...` da PER-88 (fase 2), mover a PER-88 para In Progress e começar pela T5.
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-70-verificacao-da-foundation
+- **Branch**: pntadr/per-87-fase-1-tabela-e-fila

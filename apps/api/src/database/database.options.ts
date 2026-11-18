@@ -8,8 +8,10 @@ export function databaseOptions(
   return {
     type: 'postgres',
     url: env.DATABASE_URL,
+    uuidExtension: 'pgcrypto',
     synchronize: false,
     migrationsRun: false,
+    entities: [join(import.meta.dirname, '..', '**', '*.entity.js')],
     migrations: [join(import.meta.dirname, 'migrations', '*.js')],
   };
 }
