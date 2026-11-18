@@ -4,6 +4,7 @@ import {
 } from '@testcontainers/postgresql';
 import type { TestProject } from 'vitest/node';
 import { ensureDocker } from './docker.js';
+import { createTemplateDatabase } from './isolated-database.js';
 import { runMigrations } from './migrations.js';
 
 declare module 'vitest' {
@@ -19,6 +20,7 @@ export async function setup(project: TestProject): Promise<void> {
   container = await new PostgreSqlContainer('postgres:18').start();
   const databaseUrl = container.getConnectionUri();
   await runMigrations(databaseUrl);
+  await createTemplateDatabase(databaseUrl);
   project.provide('databaseUrl', databaseUrl);
 }
 

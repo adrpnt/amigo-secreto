@@ -170,11 +170,11 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `JobRunner` provido e exportado pelo `JobsModule`
-- [ ] `test/global-setup.ts` cria o banco template depois das migrations e antes de qualquer conexão; `test/isolated-database.ts` com `createIsolatedDatabase(name)`
-- [ ] Testes em `test/job-runner.int-spec.ts`: `JobRunner > pega no máximo 50 jobs vencidos, do runAt mais antigo ao mais novo`, `> marca o job pego como RUNNING com lockedAt e soma 1 a attempts`, `> entrega cada job a uma só de duas rodadas simultâneas`, `> marca DONE o job cujo handler termina sem erro`, `> executa os jobs da rodada um de cada vez, na ordem em que foram pegos` e `> não pega jobs com runAt no futuro, DONE ou FAILED`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 58 tests pass
+- [x] `JobRunner` provido e exportado pelo `JobsModule`
+- [x] `test/global-setup.ts` cria o banco template depois das migrations e antes de qualquer conexão; `test/isolated-database.ts` com `createIsolatedDatabase(name)`
+- [x] Testes em `test/job-runner.int-spec.ts`: `JobRunner > pega no máximo 50 jobs vencidos, do runAt mais antigo ao mais novo`, `> marca o job pego como RUNNING com lockedAt e soma 1 a attempts`, `> entrega cada job a uma só de duas rodadas simultâneas`, `> marca DONE o job cujo handler termina sem erro`, `> executa os jobs da rodada um de cada vez, na ordem em que foram pegos` e `> não pega jobs com runAt no futuro, DONE ou FAILED`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 58 tests pass
 
 **Tests**: integration
 **Gate**: full
