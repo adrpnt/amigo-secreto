@@ -113,11 +113,11 @@
 
 ## Handoff
 
-- **Feature**: 01-foundation (`.specs/features/01-foundation/`), concluída
-- **Phase / Task**: T1 a T24 e a verificação mergeadas na `main` (PRs #1 a #6 e #8); `validate_verification.py` com saída 0 e 10 lições candidatas em `.specs/lessons.json`.
-- **Completed**: 01-foundation inteira
+- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), planejada
+- **Phase / Task**: spec, design e tasks aprovados em 2026-11-18; nenhuma task iniciada. `01-foundation` concluída e mergeada (PRs #1 a #6 e #8).
+- **Completed**: spec.md, context.md, design.md e tasks.md da 02-email-jobs; milestone "02 · Email Jobs" e issues PER-87 (fase 1), PER-88 (fase 2) e PER-89 (fase 3) no P-PER-4, em Backlog.
 - **In-progress** (file:line): none
-- **Next step**: abrir a feature `02-email-jobs` pelo Specify quando o usuário pedir, depois de procurar as issues dela no projeto P-PER-4 do Linear.
+- **Next step**: quando o usuário pedir a execução, ler `implement.md`, rodar `validate_tasks.py 02-email-jobs --execute`, criar a branch `pntadr/per-87-fase-1-tabela-e-fila` a partir da `main` atualizada, mover a PER-87 para In Progress e começar pela T1.
 - **Blockers**: none
-- **Uncommitted files**: none
+- **Uncommitted files**: `.specs/features/02-email-jobs/` (spec, context, design, tasks) e este `STATE.md`
 - **Branch**: main
