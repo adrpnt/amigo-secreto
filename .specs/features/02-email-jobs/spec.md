@@ -2,6 +2,7 @@
 
 **Approved**: 2026-11-18 - user: "Tudo aprovado."
 **Amended**: 2026-11-18 - no Design: JOB-02 AC 6 e JOB-06 AC 7 acrescentados (bloco de botão) e JOB-05 AC 3 e 4 ajustados (409 `concurrent_idempotent_requests` passageiro) - user: "Aprovado."
+**Amended**: 2026-11-18 - na verificação: JOB-09 acrescentado (rodada isolada por job, `lastError` sem U+0000, resultado descartado de job retomado e agendador desligado com `NODE_ENV` `test`) - user: "U+0000 + try por job (Recomendado)", "Critério + teste (Recomendado)" e "Manter e virar critério (Recomendado)".
 
 ## Problem Statement
 
@@ -220,6 +221,23 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 ---
 
+### P1: Isolamento das rodadas ⭐ MVP
+
+**User Story**: Como operador do Amigo Secreto, quero que um job com problema ao gravar o resultado não prenda os outros jobs da rodada, e que uma rodada antiga não sobrescreva um job que outra instância retomou, para os e-mails sadios saírem.
+
+**Why P1**: Achado da verificação: uma falha ao gravar o resultado de um job deixava ele e os seguintes da rodada em `RUNNING`, e os sadios terminavam `FAILED` sem rodar.
+
+**Acceptance Criteria**:
+
+1. IF a mensagem de erro de um job contém o caractere U+0000 THEN o sistema SHALL gravar o `lastError` sem esse caractere.
+2. IF gravar o resultado de um job falha THEN o sistema SHALL escrever um erro no log com `jobId` e `type`, sem o `payload`, e SHALL seguir com os outros jobs da rodada.
+3. IF outra rodada retomou o job enquanto o handler rodava THEN o sistema SHALL descartar o resultado da rodada antiga, sem mudar `status`, `lockedAt` nem `attempts`, sem aviso no log, sem `job.failed` e sem Sentry.
+4. WHERE `NODE_ENV` é `test`, the API SHALL não iniciar rodadas pelo agendador.
+
+**Independent Test**: Numa rodada com um job cujo resultado não pode ser gravado e um job sadio depois dele, o sadio termina `DONE` e o log tem um erro com o `jobId` do primeiro.
+
+---
+
 ## Edge Cases
 
 - IF a instância da API cai depois de o Resend aceitar o e-mail e antes de o job virar `DONE` THEN o sistema SHALL retomar o job depois de 10 minutos e reenviar com a mesma `Idempotency-Key`, sem o Resend mandar o e-mail de novo (JOB-04 AC 5, JOB-05 AC 2).
@@ -241,6 +259,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | JOB-06 | P1: Layout comum de e-mail | Design | Pending |
 | JOB-07 | P1: Sigilo nos registros | Design | Pending |
 | JOB-08 | P1: Comando de e-mail de teste | Design | Pending |
+| JOB-09 | P1: Isolamento das rodadas | Execute | Pending |
 
 **ID format:** `JOB-NN`; cada check cita o ID e o número do critério (ex.: JOB-04, AC 2).
 
