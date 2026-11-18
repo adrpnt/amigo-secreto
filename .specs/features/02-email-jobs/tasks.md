@@ -235,10 +235,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/jobs/jobs-scheduler.module.ts` criado e importado em `app.module.ts`
-- [ ] Testes em `test/job-scheduler.int-spec.ts`: `JobScheduler > dispara a rodada a cada 10 segundos`, `> pula o tick enquanto a rodada anterior ainda roda` e `> não liga o cron com NODE_ENV test`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 70 tests pass
+- [x] `apps/api/src/jobs/jobs-scheduler.module.ts` criado e importado em `app.module.ts`
+- [x] Testes em `test/job-scheduler.int-spec.ts`: `JobScheduler > dispara a rodada a cada 10 segundos`, `> pula o tick enquanto a rodada anterior ainda roda` e `> não liga o cron com NODE_ENV test`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 70 tests pass
 
 **Tests**: integration
 **Gate**: full
