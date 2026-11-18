@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validateEnvironment } from './config/env.validation.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
+import { JobsSchedulerModule } from './jobs/jobs-scheduler.module.js';
 import { ObservabilityModule } from './observability/observability.module.js';
 
 @Module({
@@ -11,6 +12,7 @@ import { ObservabilityModule } from './observability/observability.module.js';
     DatabaseModule,
     ObservabilityModule,
     HealthModule,
+    JobsSchedulerModule,
   ],
 })
 export class AppModule {}

@@ -114,10 +114,10 @@
 ## Handoff
 
 - **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), em execução
-- **Phase / Task**: fase 1 (T1 a T4) concluída na branch `pntadr/per-87-fase-1-tabela-e-fila`, gate Build verde (52 testes na API); PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
-- **Completed**: T1 a T4
+- **Phase / Task**: fase 2 (T5 a T8) concluída na branch `pntadr/per-88-fase-2-rodadas-e-agendamento`, gate Build verde (70 testes na API); PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
+- **Completed**: T1 a T8
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 1, atualizar a `main`, criar a branch `pntadr/per-88-...` da PER-88 (fase 2), mover a PER-88 para In Progress e começar pela T5.
+- **Next step**: depois do merge do PR da fase 2, atualizar a `main`, criar a branch `pntadr/per-89-fase-3-e-mail-e-comando-de-teste` da PER-89 (fase 3), mover a issue para In Progress e começar pela T9. A fase 3 é a última: o fechamento da feature (`check_proofs.py`, Verifier, correções, `validate_verification.py`, lições) roda na branch dela antes do push.
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-87-fase-1-tabela-e-fila
+- **Branch**: pntadr/per-88-fase-2-rodadas-e-agendamento
