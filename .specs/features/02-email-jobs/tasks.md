@@ -80,11 +80,11 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Migration em `apps/api/src/database/migrations/` cria a tabela `job`, o tipo `job_status_enum` e o índice; o `down` remove os três
-- [ ] Teste `databaseOptions > carrega as entidades pelo glob de *.entity.js` em `src/database/database.options.spec.ts`
-- [ ] Testes em `test/job-table.int-spec.ts`: `tabela job > é criada pela migration com as colunas id, type, payload, runAt, status, attempts, lastError, lockedAt e createdAt`, `> recusa um status fora de PENDING, RUNNING, DONE e FAILED`, `> tem um índice por status e runAt` e `> é removida ao reverter a migration`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 42 tests pass
+- [x] Migration em `apps/api/src/database/migrations/` cria a tabela `job`, o tipo `job_status_enum` e o índice; o `down` remove os três
+- [x] Teste `databaseOptions > carrega as entidades pelo glob de *.entity.js` em `src/database/database.options.spec.ts`
+- [x] Testes em `test/job-table.int-spec.ts`: `tabela job > é criada pela migration com as colunas id, type, payload, runAt, status, attempts, lastError, lockedAt e createdAt`, `> recusa um status fora de PENDING, RUNNING, DONE e FAILED`, `> tem um índice por status e runAt` e `> é removida ao reverter a migration`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 42 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -573,7 +573,7 @@ Proof: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
