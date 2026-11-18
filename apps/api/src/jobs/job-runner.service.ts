@@ -36,7 +36,17 @@ export class JobRunner {
         this.claim(manager, now),
       );
       for (const job of jobs) {
-        await this.run(job, now, clock);
+        // Um job cujo resultado não grava fica RUNNING até a retomada de
+        // 10 minutos; os outros da rodada seguem.
+        try {
+          await this.run(job, now, clock);
+        } catch (error) {
+          this.logger.error('Falha ao gravar o resultado do job', {
+            jobId: job.id,
+            type: job.type,
+            error: toLastError(error),
+          });
+        }
       }
     } catch (error) {
       // Sem Sentry: com o banco fora, a rodada falharia a cada 10 segundos.

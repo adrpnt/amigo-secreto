@@ -12,7 +12,8 @@
     "test": "vitest run",
     "migration:generate": "pnpm build && typeorm migration:generate -d dist/database/data-source.js",
     "migration:run": "pnpm build && typeorm migration:run -d dist/database/data-source.js",
-    "migration:revert": "pnpm build && typeorm migration:revert -d dist/database/data-source.js"
+    "migration:revert": "pnpm build && typeorm migration:revert -d dist/database/data-source.js",
+    "email:test": "pnpm build && node dist/cli/email-test.js"
   },
   "dependencies": {
     "@amigo-secreto/shared": "workspace:*",

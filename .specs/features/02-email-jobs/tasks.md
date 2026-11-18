@@ -259,10 +259,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Teste existente `validateEnvironment > o .env.example declara todas as variáveis validadas` continua verde com as três variáveis
-- [ ] Testes em `src/config/env.validation.spec.ts`: `validateEnvironment > lança erro que nomeia RESEND_API_KEY quando ela falta em production`, `> lança erro que nomeia EMAIL_FROM quando ela falta em production` e `> aceita RESEND_API_KEY e EMAIL_FROM ausentes fora de production`
-- [ ] Gate check passes: `pnpm test && pnpm test:e2e`
-- [ ] Test count: 73 tests pass na API; e2e do web verde
+- [x] Teste existente `validateEnvironment > o .env.example declara todas as variáveis validadas` continua verde com as três variáveis
+- [x] Testes em `src/config/env.validation.spec.ts`: `validateEnvironment > lança erro que nomeia RESEND_API_KEY quando ela falta em production`, `> lança erro que nomeia EMAIL_FROM quando ela falta em production` e `> aceita RESEND_API_KEY e EMAIL_FROM ausentes fora de production`
+- [x] Gate check passes: `pnpm test && pnpm test:e2e`
+- [x] Test count: 73 tests pass na API; e2e do web verde
 
 **Tests**: unit
 **Gate**: e2e
@@ -281,10 +281,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/email/email.types.ts` criado
-- [ ] Testes em `src/email/email-layout.spec.ts`: `renderEmail > produz HTML e texto com o mesmo conteúdo`, `> monta o HTML com lang pt-BR, o nome no cabeçalho, o conteúdo e o rodapé`, `> começa o texto com Amigo Secreto e termina com o rodapé`, `> usa as cores do tema claro nos estilos do HTML`, `> troca para as cores do tema escuro em prefers-color-scheme dark`, `> mostra como texto os caracteres especiais de HTML do conteúdo` e `> mostra o botão como link no HTML e como rótulo: URL no texto`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 80 tests pass
+- [x] `apps/api/src/email/email.types.ts` criado
+- [x] Testes em `src/email/email-layout.spec.ts`: `renderEmail > produz HTML e texto com o mesmo conteúdo`, `> monta o HTML com lang pt-BR, o nome no cabeçalho, o conteúdo e o rodapé`, `> começa o texto com Amigo Secreto e termina com o rodapé`, `> usa as cores do tema claro nos estilos do HTML`, `> troca para as cores do tema escuro em prefers-color-scheme dark`, `> mostra como texto os caracteres especiais de HTML do conteúdo` e `> mostra o botão como link no HTML e como rótulo: URL no texto`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 80 tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -325,10 +325,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/email/email-transport.ts` com a interface e o token
-- [ ] Testes em `src/email/resend.transport.spec.ts`, contra um servidor `node:http`: `ResendTransport > envia destinatário, assunto, HTML, texto, remetente, Authorization e Idempotency-Key`, `> trata 429 como falha passageira`, `> trata 409 concurrent_idempotent_requests como falha passageira`, `> trata 500 como falha passageira`, `> trata resposta depois de 10 segundos como falha passageira`, `> trata falha de conexão como falha passageira`, `> trata 422 como falha definitiva` e `> trata 409 invalid_idempotent_request como falha definitiva`
-- [ ] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 92 tests pass
+- [x] `apps/api/src/email/email-transport.ts` com a interface e o token
+- [x] Testes em `src/email/resend.transport.spec.ts`, contra um servidor `node:http`: `ResendTransport > envia destinatário, assunto, HTML, texto, remetente, Authorization e Idempotency-Key`, `> trata 429 como falha passageira`, `> trata 409 concurrent_idempotent_requests como falha passageira`, `> trata 500 como falha passageira`, `> trata resposta depois de 10 segundos como falha passageira`, `> trata falha de conexão como falha passageira`, `> trata 422 como falha definitiva` e `> trata 409 invalid_idempotent_request como falha definitiva`
+- [x] Gate check passes: `pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 92 tests pass
 
 **Tests**: unit
 **Gate**: quick
@@ -347,11 +347,11 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/email/log.transport.ts` criado; `EmailModule` importado em `app.module.ts`
-- [ ] Testes em `test/email-send.int-spec.ts`: `envio de e-mail > envia ao Resend destinatário, assunto, HTML, texto e remetente de EMAIL_FROM`, `> manda a mesma Idempotency-Key email/<id> em todas as tentativas`, `> emite email.sent com jobId quando o Resend aceita`, `> sem RESEND_API_KEY fora de produção escreve o e-mail no log, emite email.sent e marca DONE sem chamar o Resend` e `> usa o remetente Amigo Secreto <onboarding@resend.dev> sem EMAIL_FROM fora de produção`
-- [ ] Teste em `src/email/resend-boundary.spec.ts`: `fronteira do Resend > só o módulo de e-mail e a configuração citam o Resend` (procura `resend` nos arquivos de `src/` fora de `src/email/` e `src/config/`)
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 98 tests pass
+- [x] `apps/api/src/email/log.transport.ts` criado; `EmailModule` importado em `app.module.ts`
+- [x] Testes em `test/email-send.int-spec.ts`: `envio de e-mail > envia ao Resend destinatário, assunto, HTML, texto e remetente de EMAIL_FROM`, `> manda a mesma Idempotency-Key email/<id> em todas as tentativas`, `> emite email.sent com jobId quando o Resend aceita`, `> sem RESEND_API_KEY fora de produção escreve o e-mail no log, emite email.sent e marca DONE sem chamar o Resend` e `> usa o remetente Amigo Secreto <onboarding@resend.dev> sem EMAIL_FROM fora de produção`
+- [x] Teste em `src/email/resend-boundary.spec.ts`: `fronteira do Resend > só o módulo de e-mail e a configuração citam o Resend` (procura `resend` nos arquivos de `src/` fora de `src/email/` e `src/config/`)
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 98 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -370,9 +370,9 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] Testes `sigilo do e-mail > não escreve destinatário, assunto nem conteúdo em logs, eventos ou Sentry em production` e `> não grava destinatário, assunto nem conteúdo no lastError`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 100 tests pass
+- [x] Testes `sigilo do e-mail > não escreve destinatário, assunto nem conteúdo em logs, eventos ou Sentry em production` e `> não grava destinatário, assunto nem conteúdo no lastError`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 100 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -391,10 +391,10 @@ T9 → T10 → T11 → T12 → T13 → T14 → T15
 
 **Done when**:
 
-- [ ] `apps/api/src/cli/email-test.module.ts` criado; script no `apps/api/package.json`
-- [ ] Testes em `test/email-test-command.int-spec.ts`: `email:test > enfileira o e-mail de teste, imprime o id do job e sai com 0`, `> sem destinatário válido imprime a instrução, não grava job e sai com 1` e `> compila a API antes de enfileirar num clone sem dist`
-- [ ] Gate check passes: `pnpm test`
-- [ ] Test count: 103 tests pass
+- [x] `apps/api/src/cli/email-test.module.ts` criado; script no `apps/api/package.json`
+- [x] Testes em `test/email-test-command.int-spec.ts`: `email:test > enfileira o e-mail de teste, imprime o id do job e sai com 0`, `> sem destinatário válido imprime a instrução, não grava job e sai com 1` e `> compila a API antes de enfileirar num clone sem dist`
+- [x] Gate check passes: `pnpm test`
+- [x] Test count: 103 tests pass
 
 **Tests**: integration
 **Gate**: full
@@ -567,14 +567,26 @@ Proof: run api | ✓ email:test > compila a API antes de enfileirar num clone se
 **C50** - O e2e do web continua verde com a API em `production` depois das variáveis obrigatórias de e-mail (JOB-05, AC 7)
 Proof: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
+**C51** - Erro com o caractere U+0000 grava o `lastError` sem ele, e o job volta a `PENDING` com espera (JOB-09, AC 1)
+Proof: run api | ✓ JobRunner > grava o lastError sem o caractere U+0000
+
+**C52** - Falha ao gravar o resultado de um job vai ao log com `jobId` e `type`, sem `payload`, e a rodada segue com os outros jobs (JOB-09, AC 2)
+Proof: run api | ✓ JobRunner > segue com os outros jobs da rodada quando gravar o resultado de um falha
+
+**C53** - O resultado da rodada antiga de um job que outra rodada retomou é descartado, sem aviso, `job.failed` nem Sentry (JOB-09, AC 3)
+Proof: run api | ✓ JobRunner > descarta o resultado de um job que outra rodada retomou
+
+**C54** - Com `NODE_ENV` `test`, o agendador não inicia rodadas (JOB-09, AC 4)
+Proof: run api | ✓ JobScheduler > não liga o cron com NODE_ENV test
+
 ---
 
 ## Handoff
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)". (2026-11-18, T6) O instante da falha que entra no `nextRunAt` é o `now` da rodada somado ao tempo real decorrido desde o início dela, fiel ao JOB-04 AC 1 com rodada longa e testável com relógio controlado - user: "now + tempo decorrido (Recomendado)". Tipo sem handler grava o `lastError` exato "Tipo de job desconhecido: <type>", sem passar pelo `toLastError`; o mesmo vale para "Processamento interrompido" na T7 - user: "Texto exato do AC (Recomendado)".
-**Dispatched:** none
+**Settled mid-build:** (2026-11-18, T1) o teste de revert roda num banco próprio por um DataSource com a classe da migration importada de `src`, com `up` e `undoLastMigration`, sem `pnpm migration:revert`, para não compilar em paralelo com o `migrations.int-spec` (deleteOutDir) - user: "DataSource no teste (Recomendado)". O `migration:generate` usa um container `postgres:18` temporário, removido em seguida - user: "Container temporário (Recomendado)". O teste do glob afirma com `path.matchesGlob` que o padrão casa `<src>/jobs/job.entity.js` e não casa `job-queue.service.js` - user: "Casa arquivos de entidade (Recomendado)". O `databaseOptions` ganha `uuidExtension: 'pgcrypto'`, e o `id` da tabela `job` usa `DEFAULT gen_random_uuid()`, nativo do PostgreSQL, sem a extensão `uuid-ossp` - user: "uuidExtension pgcrypto (Recomendado)". (2026-11-18, T3) O `toLastError` grava `<name>: <message>` do erro, como diz a suposição `lastError` da spec, e não só a mensagem, como diziam o design e a T3; o design foi ajustado - user: "Nome e mensagem (Recomendado)". (2026-11-18, T6) O instante da falha que entra no `nextRunAt` é o `now` da rodada somado ao tempo real decorrido desde o início dela, fiel ao JOB-04 AC 1 com rodada longa e testável com relógio controlado - user: "now + tempo decorrido (Recomendado)". Tipo sem handler grava o `lastError` exato "Tipo de job desconhecido: <type>", sem passar pelo `toLastError`; o mesmo vale para "Processamento interrompido" na T7 - user: "Texto exato do AC (Recomendado)". (2026-11-18, T9) O `test/swagger.int-spec.ts` sobe o `AppModule` com `NODE_ENV=production` e passou a abortar sem as variáveis de e-mail; o `beforeAll` dele ganha `RESEND_API_KEY=re_test` e `EMAIL_FROM=Amigo Secreto <test@example.com>`, só preparação do ambiente, sem mudar asserção - user: "Stub no beforeAll (Recomendado)". (2026-11-18, T12) O teste do timeout espera de verdade: o Resend falso responde depois de 10,5 s e o teste tem limite de 15 s - user: "Espera real (Recomendado)". `EMAIL_FROM` vazio conta como ausente e usa o remetente padrão fora de produção, como `RESEND_API_KEY` vazia - user: "Vazio = ausente (Recomendado)". (2026-11-18, T13) O teste de fronteira varre só o código de `src/` fora de `email/` e `config/`, sem os `*.spec.ts`, e casa `resend` sem letra antes (`/(?<![a-z])resend/i`), o que ignora o `beforeSend` do Sentry; o teste também afirma que a busca acha o Resend em `src/email/` - user: "Só código, palavra inteira (Recomendado)". (2026-11-18, T15) Os testes que apagam ou compilam o `dist/` (`migrations.int-spec.ts` e `email-test-command.int-spec.ts`) vão para um projeto Vitest `integration-dist` com `fileParallelism: false` e `sequence.groupOrder` 1, depois de `unit` e `integration`; o global-setup roda de novo para esse projeto - user: "Projeto Vitest em série (Recomendado)". (2026-11-18, verificação) Achado 1: `toLastError` remove U+0000 e cada job da rodada ganha try/catch próprio; erro ao gravar vai ao log com `jobId` e `type`, e o job fica `RUNNING` até a retomada de 10 min; novo JOB-09 - user: "U+0000 + try por job (Recomendado)". Achado 2: o teste do 422 ganha 400, 401, 404, 499 e 409 sem `name` - user: "Acrescentar bordas (Recomendado)". Achado 3: critério e teste da guarda do `finish` - user: "Critério + teste (Recomendado)". Achado 4: o cron desligado com `NODE_ENV` `test` (decisão do design) vira critério, com check no teste existente - user: "Manter e virar critério (Recomendado)".
+**Dispatched:** 2026-11-18 - Verifier (sub-agente novo, `validate.md`), sobre o `HEAD` do commit das provas (`check_proofs.py` em `008f3be`: 65 pass, 0 fail), diff `6b06c2a..HEAD`; sem screens sub-agent, porque nenhum critério cita captura - voltou com FAIL e 4 achados em `verification.md`, todos fechados por commit (`da6d97c`, `c64761c`, `2954f82`)
 **Walked:** none
 
 ---

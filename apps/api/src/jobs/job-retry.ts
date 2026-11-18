@@ -13,5 +13,6 @@ export function nextRunAt(attempts: number, failedAt: Date): Date {
 export function toLastError(error: unknown): string {
   const text =
     error instanceof Error ? `${error.name}: ${error.message}` : String(error);
-  return text.slice(0, LAST_ERROR_MAX_LENGTH);
+  // O PostgreSQL recusa U+0000 em texto.
+  return text.replaceAll('\u0000', '').slice(0, LAST_ERROR_MAX_LENGTH);
 }

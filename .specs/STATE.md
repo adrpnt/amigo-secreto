@@ -113,11 +113,11 @@
 
 ## Handoff
 
-- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), em execução
-- **Phase / Task**: fase 2 (T5 a T8) concluída na branch `pntadr/per-88-fase-2-rodadas-e-agendamento`, gate Build verde (70 testes na API); PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
-- **Completed**: T1 a T8
+- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), concluída
+- **Phase / Task**: fase 3 (T9 a T15) concluída na branch `pntadr/per-89-fase-3-e-mail-e-comando-de-teste`; fechamento feito: `check_proofs.py` com 69 pass, Verifier com 4 achados fechados por commit (JOB-09 acrescentado à spec), `validate_verification.py` com saída 0, lições L-011 a L-014. PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
+- **Completed**: T1 a T15 e o fechamento da feature
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 2, atualizar a `main`, criar a branch `pntadr/per-89-fase-3-e-mail-e-comando-de-teste` da PER-89 (fase 3), mover a issue para In Progress e começar pela T9. A fase 3 é a última: o fechamento da feature (`check_proofs.py`, Verifier, correções, `validate_verification.py`, lições) roda na branch dela antes do push.
+- **Next step**: depois do merge do PR da fase 3, atualizar a `main` e abrir a feature 03-auth (Specify), carregando as lições confirmadas.
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-88-fase-2-rodadas-e-agendamento
+- **Branch**: pntadr/per-89-fase-3-e-mail-e-comando-de-teste

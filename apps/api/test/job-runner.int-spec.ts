@@ -453,4 +453,136 @@ describe('JobRunner', () => {
       { jobId: job.id, type },
     ]);
   });
+
+  it('grava o lastError sem o caractere U+0000', async () => {
+    const type = failingHandler(() => new Error('falhou\u0000 no envio'));
+    const { type: healthyType, handled } = recordingHandler();
+    const job = await queue.enqueue(type, {}, { runAt: minutesBefore(2) });
+    const healthy = await queue.enqueue(
+      healthyType,
+      {},
+      { runAt: minutesBefore(1) },
+    );
+
+    await runner.runRound(NOW);
+
+    const outcome = await findOutcome(job.id);
+    expect(outcome).toMatchObject({
+      status: 'PENDING',
+      attempts: 1,
+      lastError: 'Error: falhou no envio',
+    });
+    expect(outcome?.runAt.getTime()).toBeGreaterThanOrEqual(
+      NOW.getTime() + 60_000,
+    );
+    expect(handled).toEqual([healthy.id]);
+    expect((await findJob(healthy.id))?.status).toBe('DONE');
+  });
+
+  it('segue com os outros jobs da rodada quando gravar o resultado de um falha', async () => {
+    const constraint = `job_block_${randomUUID().slice(0, 8)}`;
+    // O handler deste job faz o banco recusar o DONE dele, como uma falha
+    // real ao gravar o resultado.
+    const blockedType = `job-runner.${randomUUID()}`;
+    handlers.register(blockedType, {
+      handle: async () => {
+        await dataSource.query(
+          `ALTER TABLE job ADD CONSTRAINT ${constraint}
+           CHECK (NOT (type = '${blockedType}' AND status = 'DONE'))`,
+        );
+      },
+    });
+    const { type: healthyType, handled } = recordingHandler();
+    const blocked = await queue.enqueue(
+      blockedType,
+      { segredo: 'payload-que-nao-pode-ir-ao-log' },
+      { runAt: minutesBefore(2) },
+    );
+    const healthy = await queue.enqueue(
+      healthyType,
+      {},
+      { runAt: minutesBefore(1) },
+    );
+
+    // O logger escreve erros no stderr.
+    const stderr = vi
+      .spyOn(process.stderr, 'write')
+      .mockImplementation((chunk) => {
+        output.push(String(chunk));
+        return true;
+      });
+    try {
+      await runner.runRound(NOW);
+    } finally {
+      stderr.mockRestore();
+      await dataSource.query(
+        `ALTER TABLE job DROP CONSTRAINT IF EXISTS ${constraint}`,
+      );
+    }
+
+    expect(handled).toEqual([healthy.id]);
+    expect((await findJob(healthy.id))?.status).toBe('DONE');
+    expect(await findJob(blocked.id)).toEqual({
+      status: 'RUNNING',
+      attempts: 1,
+      lockedAt: NOW,
+    });
+    const errors = logRecords().filter((record) => record.level === 'error');
+    expect(errors).toEqual([
+      expect.objectContaining({
+        context: 'Jobs',
+        message: 'Falha ao gravar o resultado do job',
+        jobId: blocked.id,
+        type: blockedType,
+      }),
+    ]);
+    expect(output.join('')).not.toContain('payload-que-nao-pode-ir-ao-log');
+  });
+
+  it('descarta o resultado de um job que outra rodada retomou', async () => {
+    const takenOverAt = new Date(NOW.getTime() + 11 * 60_000);
+    // Faz o que outra instância faz ao retomar um job travado: novo lockedAt
+    // e mais uma tentativa.
+    const takeOver = (id: string) =>
+      dataSource.query(
+        'UPDATE job SET "lockedAt" = $2, attempts = attempts + 1 WHERE id = $1',
+        [id, takenOverAt],
+      );
+    const outcomes = [
+      { name: 'sucesso', error: undefined },
+      { name: 'falha passageira', error: new Error('Tempo esgotado') },
+      { name: 'falha definitiva', error: new PermanentJobError('Resend 422') },
+    ];
+    const jobs: { id: string; type: string }[] = [];
+    for (const { name, error } of outcomes) {
+      const type = `job-runner.${name}.${randomUUID()}`;
+      handlers.register(type, {
+        handle: async (job) => {
+          await takeOver(job.id);
+          if (error) throw error;
+        },
+      });
+      const job = await queue.enqueue(type, {}, { runAt: NOW });
+      jobs.push({ id: job.id, type });
+    }
+
+    await runner.runRound(NOW);
+    await Sentry.flush(2000);
+
+    for (const job of jobs) {
+      expect(await findOutcome(job.id)).toMatchObject({
+        status: 'RUNNING',
+        attempts: 2,
+        lastError: null,
+      });
+      expect((await findJob(job.id))?.lockedAt).toEqual(takenOverAt);
+    }
+    expect(logRecords().filter((record) => record.level === 'warn')).toEqual(
+      [],
+    );
+    expect(
+      logRecords().filter((record) => record.event === 'job.failed'),
+    ).toEqual([]);
+    expect(sentEvents).toHaveLength(0);
+  });
 });
