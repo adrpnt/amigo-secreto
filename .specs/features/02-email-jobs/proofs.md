@@ -1,6 +1,6 @@
 # 02-email-jobs proofs
 
-**HEAD**: 9e691c5
+**HEAD**: 14084a2
 **Tree**: clean
 **Shell**: /bin/sh
 **Result**: 69 pass, 0 fail
@@ -82,39 +82,39 @@
 `Run api` - exit 0
 
 ```
-@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1600ms
-@amigo-secreto/api:test: (node:60014) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1424ms
+@amigo-secreto/api:test: (node:62058) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
 @amigo-secreto/api:test: (Use `node --trace-deprecation ...` to show where the warning was created)
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1319ms
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1220ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1306ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1257ms
 @amigo-secreto/api:test: 
 @amigo-secreto/api:test:  Test Files  26 passed (26)
 @amigo-secreto/api:test:       Tests  106 passed (106)
-@amigo-secreto/api:test:    Start at  18:11:46
-@amigo-secreto/api:test:    Duration  39.19s (tests 71%, import 28%, transform 1%)
+@amigo-secreto/api:test:    Start at  18:13:10
+@amigo-secreto/api:test:    Duration  32.71s (tests 75%, import 23%, transform 1%)
 @amigo-secreto/api:test: 
 
  Tasks:    3 successful, 3 total
 Cached:    0 cached, 3 total
-  Time:    43.465s
+  Time:    35.361s
 ```
 
 `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web` - exit 0
 
 ```
-@amigo-secreto/web:test:e2e:   ✓   9 [chromium] › e2e/home.spec.ts:26:3 › página inicial › mostra API online quando a API responde (429ms)
-@amigo-secreto/web:test:e2e:   ✓   8 [chromium] › e2e/theme.spec.ts:188:3 › tema › o botão troca o tema e a escolha sobrevive ao recarregar (597ms)
-@amigo-secreto/web:test:e2e:   ✓  11 [chromium] › e2e/home.spec.ts:33:3 › página inicial › mostra API indisponível e o tema funciona quando a API não responde (279ms)
-@amigo-secreto/web:test:e2e:   ✓  12 [chromium] › e2e/theme.spec.ts:205:3 › tema › pinta o primeiro quadro no tema salvo (151ms)
-@amigo-secreto/web:test:e2e:   ✓  10 [chromium] › e2e/accessibility.spec.ts:44:3 › acessibilidade › página inicial sem violações WCAG 2.1 A/AA no tema claro (766ms)
-@amigo-secreto/web:test:e2e:   ✓  13 [chromium] › e2e/theme.spec.ts:220:3 › tema › o botão se chama Ativar tema escuro no claro e Ativar tema claro no escuro (244ms)
-@amigo-secreto/web:test:e2e:   ✓  15 [chromium] › e2e/theme.spec.ts:238:3 › tema › aplica os tokens do design system no tema claro (215ms)
-@amigo-secreto/web:test:e2e:   ✓  14 [chromium] › e2e/accessibility.spec.ts:56:3 › acessibilidade › página inicial sem violações WCAG 2.1 A/AA no tema escuro (568ms)
-@amigo-secreto/web:test:e2e:   ✓  16 [chromium] › e2e/theme.spec.ts:245:3 › tema › aplica os tokens do design system no tema escuro (206ms)
+@amigo-secreto/web:test:e2e:   ✓   8 [chromium] › e2e/theme.spec.ts:188:3 › tema › o botão troca o tema e a escolha sobrevive ao recarregar (452ms)
+@amigo-secreto/web:test:e2e:   ✓  12 [chromium] › e2e/theme.spec.ts:205:3 › tema › pinta o primeiro quadro no tema salvo (288ms)
+@amigo-secreto/web:test:e2e:   ✓   9 [chromium] › e2e/accessibility.spec.ts:44:3 › acessibilidade › página inicial sem violações WCAG 2.1 A/AA no tema claro (751ms)
+@amigo-secreto/web:test:e2e:   ✓  11 [chromium] › e2e/home.spec.ts:33:3 › página inicial › mostra API indisponível e o tema funciona quando a API não responde (411ms)
+@amigo-secreto/web:test:e2e:   ✓  13 [chromium] › e2e/theme.spec.ts:220:3 › tema › o botão se chama Ativar tema escuro no claro e Ativar tema claro no escuro (350ms)
+@amigo-secreto/web:test:e2e:   ✓  14 [chromium] › e2e/accessibility.spec.ts:56:3 › acessibilidade › página inicial sem violações WCAG 2.1 A/AA no tema escuro (603ms)
+@amigo-secreto/web:test:e2e:   ✓  15 [chromium] › e2e/theme.spec.ts:238:3 › tema › aplica os tokens do design system no tema claro (250ms)
+@amigo-secreto/web:test:e2e:   ✓  16 [chromium] › e2e/theme.spec.ts:245:3 › tema › aplica os tokens do design system no tema escuro (154ms)
+@amigo-secreto/web:test:e2e:   ✓   3 [chromium] › e2e/api-rewrite.spec.ts:13:3 › rewrite da API › GET /api/health no web devolve o status e o corpo da API (5.1s)
 @amigo-secreto/web:test:e2e: 
-@amigo-secreto/web:test:e2e:   16 passed (6.8s)
+@amigo-secreto/web:test:e2e:   16 passed (8.6s)
 
  Tasks:    4 successful, 4 total
 Cached:    0 cached, 4 total
-  Time:    16.23s
+  Time:    18.385s
 ```

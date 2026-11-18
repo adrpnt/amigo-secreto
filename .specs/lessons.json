@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 11,
+  "next_id": 15,
   "lessons": [
     {
       "id": "L-001",
@@ -184,6 +184,78 @@
       ],
       "created": "2026-11-12T17:13:28Z",
       "last_seen": "2026-11-12T17:13:28Z"
+    },
+    {
+      "id": "L-011",
+      "key": "ac_gap::isolar cada item de um laco de processamento em lote num try catch proprio e testar um item cuja gravacao falha seguido de um sadio",
+      "text": "Isolar cada item de um laço de processamento em lote num try/catch próprio e testar um item cuja gravação falha seguido de um sadio.",
+      "signal": "ac_gap",
+      "scope": "jobs",
+      "status": "candidate",
+      "features": [
+        "02-email-jobs"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/jobs/job-runner.service.ts:33-46 (jobs)"
+      ],
+      "created": "2026-11-18T21:14:24Z",
+      "last_seen": "2026-11-18T21:14:24Z"
+    },
+    {
+      "id": "L-012",
+      "key": "weak_test::provar uma regra sobre uma faixa de valores nas duas bordas da faixa nao so com valores do meio",
+      "text": "Provar uma regra sobre uma faixa de valores nas duas bordas da faixa, não só com valores do meio.",
+      "signal": "weak_test",
+      "scope": "",
+      "status": "candidate",
+      "features": [
+        "02-email-jobs"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C32 apps/api/src/email/resend.transport.spec.ts:168-186"
+      ],
+      "created": "2026-11-18T21:14:24Z",
+      "last_seen": "2026-11-18T21:14:24Z"
+    },
+    {
+      "id": "L-013",
+      "key": "spec_precision_gap::dar criterio e teste a toda guarda de concorrencia do codigo como a que descarta o resultado de um trabalho retomado por outra instancia",
+      "text": "Dar critério e teste a toda guarda de concorrência do código, como a que descarta o resultado de um trabalho retomado por outra instância.",
+      "signal": "spec_precision_gap",
+      "scope": "concurrency",
+      "status": "candidate",
+      "features": [
+        "02-email-jobs"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/jobs/job-runner.service.ts:180-198 (concurrency)"
+      ],
+      "created": "2026-11-18T21:14:24Z",
+      "last_seen": "2026-11-18T21:14:24Z"
+    },
+    {
+      "id": "L-014",
+      "key": "spec_precision_gap::registrar como criterio toda excecao de ambiente que muda o comportamento da aplicacao mesmo a que so existe para os testes",
+      "text": "Registrar como critério toda exceção de ambiente que muda o comportamento da aplicação, mesmo a que só existe para os testes.",
+      "signal": "spec_precision_gap",
+      "scope": "config",
+      "status": "candidate",
+      "features": [
+        "02-email-jobs"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/jobs/jobs-scheduler.module.ts:9 (config)"
+      ],
+      "created": "2026-11-18T21:14:24Z",
+      "last_seen": "2026-11-18T21:14:24Z"
     }
   ]
 }
