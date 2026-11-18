@@ -113,11 +113,11 @@
 
 ## Handoff
 
-- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), planejada
-- **Phase / Task**: spec, design e tasks aprovados em 2026-11-18; nenhuma task iniciada. `01-foundation` concluída e mergeada (PRs #1 a #6 e #8).
-- **Completed**: spec.md, context.md, design.md e tasks.md da 02-email-jobs; milestone "02 · Email Jobs" e issues PER-87 (fase 1), PER-88 (fase 2) e PER-89 (fase 3) no P-PER-4, em Backlog.
+- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), em execução
+- **Phase / Task**: fase 1 (T1 a T4) concluída na branch `pntadr/per-87-fase-1-tabela-e-fila`, gate Build verde (52 testes na API); PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
+- **Completed**: T1 a T4
 - **In-progress** (file:line): none
-- **Next step**: quando o usuário pedir a execução, ler `implement.md`, rodar `validate_tasks.py 02-email-jobs --execute`, criar a branch `pntadr/per-87-fase-1-tabela-e-fila` a partir da `main` atualizada, mover a PER-87 para In Progress e começar pela T1.
+- **Next step**: depois do merge do PR da fase 1, atualizar a `main`, criar a branch `pntadr/per-88-...` da PER-88 (fase 2), mover a PER-88 para In Progress e começar pela T5.
 - **Blockers**: none
-- **Uncommitted files**: `.specs/features/02-email-jobs/` (spec, context, design, tasks) e este `STATE.md`
-- **Branch**: main
+- **Uncommitted files**: none
+- **Branch**: pntadr/per-87-fase-1-tabela-e-fila
