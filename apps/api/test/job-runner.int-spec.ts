@@ -538,4 +538,51 @@ describe('JobRunner', () => {
     ]);
     expect(output.join('')).not.toContain('payload-que-nao-pode-ir-ao-log');
   });
+
+  it('descarta o resultado de um job que outra rodada retomou', async () => {
+    const takenOverAt = new Date(NOW.getTime() + 11 * 60_000);
+    // Faz o que outra instância faz ao retomar um job travado: novo lockedAt
+    // e mais uma tentativa.
+    const takeOver = (id: string) =>
+      dataSource.query(
+        'UPDATE job SET "lockedAt" = $2, attempts = attempts + 1 WHERE id = $1',
+        [id, takenOverAt],
+      );
+    const outcomes = [
+      { name: 'sucesso', error: undefined },
+      { name: 'falha passageira', error: new Error('Tempo esgotado') },
+      { name: 'falha definitiva', error: new PermanentJobError('Resend 422') },
+    ];
+    const jobs: { id: string; type: string }[] = [];
+    for (const { name, error } of outcomes) {
+      const type = `job-runner.${name}.${randomUUID()}`;
+      handlers.register(type, {
+        handle: async (job) => {
+          await takeOver(job.id);
+          if (error) throw error;
+        },
+      });
+      const job = await queue.enqueue(type, {}, { runAt: NOW });
+      jobs.push({ id: job.id, type });
+    }
+
+    await runner.runRound(NOW);
+    await Sentry.flush(2000);
+
+    for (const job of jobs) {
+      expect(await findOutcome(job.id)).toMatchObject({
+        status: 'RUNNING',
+        attempts: 2,
+        lastError: null,
+      });
+      expect((await findJob(job.id))?.lockedAt).toEqual(takenOverAt);
+    }
+    expect(logRecords().filter((record) => record.level === 'warn')).toEqual(
+      [],
+    );
+    expect(
+      logRecords().filter((record) => record.event === 'job.failed'),
+    ).toEqual([]);
+    expect(sentEvents).toHaveLength(0);
+  });
 });
