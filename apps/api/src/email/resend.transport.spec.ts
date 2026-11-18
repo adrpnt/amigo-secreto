@@ -173,6 +173,23 @@ describe('ResendTransport', () => {
 
     expect(error).toBeInstanceOf(PermanentJobError);
     expect(error.message).toBe('Resend 422 validation_error');
+
+    // Os outros 4xx, nas bordas da faixa e o 409 sem name.
+    const others = [
+      { status: 400, name: 'validation_error' },
+      { status: 401, name: 'missing_api_key' },
+      { status: 404, name: 'not_found' },
+      { status: 499, name: 'client_closed_request' },
+    ];
+    for (const { status, name } of others) {
+      const other = await sendError({ status, body: errorBody(status, name) });
+
+      expect(other).toBeInstanceOf(PermanentJobError);
+      expect(other.message).toBe(`Resend ${status} ${name}`);
+    }
+    const conflict = await sendError({ status: 409, body: '{}' });
+    expect(conflict).toBeInstanceOf(PermanentJobError);
+    expect(conflict.message).toBe('Resend 409');
   });
 
   it('trata 409 invalid_idempotent_request como falha definitiva', async () => {
