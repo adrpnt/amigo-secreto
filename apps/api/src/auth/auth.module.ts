@@ -11,6 +11,7 @@ import { AuthService } from './auth.service.js';
 import { EmailVerificationService } from './email-verification.service.js';
 import { CsrfGuard } from './guards/csrf.guard.js';
 import { SessionGuard } from './guards/session.guard.js';
+import { LoginService } from './login.service.js';
 import { PasswordHasher } from './password-hasher.js';
 import { Session } from './session.entity.js';
 import { SessionsService } from './sessions.service.js';
@@ -30,6 +31,7 @@ import { SessionsService } from './sessions.service.js';
     PasswordHasher,
     AuthService,
     EmailVerificationService,
+    LoginService,
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],

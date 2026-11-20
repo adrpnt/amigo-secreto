@@ -17,9 +17,11 @@ import { type CookieResponse, parseCookies } from './cookies.js';
 import { CSRF_COOKIE, isValidCsrfToken } from './csrf-token.js';
 import { CurrentUser } from './decorators/current-user.decorator.js';
 import { Public } from './decorators/public.decorator.js';
+import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
 import { VerifyEmailDto } from './dto/verify-email.dto.js';
 import { EmailVerificationService } from './email-verification.service.js';
+import { LoginService } from './login.service.js';
 import { SessionsService } from './sessions.service.js';
 
 @Controller('auth')
@@ -29,6 +31,7 @@ export class AuthController {
     private readonly sessions: SessionsService,
     private readonly auth: AuthService,
     private readonly emailVerification: EmailVerificationService,
+    private readonly logins: LoginService,
   ) {}
 
   @Public()
@@ -88,5 +91,35 @@ export class AuthController {
     @Ip() ip: string,
   ): Promise<{ email: string }> {
     return this.emailVerification.sendVerificationLink(user, ip);
+  }
+  @Public()
+  @Post('login')
+  @HttpCode(200)
+  login(
+    @Body() body: LoginDto,
+    @Ip() ip: string,
+    @Req() request: AuthRequest,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ): Promise<{ user: SessionUser }> {
+    return this.logins.login(body, ip, response, request.auth?.session.id);
+  }
+
+  @Post('logout')
+  @HttpCode(204)
+  logout(
+    @Req() request: AuthRequest,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ): Promise<void> {
+    // Rota com sessão: o SessionGuard já preencheu request.auth.
+    return this.logins.logout(request.auth!.session.id, response);
+  }
+
+  @Post('logout-all')
+  @HttpCode(204)
+  logoutAll(
+    @CurrentUser() user: SessionUser,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ): Promise<void> {
+    return this.logins.logoutAll(user.id, response);
   }
 }
