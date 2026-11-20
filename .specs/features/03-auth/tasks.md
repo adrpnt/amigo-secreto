@@ -125,9 +125,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `src/auth/password-hasher.spec.ts`: `PasswordHasher > gera hash argon2id no formato PHC com m=19456, t=2 e p=1`, `> verifica a senha certa`, `> recusa a senha errada` e `> verifica contra o hash fixo e devolve false quando não há hash guardado`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 114 tests pass na API
+- [x] Testes em `src/auth/password-hasher.spec.ts`: `PasswordHasher > gera hash argon2id no formato PHC com m=19456, t=2 e p=1`, `> verifica a senha certa`, `> recusa a senha errada` e `> verifica contra o hash fixo e devolve false quando não há hash guardado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 114 tests pass na API
 
 **Tests**: unit
 **Gate**: quick
