@@ -8,6 +8,7 @@ import { AuthToken } from './auth-token.entity.js';
 import { AuthTokensService } from './auth-tokens.service.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
+import { EmailVerificationService } from './email-verification.service.js';
 import { CsrfGuard } from './guards/csrf.guard.js';
 import { SessionGuard } from './guards/session.guard.js';
 import { PasswordHasher } from './password-hasher.js';
@@ -28,6 +29,7 @@ import { SessionsService } from './sessions.service.js';
     AuthTokensService,
     PasswordHasher,
     AuthService,
+    EmailVerificationService,
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],

@@ -1,4 +1,4 @@
-import type { SessionResponse } from '@amigo-secreto/shared';
+import type { SessionResponse, SessionUser } from '@amigo-secreto/shared';
 import {
   Body,
   Controller,
@@ -15,8 +15,11 @@ import type { AuthRequest } from './auth-request.js';
 import { AuthService } from './auth.service.js';
 import { type CookieResponse, parseCookies } from './cookies.js';
 import { CSRF_COOKIE, isValidCsrfToken } from './csrf-token.js';
+import { CurrentUser } from './decorators/current-user.decorator.js';
 import { Public } from './decorators/public.decorator.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { VerifyEmailDto } from './dto/verify-email.dto.js';
+import { EmailVerificationService } from './email-verification.service.js';
 import { SessionsService } from './sessions.service.js';
 
 @Controller('auth')
@@ -25,6 +28,7 @@ export class AuthController {
     private readonly config: ConfigService<EnvironmentVariables, true>,
     private readonly sessions: SessionsService,
     private readonly auth: AuthService,
+    private readonly emailVerification: EmailVerificationService,
   ) {}
 
   @Public()
@@ -61,5 +65,28 @@ export class AuthController {
     @Ip() ip: string,
   ): Promise<{ email: string }> {
     return this.auth.register(body, ip);
+  }
+  @Public()
+  @Post('email/verify')
+  @HttpCode(200)
+  verifyEmail(
+    @Body() body: VerifyEmailDto,
+    @Req() request: AuthRequest,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ): Promise<{ next: string }> {
+    return this.emailVerification.verify(
+      body.token,
+      response,
+      request.auth?.session.id,
+    );
+  }
+
+  @Post('email/verification-link')
+  @HttpCode(202)
+  sendVerificationLink(
+    @CurrentUser() user: SessionUser,
+    @Ip() ip: string,
+  ): Promise<{ email: string }> {
+    return this.emailVerification.sendVerificationLink(user, ip);
   }
 }

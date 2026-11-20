@@ -150,7 +150,7 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
   - `POST /auth/logout` (autenticada) - `204`, encerra a sessão e apaga `sid`.
   - `POST /auth/logout-all` (autenticada) - `204`, encerra todas.
   - `POST /auth/email/verify` `{ token }` - confirma, emite `user.email_verified`, abre sessão, devolve `{ next }`.
-  - `POST /auth/email/resend` (autenticada) - `202`.
+  - `POST /auth/email/verification-link` (autenticada) - `202 { email }`; pede um novo link de confirmação.
   - `POST /auth/password/forgot` `{ email }` - sempre `202`.
   - `POST /auth/password/reset` `{ token, password }` - troca, confirma o e-mail, `revokeAll`, abre sessão, avisa, devolve `{ next }`.
   - `POST /auth/email/change/confirm` `{ token }` - troca o e-mail; `409` "Este e-mail já está em uso por outra conta.".
