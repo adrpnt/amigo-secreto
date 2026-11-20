@@ -13,6 +13,7 @@ import { CsrfGuard } from './guards/csrf.guard.js';
 import { SessionGuard } from './guards/session.guard.js';
 import { LoginService } from './login.service.js';
 import { PasswordHasher } from './password-hasher.js';
+import { PasswordResetService } from './password-reset.service.js';
 import { Session } from './session.entity.js';
 import { SessionsService } from './sessions.service.js';
 
@@ -32,6 +33,7 @@ import { SessionsService } from './sessions.service.js';
     AuthService,
     EmailVerificationService,
     LoginService,
+    PasswordResetService,
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],

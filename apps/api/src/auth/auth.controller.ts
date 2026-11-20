@@ -17,11 +17,14 @@ import { type CookieResponse, parseCookies } from './cookies.js';
 import { CSRF_COOKIE, isValidCsrfToken } from './csrf-token.js';
 import { CurrentUser } from './decorators/current-user.decorator.js';
 import { Public } from './decorators/public.decorator.js';
+import { ForgotPasswordDto } from './dto/forgot-password.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { ResetPasswordDto } from './dto/reset-password.dto.js';
 import { VerifyEmailDto } from './dto/verify-email.dto.js';
 import { EmailVerificationService } from './email-verification.service.js';
 import { LoginService } from './login.service.js';
+import { PasswordResetService } from './password-reset.service.js';
 import { SessionsService } from './sessions.service.js';
 
 @Controller('auth')
@@ -32,6 +35,7 @@ export class AuthController {
     private readonly auth: AuthService,
     private readonly emailVerification: EmailVerificationService,
     private readonly logins: LoginService,
+    private readonly passwordReset: PasswordResetService,
   ) {}
 
   @Public()
@@ -121,5 +125,25 @@ export class AuthController {
     @Res({ passthrough: true }) response: CookieResponse,
   ): Promise<void> {
     return this.logins.logoutAll(user.id, response);
+  }
+  @Public()
+  @Post('password/forgot')
+  @HttpCode(202)
+  forgotPassword(
+    @Body() body: ForgotPasswordDto,
+    @Ip() ip: string,
+  ): Promise<{ email: string }> {
+    return this.passwordReset.forgot(body, ip);
+  }
+
+  @Public()
+  @Post('password/reset')
+  @HttpCode(200)
+  resetPassword(
+    @Body() body: ResetPasswordDto,
+    @Req() request: AuthRequest,
+    @Res({ passthrough: true }) response: CookieResponse,
+  ): Promise<{ next: string }> {
+    return this.passwordReset.reset(body, response, request.auth?.session.id);
   }
 }
