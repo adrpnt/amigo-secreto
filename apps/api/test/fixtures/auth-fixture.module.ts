@@ -21,6 +21,12 @@ class AuthFixtureController {
     return { ok: true };
   }
 
+  // Erro inesperado numa rota com sessão, para o teste de sigilo.
+  @Post('failure')
+  failure(): never {
+    throw new Error('Falha forçada na rota da conta');
+  }
+
   @Public()
   @Post('public-mutation')
   publicMutation(): { ok: true } {

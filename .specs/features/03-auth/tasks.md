@@ -389,9 +389,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes: `sigilo da conta > não escreve senha, token de sessão, token de link nem cookie no log`, `> não manda senha, token nem cookie ao Sentry num erro 500`, `> não devolve hash de senha nem de token nas respostas da conta` e `> não devolve senha nem token nas respostas de erro 400`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 218 tests pass na API
+- [x] Testes: `sigilo da conta > não escreve senha, token de sessão, token de link nem cookie no log`, `> não manda senha, token nem cookie ao Sentry num erro 500`, `> não devolve hash de senha nem de token nas respostas da conta` e `> não devolve senha nem token nas respostas de erro 400`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 218 tests pass na API
 
 **Tests**: integration
 **Gate**: full
