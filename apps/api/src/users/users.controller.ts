@@ -11,8 +11,10 @@ import {
 import type { AuthRequest } from '../auth/auth-request.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { toSessionUser } from '../auth/session-user.js';
+import { ChangeEmailDto } from './dto/change-email.dto.js';
 import { ChangePasswordDto } from './dto/change-password.dto.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { EmailChangeService } from './email-change.service.js';
 import { PasswordChangeService } from './password-change.service.js';
 import { UsersService } from './users.service.js';
 
@@ -21,6 +23,7 @@ export class UsersController {
   constructor(
     private readonly users: UsersService,
     private readonly passwordChange: PasswordChangeService,
+    private readonly emailChange: EmailChangeService,
   ) {}
 
   @Get('me')
@@ -47,5 +50,14 @@ export class UsersController {
     return toSessionUser(
       await this.passwordChange.change(user.id, session.id, body),
     );
+  }
+
+  @Post('me/email')
+  @HttpCode(202)
+  changeEmail(
+    @CurrentUser() user: SessionUser,
+    @Body() body: ChangeEmailDto,
+  ): Promise<{ email: string }> {
+    return this.emailChange.request(user.id, body);
   }
 }

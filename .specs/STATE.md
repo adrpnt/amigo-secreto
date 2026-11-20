@@ -150,11 +150,11 @@
 ## Handoff
 
 - **Feature**: 03-auth (`.specs/features/03-auth/`), em execução
-- **Phase / Task**: fase 3 (T15 a T20) em andamento na branch `pntadr/per-95-fase-3-google-e-perfil-na-api`; T15 a T19 commitadas (258 testes na API)
-- **Completed**: fases 1 e 2 (PRs #12 e #13 mergeados); T15 a T19; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
+- **Phase / Task**: fase 3 (T15 a T20) concluída na branch `pntadr/per-95-fase-3-google-e-perfil-na-api`; gate Build verde (268 testes na API, 16 unitários e 16 e2e no web)
+- **Completed**: fases 1 a 3; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
 - **In-progress** (file:line): none
-- **Next step**: T20 (troca de e-mail), gate Build da fase, push e PR
-- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98; PER-95 em In Progress com T15 a T19 marcadas
+- **Next step**: depois do merge do PR da fase 3, atualizar a `main`, criar a branch da PER-96 e executar a fase 4 (T21 a T26)
+- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
 - **Blockers**: none
 - **Uncommitted files**: none
 - **Branch**: pntadr/per-95-fase-3-google-e-perfil-na-api

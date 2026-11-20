@@ -43,6 +43,6 @@ import { SessionsService } from './sessions.service.js';
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],
-  exports: [SessionsService, PasswordHasher],
+  exports: [SessionsService, PasswordHasher, AuthTokensService],
 })
 export class AuthModule {}

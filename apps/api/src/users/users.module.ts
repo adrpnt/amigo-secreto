@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module.js';
 import { EmailModule } from '../email/email.module.js';
 import { RateLimitModule } from '../rate-limit/rate-limit.module.js';
+import { EmailChangeController } from './email-change.controller.js';
+import { EmailChangeService } from './email-change.service.js';
 import { PasswordChangeService } from './password-change.service.js';
 import { User } from './user.entity.js';
 import { UsersController } from './users.controller.js';
@@ -15,8 +17,8 @@ import { UsersService } from './users.service.js';
     RateLimitModule,
     TypeOrmModule.forFeature([User]),
   ],
-  controllers: [UsersController],
-  providers: [UsersService, PasswordChangeService],
+  controllers: [UsersController, EmailChangeController],
+  providers: [UsersService, PasswordChangeService, EmailChangeService],
   exports: [TypeOrmModule],
 })
 export class UsersModule {}
