@@ -7,6 +7,30 @@ import { EnvironmentVariables, validateEnvironment } from './env.validation.js';
 const VALID_DATABASE_URL =
   'postgres://amigo:amigo@localhost:5432/amigo_secreto';
 
+const PRODUCTION: Record<string, string> = {
+  NODE_ENV: 'production',
+  DATABASE_URL: VALID_DATABASE_URL,
+  RESEND_API_KEY: 're_123',
+  EMAIL_FROM: 'Amigo Secreto <nao-responda@example.com>',
+  WEB_URL: 'https://amigo-secreto.example.com',
+  AUTH_SECRET: 'segredo-de-producao',
+  GOOGLE_CLIENT_ID: 'google-client',
+  GOOGLE_CLIENT_SECRET: 'google-secret',
+  TRUST_PROXY_HOPS: '1',
+};
+
+// Nomes das variáveis citadas no erro de validação, uma por linha "NOME: motivo".
+function invalidVariables(config: Record<string, string>): string[] {
+  try {
+    validateEnvironment(config);
+    return [];
+  } catch (error) {
+    return [...(error as Error).message.matchAll(/^([A-Z_]+):/gm)].map(
+      ([, name]) => name ?? '',
+    );
+  }
+}
+
 describe('validateEnvironment', () => {
   it('lança erro que nomeia DATABASE_URL quando ela falta', () => {
     expect(() => validateEnvironment({})).toThrow(/DATABASE_URL/);
@@ -70,6 +94,56 @@ describe('validateEnvironment', () => {
       expect(env.NODE_ENV).toBe(nodeEnv);
       expect(env.RESEND_API_KEY).toBeUndefined();
       expect(env.EMAIL_FROM).toBeUndefined();
+    }
+  });
+
+  for (const name of [
+    'GOOGLE_CLIENT_ID',
+    'GOOGLE_CLIENT_SECRET',
+    'AUTH_SECRET',
+    'TRUST_PROXY_HOPS',
+  ]) {
+    it(`lança erro que nomeia ${name} quando ela falta em production`, () => {
+      const missing = { ...PRODUCTION };
+      delete missing[name];
+
+      expect(invalidVariables(PRODUCTION)).toEqual([]);
+      expect(invalidVariables(missing)).toEqual([name]);
+      expect(invalidVariables({ ...PRODUCTION, [name]: '' })).toEqual([name]);
+    });
+  }
+
+  it('aceita as variáveis da conta ausentes fora de production, com WEB_URL http://localhost:3000', () => {
+    const empty = {
+      WEB_URL: '',
+      AUTH_SECRET: '',
+      GOOGLE_CLIENT_ID: '',
+      GOOGLE_CLIENT_SECRET: '',
+      TRUST_PROXY_HOPS: '',
+      GOOGLE_AUTH_URL: '',
+      GOOGLE_TOKEN_URL: '',
+    };
+
+    for (const nodeEnv of ['development', 'test']) {
+      for (const accountVariables of [{}, empty]) {
+        const env = validateEnvironment({
+          NODE_ENV: nodeEnv,
+          DATABASE_URL: VALID_DATABASE_URL,
+          ...accountVariables,
+        });
+
+        expect(env.WEB_URL).toBe('http://localhost:3000');
+        expect(env.AUTH_SECRET).toBe('amigo-secreto-dev-auth-secret');
+        expect(env.GOOGLE_CLIENT_ID).toBeUndefined();
+        expect(env.GOOGLE_CLIENT_SECRET).toBeUndefined();
+        expect(env.TRUST_PROXY_HOPS).toBeUndefined();
+        expect(env.GOOGLE_AUTH_URL).toBe(
+          'https://accounts.google.com/o/oauth2/v2/auth',
+        );
+        expect(env.GOOGLE_TOKEN_URL).toBe(
+          'https://oauth2.googleapis.com/token',
+        );
+      }
     }
   });
 

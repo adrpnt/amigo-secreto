@@ -13,6 +13,7 @@ import type { Job, JobStatus } from '../src/jobs/job.entity.js';
 import { JobRunner } from '../src/jobs/job-runner.service.js';
 import { AppLogger } from '../src/observability/app-logger.js';
 import { ObservabilityModule } from '../src/observability/observability.module.js';
+import { stubAccountEnv } from './account-env.js';
 import { type FakeResend, startFakeResend } from './fake-resend.js';
 import { createIsolatedDatabase } from './isolated-database.js';
 
@@ -65,6 +66,7 @@ describe('envio de e-mail', () => {
   async function start(env: Record<string, string>) {
     vi.stubEnv('DATABASE_URL', databaseUrl);
     vi.stubEnv('RESEND_BASE_URL', resend.url);
+    stubAccountEnv();
     for (const [name, value] of Object.entries(env)) {
       vi.stubEnv(name, value);
     }

@@ -1,6 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const API_URL = 'http://localhost:3001';
+// Porta própria do e2e, fora da 3000 do `pnpm dev`.
+const WEB_PORT = 3200;
+const WEB_URL = `http://localhost:${WEB_PORT}`;
 const CLOSED_API_URL = 'http://localhost:3999';
 const IS_CI = Boolean(process.env.CI);
 
@@ -9,7 +12,7 @@ export default defineConfig({
   reporter: IS_CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   retries: 0,
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: WEB_URL,
     trace: IS_CI ? 'retain-on-failure' : 'off',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
@@ -25,12 +28,17 @@ export default defineConfig({
         PORT: '3001',
         RESEND_API_KEY: 're_e2e',
         EMAIL_FROM: 'Amigo Secreto <e2e@example.com>',
+        WEB_URL,
+        AUTH_SECRET: 'e2e-auth-secret',
+        GOOGLE_CLIENT_ID: 'e2e-google-client',
+        GOOGLE_CLIENT_SECRET: 'e2e-google-secret',
+        TRUST_PROXY_HOPS: '0',
       },
     },
     {
       name: 'web',
-      command: 'pnpm exec next start --port 3000',
-      url: 'http://localhost:3000',
+      command: `pnpm exec next start --port ${WEB_PORT}`,
+      url: WEB_URL,
       reuseExistingServer: false,
       env: { API_INTERNAL_URL: API_URL },
     },

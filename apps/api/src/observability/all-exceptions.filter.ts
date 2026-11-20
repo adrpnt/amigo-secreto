@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import type { HttpAdapterHost } from '@nestjs/core';
 import * as Sentry from '@sentry/nestjs';
+import { TooManyAttemptsException } from '../rate-limit/too-many-attempts.exception.js';
 
 const INTERNAL_ERROR = {
   statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -47,11 +48,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
       isHttpException && !isInternalError
         ? httpExceptionBody(exception)
         : INTERNAL_ERROR;
-    this.adapterHost.httpAdapter.reply(
-      host.switchToHttp().getResponse(),
-      body,
-      status,
-    );
+    const response: unknown = host.switchToHttp().getResponse();
+    const { httpAdapter } = this.adapterHost;
+    if (exception instanceof TooManyAttemptsException) {
+      httpAdapter.setHeader(
+        response,
+        'Retry-After',
+        String(exception.retryAfterSeconds),
+      );
+    }
+    httpAdapter.reply(response, body, status);
   }
 }
 

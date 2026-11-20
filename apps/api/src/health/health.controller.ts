@@ -5,9 +5,11 @@ import {
   HealthCheckService,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { Public } from '../auth/decorators/public.decorator.js';
 
 const DATABASE_TIMEOUT_MS = 3000;
 
+@Public()
 @Controller('health')
 export class HealthController {
   constructor(

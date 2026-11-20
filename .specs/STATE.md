@@ -111,13 +111,50 @@
 - **Revised**: 2026-11-12 - na última fase de uma feature, o fechamento (`check_proofs.py`, provas por walk, Verifier, correções, `validate_verification.py` com saída 0 e lições) acontece na branch da fase, antes do push; o PR só abre com a feature inteira finalizada. Pedido do usuário depois do PR #6 da `01-foundation`, aberto antes do fechamento: "O fechamento devia ter sido feito antes de abrir o PR, abrindo somente com tudo da feature finalizado."
 - **Status**: active
 
+### AD-011
+
+- **Decision**: A sessão do usuário é guardada no banco. O cookie httpOnly leva um token aleatório; a tabela de sessões guarda só o hash dele. Não há JWT.
+- **Reason**: Logout e troca de senha derrubam a sessão na hora, sem lista de revogação nem rotação de refresh, e sem dependência nova. Diverge do `scope.md` 7.2 ("JWT em cookie httpOnly (access + refresh)"). Pergunta ao usuário em 2026-11-19: "Como a sessão do usuário deve funcionar?", resposta "Sessão no banco (Recomendado)", entre "Sessão no banco" e "JWT access + refresh".
+- **Trade-off**: Uma consulta ao banco por requisição autenticada.
+- **Scope**: `apps/api`, `apps/web` e toda feature com rota autenticada.
+- **Date**: 2026-11-19
+- **Status**: active
+
+### AD-012
+
+- **Decision**: Toda rota da API exige sessão por padrão: um `SessionGuard` global (`APP_GUARD`) recusa com 401 a requisição sem sessão válida, e as rotas públicas levam `@Public()`. O usuário da sessão chega à rota por `@CurrentUser()`.
+- **Reason**: Esquecer o decorator fecha a rota em vez de abri-la. Pergunta ao usuário em 2026-11-19, no Design da `03-auth`: "Rotas da API são autenticadas por padrão?", resposta "Sim, com @Public() (Recomendado)", entre essa e "Não, com @Authenticated()".
+- **Trade-off**: Toda rota pública nova (health, convite aberto, páginas públicas que chamem a API) precisa do `@Public()`.
+- **Scope**: `apps/api` e todas as features a partir da `03-auth`.
+- **Date**: 2026-11-19
+- **Status**: active
+
+### AD-013
+
+- **Decision**: A proteção contra CSRF é um token double-submit assinado: a API grava no cookie `csrf`, legível pelo site, um valor `<aleatório>.<HMAC(AUTH_SECRET, aleatório + sessão)>`, e um `CsrfGuard` global exige em `POST`, `PUT`, `PATCH` e `DELETE` o mesmo valor no cabeçalho `X-CSRF-Token`, com HMAC válido para a sessão atual; senão, 403. No site, toda chamada que altera estado passa pelo `apiFetch`, que manda o cabeçalho.
+- **Reason**: Recomendado pela OWASP e independente dos cabeçalhos do navegador e do proxy. Pergunta ao usuário em 2026-11-19, no Design da `03-auth`: "Qual a proteção contra CSRF?", resposta "Token double-submit assinado (Recomendado)", entre essa e "Fetch Metadata / Origin".
+- **Trade-off**: O site busca um token antes da primeira mutação, e o token muda quando a sessão abre ou fecha.
+- **Scope**: `apps/api`, `apps/web` e toda feature com rota que altera estado.
+- **Date**: 2026-11-19
+- **Status**: active
+
+### AD-014
+
+- **Decision**: Limites de tentativas usam o `RateLimitService` da `03-auth`, com as contagens numa tabela `rate_limit` do PostgreSQL (uma linha por chave, janela fixa, upsert atômico), somadas entre instâncias. Chaves com e-mail guardam o SHA-256 do e-mail. O IP do cliente vem do `trust proxy` do Express com `TRUST_PROXY_HOPS` saltos, obrigatória em produção.
+- **Reason**: Sem Redis nem dependência nova, coerente com a tabela de jobs. Pergunta ao usuário em 2026-11-19, no Design da `03-auth`: "Onde o rate limit guarda as contagens?", resposta "Tabela no PostgreSQL (Recomendado)", entre essa e "@nestjs/throttler + storage no Postgres". O Next não acrescenta `X-Forwarded-For` ao repassar `/api/*` (código do `proxy-request.ts` do Next, via Context7, 2026-11-19); o valor de `TRUST_PROXY_HOPS` depende da hospedagem (`scope.md` 12.2).
+- **Trade-off**: Uma escrita no banco por tentativa limitada; a tabela não é limpa até a `10-lifecycle`.
+- **Scope**: `apps/api`; rate limit de convite e mensagens nas features `05-invites`, `08-wall` e `09-secret-messages`.
+- **Date**: 2026-11-19
+- **Status**: active
+
 ## Handoff
 
-- **Feature**: 02-email-jobs (`.specs/features/02-email-jobs/`), concluída
-- **Phase / Task**: fase 3 (T9 a T15) concluída na branch `pntadr/per-89-fase-3-e-mail-e-comando-de-teste`; fechamento feito: `check_proofs.py` com 69 pass, Verifier com 4 achados fechados por commit (JOB-09 acrescentado à spec), `validate_verification.py` com saída 0, lições L-011 a L-014. PR da fase aberto para revisão. Decisões da execução na linha `**Settled mid-build:**` do `tasks.md`.
-- **Completed**: T1 a T15 e o fechamento da feature
+- **Feature**: 03-auth (`.specs/features/03-auth/`), em execução
+- **Phase / Task**: fase 1 (T1 a T7) concluída na branch `pntadr/per-93-fase-1-contas-sessao-csrf-e-rate-limit`; gate Build verde (146 testes na API, 16 unitários e 16 e2e no web)
+- **Completed**: T1 a T7; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 3, atualizar a `main` e abrir a feature 03-auth (Specify), carregando as lições confirmadas.
+- **Next step**: depois do merge do PR da fase 1, atualizar a `main`, criar a branch da PER-94 e executar a fase 2 (T8 a T14)
+- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-89-fase-3-e-mail-e-comando-de-teste
+- **Branch**: pntadr/per-93-fase-1-contas-sessao-csrf-e-rate-limit

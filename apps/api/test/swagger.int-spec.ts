@@ -4,6 +4,7 @@ import request from 'supertest';
 import type { App } from 'supertest/types.js';
 import { inject } from 'vitest';
 import { configureApp } from '../src/app.setup.js';
+import { stubAccountEnv } from './account-env.js';
 
 type OpenApiDocument = {
   openapi: string;
@@ -33,6 +34,7 @@ describe('Swagger', () => {
     vi.stubEnv('DATABASE_URL', inject('databaseUrl'));
     vi.stubEnv('RESEND_API_KEY', 're_test');
     vi.stubEnv('EMAIL_FROM', 'Amigo Secreto <test@example.com>');
+    stubAccountEnv();
   });
 
   afterAll(async () => {
