@@ -8,6 +8,7 @@ import type { EmailMessage } from '../src/email/email.types.js';
 import type { JobStatus } from '../src/jobs/job.entity.js';
 import { JobRunner } from '../src/jobs/job-runner.service.js';
 import { AppLogger } from '../src/observability/app-logger.js';
+import { stubAccountEnv } from './account-env.js';
 import { type FakeResend, startFakeResend } from './fake-resend.js';
 import { createIsolatedDatabase } from './isolated-database.js';
 
@@ -69,6 +70,7 @@ describe('sigilo do e-mail', () => {
     vi.stubEnv('RESEND_API_KEY', 're_test_key');
     vi.stubEnv('EMAIL_FROM', 'Amigo Secreto <nao-responda@amigo.example>');
     vi.stubEnv('RESEND_BASE_URL', resend.url);
+    stubAccountEnv();
     const { EmailFixtureModule } =
       await import('./fixtures/email-fixture.module.js');
     app = await NestFactory.createApplicationContext(EmailFixtureModule, {

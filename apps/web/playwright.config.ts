@@ -25,6 +25,11 @@ export default defineConfig({
         PORT: '3001',
         RESEND_API_KEY: 're_e2e',
         EMAIL_FROM: 'Amigo Secreto <e2e@example.com>',
+        WEB_URL: 'http://localhost:3000',
+        AUTH_SECRET: 'e2e-auth-secret',
+        GOOGLE_CLIENT_ID: 'e2e-google-client',
+        GOOGLE_CLIENT_SECRET: 'e2e-google-secret',
+        TRUST_PROXY_HOPS: '0',
       },
     },
     {

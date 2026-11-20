@@ -146,10 +146,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] `apps/api/.env.example` e `apps/api/src/app.setup.ts` atualizados; `apps/web/playwright.config.ts` passa as variáveis novas à API do e2e (que roda em production), para os 16 e2e seguirem verdes no gate Build da fase
-- [ ] Testes em `src/config/env.validation.spec.ts`: `validateEnvironment > lança erro que nomeia GOOGLE_CLIENT_ID quando ela falta em production`, `> lança erro que nomeia GOOGLE_CLIENT_SECRET quando ela falta em production`, `> lança erro que nomeia AUTH_SECRET quando ela falta em production`, `> lança erro que nomeia TRUST_PROXY_HOPS quando ela falta em production` e `> aceita as variáveis da conta ausentes fora de production, com WEB_URL http://localhost:3000`; o teste existente do `.env.example` segue verde
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 119 tests pass na API
+- [x] `apps/api/.env.example` e `apps/api/src/app.setup.ts` atualizados; `apps/web/playwright.config.ts` passa as variáveis novas à API do e2e (que roda em production), para os 16 e2e seguirem verdes no gate Build da fase
+- [x] Testes em `src/config/env.validation.spec.ts`: `validateEnvironment > lança erro que nomeia GOOGLE_CLIENT_ID quando ela falta em production`, `> lança erro que nomeia GOOGLE_CLIENT_SECRET quando ela falta em production`, `> lança erro que nomeia AUTH_SECRET quando ela falta em production`, `> lança erro que nomeia TRUST_PROXY_HOPS quando ela falta em production` e `> aceita as variáveis da conta ausentes fora de production, com WEB_URL http://localhost:3000`; o teste existente do `.env.example` segue verde
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 119 tests pass na API
 
 **Tests**: unit
 **Gate**: quick
@@ -1339,7 +1339,7 @@ Proof: run e2e | ✓ provedores falsos › o e-mail enfileirado pela API chega �
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois.
+**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois. (2026-11-20, T3) `AUTH_SECRET` fora de produção tem o padrão fixo `amigo-secreto-dev-auth-secret`; o `.env.example` traz `AUTH_SECRET=` vazio, e vazio conta como ausente, como em `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` - user: "Vazio = ausente (Recomendado)"; em produção `AUTH_SECRET` só precisa não ser vazia - user: "Só não vazia (Recomendado)"; a API do e2e recebe `AUTH_SECRET=e2e-auth-secret`, `GOOGLE_CLIENT_ID=e2e-google-client`, `GOOGLE_CLIENT_SECRET=e2e-google-secret`, `TRUST_PROXY_HOPS=0` e `WEB_URL=http://localhost:3000` - user: "Pode (Recomendado)". Os três testes de integração que sobem a API em production (`email-send`, `swagger`, `email-secrecy`) passaram a receber essas variáveis por `test/account-env.ts`, sem mudar asserção.
 **Dispatched:** none
 **Walked:** none
 
