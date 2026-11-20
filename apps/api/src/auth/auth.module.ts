@@ -9,6 +9,9 @@ import { AuthTokensService } from './auth-tokens.service.js';
 import { AuthController } from './auth.controller.js';
 import { AuthService } from './auth.service.js';
 import { EmailVerificationService } from './email-verification.service.js';
+import { GoogleAuthController } from './google/google-auth.controller.js';
+import { GoogleAuthService } from './google/google-auth.service.js';
+import { GoogleOidcClient } from './google/google-oidc.client.js';
 import { CsrfGuard } from './guards/csrf.guard.js';
 import { SessionGuard } from './guards/session.guard.js';
 import { LoginService } from './login.service.js';
@@ -24,7 +27,7 @@ import { SessionsService } from './sessions.service.js';
     RateLimitModule,
     TypeOrmModule.forFeature([Session, AuthToken]),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, GoogleAuthController],
   // Os guards globais rodam na ordem em que são registrados.
   providers: [
     SessionsService,
@@ -34,6 +37,8 @@ import { SessionsService } from './sessions.service.js';
     EmailVerificationService,
     LoginService,
     PasswordResetService,
+    GoogleOidcClient,
+    GoogleAuthService,
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],
