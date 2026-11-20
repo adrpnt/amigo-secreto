@@ -8,6 +8,7 @@ import { validateEnvironment } from '../../src/config/env.validation.js';
 import { DatabaseModule } from '../../src/database/database.module.js';
 import { HealthModule } from '../../src/health/health.module.js';
 import { ObservabilityModule } from '../../src/observability/observability.module.js';
+import { UsersModule } from '../../src/users/users.module.js';
 
 @Controller('fixtures/auth')
 class AuthFixtureController {
@@ -46,6 +47,7 @@ class AuthFixtureController {
     DatabaseModule,
     ObservabilityModule,
     AuthModule,
+    UsersModule,
     HealthModule,
   ],
   controllers: [AuthFixtureController],
