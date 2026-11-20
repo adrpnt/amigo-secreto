@@ -122,11 +122,11 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
 ### API: `SessionsService`
 
 - **Purpose**: Abrir, ler, renovar e encerrar sessões.
-- **Location**: `apps/api/src/auth/session.service.ts`
+- **Location**: `apps/api/src/auth/sessions.service.ts`
 - **Interfaces**:
   - `create(userId, response, manager?): Promise<void>` - token de 32 bytes aleatórios em base64url no cookie `sid`; grava o SHA-256 dele; emite um token CSRF novo.
   - `resolve(rawToken): Promise<{ session, user } | null>` - ignora sessão com `expiresAt` no passado.
-  - `touch(session, response)` - se o último uso tem mais de 1 hora, grava `lastUsedAt`, `expiresAt = agora + 30 dias` e reenvia o cookie com o novo `Max-Age`.
+  - `touch(session, response, rawToken)` - se o último uso tem mais de 1 hora, grava `lastUsedAt`, `expiresAt = agora + 30 dias` e reenvia o cookie com o novo `Max-Age`.
   - `revoke(sessionId)`, `revokeAll(userId, { except?: sessionId }, manager?)`.
 - **Cookie `sid`**: `HttpOnly`, `SameSite=Lax`, `Path=/`, `Secure` quando `NODE_ENV=production`, `Max-Age` 30 dias.
 

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module.js';
 import { validateEnvironment } from './config/env.validation.js';
 import { DatabaseModule } from './database/database.module.js';
 import { EmailModule } from './email/email.module.js';
@@ -17,6 +18,7 @@ import { UsersModule } from './users/users.module.js';
     EmailModule,
     JobsSchedulerModule,
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
