@@ -1,11 +1,22 @@
 import type { SessionResponse } from '@amigo-secreto/shared';
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Ip,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import type { AuthRequest } from './auth-request.js';
+import { AuthService } from './auth.service.js';
 import { type CookieResponse, parseCookies } from './cookies.js';
 import { CSRF_COOKIE, isValidCsrfToken } from './csrf-token.js';
 import { Public } from './decorators/public.decorator.js';
+import { RegisterDto } from './dto/register.dto.js';
 import { SessionsService } from './sessions.service.js';
 
 @Controller('auth')
@@ -13,6 +24,7 @@ export class AuthController {
   constructor(
     private readonly config: ConfigService<EnvironmentVariables, true>,
     private readonly sessions: SessionsService,
+    private readonly auth: AuthService,
   ) {}
 
   @Public()
@@ -40,5 +52,14 @@ export class AuthController {
         this.config.get('GOOGLE_CLIENT_SECRET', { infer: true }),
       ),
     };
+  }
+  @Public()
+  @Post('register')
+  @HttpCode(202)
+  register(
+    @Body() body: RegisterDto,
+    @Ip() ip: string,
+  ): Promise<{ email: string }> {
+    return this.auth.register(body, ip);
   }
 }

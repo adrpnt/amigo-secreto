@@ -155,7 +155,9 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
   - `POST /auth/password/reset` `{ token, password }` - troca, confirma o e-mail, `revokeAll`, abre sessão, avisa, devolve `{ next }`.
   - `POST /auth/email/change/confirm` `{ token }` - troca o e-mail; `409` "Este e-mail já está em uso por outra conta.".
 - **Links nos e-mails**: `WEB_URL` + `/confirmar-email?token=...`, `/redefinir-senha?token=...`, `/confirmar-email?token=...&tipo=troca`. A página do site faz o `POST`; o `GET` do link não muda nada, para leitores de link de antivírus não gastarem o token.
-- **Corrida no cadastro**: o índice único de `email` decide; a violação vira o caminho "já tem conta".
+- **Corrida no cadastro**: o índice único de `email` decide, por `INSERT ... ON CONFLICT (email) DO NOTHING`; sem linha devolvida, a mesma transação segue o caminho "já tem conta".
+- **Destino**: `safeNext` da API em `src/auth/safe-next.ts`, com as regras do `safeNext` do site; o cadastro grava no token o destino já validado.
+- **Versão dos termos**: `TERMS_VERSION` em `packages/shared`.
 
 ### API: `GoogleAuthService` e `GoogleAuthController`
 
