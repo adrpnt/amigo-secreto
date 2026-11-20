@@ -107,7 +107,7 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
   - `UsersService.findByEmail(email: string, manager?): Promise<User | null>` - e-mail normalizado (trim + minúsculas).
   - `UsersService.updateProfile(userId, { name?, marketingOptIn? }): Promise<User>` - grava `marketingOptInAt` quando o opt-in muda.
   - `UsersController`: `GET /users/me`, `PATCH /users/me`, `POST /users/me/password`, `POST /users/me/email`.
-- **Dependencies**: TypeORM, `PasswordHasher`, `SessionsService`, `AuthTokensService`, `EmailService`.
+- **Dependencies**: TypeORM, `PasswordHasher`, `SessionsService`, `AuthTokensService`, `EmailService`. O `UsersModule` importa o `AuthModule`, que exporta esses serviços e registra o repositório de `User` sem importar o `UsersModule`.
 - **Reuses**: padrão de entidade do `job`.
 
 ### API: `PasswordHasher`

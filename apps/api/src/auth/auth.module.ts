@@ -3,7 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailModule } from '../email/email.module.js';
 import { RateLimitModule } from '../rate-limit/rate-limit.module.js';
-import { UsersModule } from '../users/users.module.js';
+import { User } from '../users/user.entity.js';
 import { AuthToken } from './auth-token.entity.js';
 import { AuthTokensService } from './auth-tokens.service.js';
 import { AuthController } from './auth.controller.js';
@@ -23,10 +23,9 @@ import { SessionsService } from './sessions.service.js';
 
 @Module({
   imports: [
-    UsersModule,
     EmailModule,
     RateLimitModule,
-    TypeOrmModule.forFeature([Session, AuthToken]),
+    TypeOrmModule.forFeature([User, Session, AuthToken]),
   ],
   controllers: [AuthController, GoogleAuthController],
   // Os guards globais rodam na ordem em que são registrados.
@@ -44,6 +43,6 @@ import { SessionsService } from './sessions.service.js';
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],
-  exports: [SessionsService],
+  exports: [SessionsService, PasswordHasher],
 })
 export class AuthModule {}

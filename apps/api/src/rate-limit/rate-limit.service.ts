@@ -7,7 +7,7 @@ export type RateRule = { key: string; limit: number; windowMs: number };
 
 export type RateLimitResult = { allowed: boolean; retryAfterMs: number };
 
-type RateLimitKind = 'email' | 'ip';
+type RateLimitKind = 'email' | 'ip' | 'user';
 
 // O e-mail não fica em claro na tabela: a chave leva o SHA-256 do e-mail normalizado.
 export function rateLimitKey(
