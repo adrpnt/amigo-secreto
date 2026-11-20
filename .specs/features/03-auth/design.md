@@ -185,7 +185,7 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
 - **Location**: `apps/api/src/rate-limit/`
 - **Interfaces**:
   - `consume(key: string, limit: number, windowMs: number): Promise<{ allowed: boolean; retryAfterMs: number }>` - um `INSERT ... ON CONFLICT (key) DO UPDATE` que reinicia a contagem quando a janela venceu e soma 1 senão, devolvendo a contagem e o início da janela.
-  - `assertWithinLimits(rules: RateRule[])` - consome todas as regras e lança `429` com "Muitas tentativas. Tente de novo em N minutos." (N = minutos restantes arredondados para cima) se alguma estourou.
+  - `assertWithinLimits(rules: RateRule[])` - consome todas as regras e lança `429` com "Muitas tentativas. Tente de novo em N minutos." ("em 1 minuto." quando N = 1) (N = minutos restantes arredondados para cima) se alguma estourou.
 - **Chaves**: `<rota>:email:<SHA-256 do e-mail normalizado>` e `<rota>:ip:<ip>`; o e-mail não fica em claro na tabela.
 - **IP do cliente**: o Next repassa os cabeçalhos da requisição sem acrescentar `X-Forwarded-For` (só `x-forwarded-host`). A API usa o `trust proxy` do Express com `TRUST_PROXY_HOPS` saltos e lê `request.ip`.
 - **Reuses**: nenhuma dependência; uma linha por chave, sem limpeza (fica na `10-lifecycle`).
@@ -294,7 +294,7 @@ type RateLimit = {
 | Login inválido, conta só Google | `401` "E-mail ou senha incorretos.", depois de `verify` contra o hash fixo | Mesma mensagem e mesmo tempo |
 | Sem sessão numa rota protegida | `401` | Site leva a `/entrar?next=` |
 | CSRF ausente ou inválido | `403` | `apiFetch` busca um token novo e repete uma vez; falhando, "Algo deu errado. Recarregue a página." |
-| Limite estourado | `429` com a mensagem e `Retry-After` | "Muitas tentativas. Tente de novo em N minutos." |
+| Limite estourado | `429` com a mensagem e `Retry-After` | "Muitas tentativas. Tente de novo em N minutos." ("em 1 minuto." quando N = 1) |
 | Link vencido, usado ou substituído | `410` | "Este link expirou ou já foi usado." |
 | Troca para e-mail em uso | `409` | "Este e-mail já está em uso por outra conta." |
 | Google: state diferente, code recusado, token inválido, cancelamento | 302 `/entrar?erro=google` | "Não foi possível entrar com Google. Tente de novo." |

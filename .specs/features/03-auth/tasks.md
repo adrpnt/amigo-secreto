@@ -168,10 +168,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] `rate-limit.entity.ts`, `rate-limit.module.ts` e a migration criados
-- [ ] Testes em `test/rate-limit.int-spec.ts`: `RateLimitService > permite até o limite e recusa a tentativa seguinte na mesma janela`, `> reinicia a contagem quando a janela vence`, `> soma as tentativas de duas conexões ao mesmo tempo sem perder nenhuma`, `> devolve o tempo que falta para a janela vencer`, `> lança 429 com "Muitas tentativas. Tente de novo em N minutos." quando uma regra estoura` e `> guarda o e-mail só como SHA-256 na chave`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 125 tests pass na API
+- [x] `rate-limit.entity.ts`, `rate-limit.module.ts` e a migration criados
+- [x] Testes em `test/rate-limit.int-spec.ts`: `RateLimitService > permite até o limite e recusa a tentativa seguinte na mesma janela`, `> reinicia a contagem quando a janela vence`, `> soma as tentativas de duas conexões ao mesmo tempo sem perder nenhuma`, `> devolve o tempo que falta para a janela vencer`, `> lança 429 com "Muitas tentativas. Tente de novo em N minutos." quando uma regra estoura` e `> guarda o e-mail só como SHA-256 na chave`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 125 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -1339,7 +1339,7 @@ Proof: run e2e | ✓ provedores falsos › o e-mail enfileirado pela API chega �
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois. (2026-11-20, T3) `AUTH_SECRET` fora de produção tem o padrão fixo `amigo-secreto-dev-auth-secret`; o `.env.example` traz `AUTH_SECRET=` vazio, e vazio conta como ausente, como em `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` - user: "Vazio = ausente (Recomendado)"; em produção `AUTH_SECRET` só precisa não ser vazia - user: "Só não vazia (Recomendado)"; a API do e2e recebe `AUTH_SECRET=e2e-auth-secret`, `GOOGLE_CLIENT_ID=e2e-google-client`, `GOOGLE_CLIENT_SECRET=e2e-google-secret`, `TRUST_PROXY_HOPS=0` e `WEB_URL=http://localhost:3000` - user: "Pode (Recomendado)". Os três testes de integração que sobem a API em production (`email-send`, `swagger`, `email-secrecy`) passaram a receber essas variáveis por `test/account-env.ts`, sem mudar asserção.
+**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois. (2026-11-20, T3) `AUTH_SECRET` fora de produção tem o padrão fixo `amigo-secreto-dev-auth-secret`; o `.env.example` traz `AUTH_SECRET=` vazio, e vazio conta como ausente, como em `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` - user: "Vazio = ausente (Recomendado)"; em produção `AUTH_SECRET` só precisa não ser vazia - user: "Só não vazia (Recomendado)"; a API do e2e recebe `AUTH_SECRET=e2e-auth-secret`, `GOOGLE_CLIENT_ID=e2e-google-client`, `GOOGLE_CLIENT_SECRET=e2e-google-secret`, `TRUST_PROXY_HOPS=0` e `WEB_URL=http://localhost:3000` - user: "Pode (Recomendado)". Os três testes de integração que sobem a API em production (`email-send`, `swagger`, `email-secrecy`) passaram a receber essas variáveis por `test/account-env.ts`, sem mudar asserção. (2026-11-20, T4) o 429 leva `Retry-After` por uma `TooManyAttemptsException` com `retryAfterSeconds`, que o `AllExceptionsFilter` grava como cabeçalho; o teste do 429 sobe uma rota de fixture e confere status, mensagem e cabeçalho - user: "Exceção + filtro (Recomendado)". Com N = 1 a mensagem é "Muitas tentativas. Tente de novo em 1 minuto."; spec e design atualizados - user: '"em 1 minuto" (Recomendado)'.
 **Dispatched:** none
 **Walked:** none
 
