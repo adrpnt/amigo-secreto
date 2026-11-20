@@ -12,6 +12,7 @@ import { EmailVerificationService } from './email-verification.service.js';
 import { GoogleAuthController } from './google/google-auth.controller.js';
 import { GoogleAuthService } from './google/google-auth.service.js';
 import { GoogleOidcClient } from './google/google-oidc.client.js';
+import { GoogleSignupService } from './google/google-signup.service.js';
 import { CsrfGuard } from './guards/csrf.guard.js';
 import { SessionGuard } from './guards/session.guard.js';
 import { LoginService } from './login.service.js';
@@ -39,6 +40,7 @@ import { SessionsService } from './sessions.service.js';
     PasswordResetService,
     GoogleOidcClient,
     GoogleAuthService,
+    GoogleSignupService,
     { provide: APP_GUARD, useClass: SessionGuard },
     { provide: APP_GUARD, useClass: CsrfGuard },
   ],

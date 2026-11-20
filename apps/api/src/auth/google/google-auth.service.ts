@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createHash, randomBytes } from 'node:crypto';
-import { DataSource } from 'typeorm';
+import { DataSource, type EntityManager } from 'typeorm';
 import type { EnvironmentVariables } from '../../config/env.validation.js';
 import { EmailService } from '../../email/email.service.js';
 import { BusinessEventsService } from '../../observability/business-events.service.js';
@@ -43,8 +43,15 @@ export type GoogleCallbackQuery = {
 
 type GoogleError = 'google' | 'google_nao_verificado';
 
-// Resultado da conta no retorno: entra, vai completar o cadastro ou é recusada.
-type AccountOutcome =
+// Identidade do Google já com o e-mail normalizado.
+export type GoogleIdentity = {
+  sub: string;
+  email: string;
+  picture: string | null;
+};
+
+// Resultado da conta: entra, vai completar o cadastro ou é recusada.
+export type AccountOutcome =
   | { kind: 'session'; userId: string; verifiedNow: boolean }
   | { kind: 'signup' }
   | { kind: 'error'; error: GoogleError };
@@ -126,7 +133,9 @@ export class GoogleAuthService {
     if (!profile.emailVerified) return errorUrl('google_nao_verificado', next);
 
     const email = profile.email.trim().toLowerCase();
-    const outcome = await this.resolveAccount(profile, email);
+    const outcome = await this.dataSource.transaction((manager) =>
+      this.resolveAccount({ ...profile, email }, manager),
+    );
     if (outcome.kind === 'error') return errorUrl(outcome.error, next);
     if (outcome.kind === 'signup') {
       const signup: GoogleSignup = {
@@ -144,46 +153,60 @@ export class GoogleAuthService {
       return SIGNUP_PATH;
     }
 
-    if (outcome.verifiedNow) {
-      this.events.record('user.email_verified', { userId: outcome.userId });
-    }
-    if (currentSessionId) await this.sessions.revoke(currentSessionId);
-    await this.sessions.create(outcome.userId, response);
+    await this.openSession(outcome, response, currentSessionId);
     return next;
   }
 
   // Conta vinculada entra com a foto atual; conta com o mesmo e-mail e sem
   // Google é vinculada; vinculada a outro Google é recusada.
-  private resolveAccount(
-    profile: GoogleProfile,
-    email: string,
+  async resolveAccount(
+    identity: GoogleIdentity,
+    manager: EntityManager,
   ): Promise<AccountOutcome> {
-    return this.dataSource.transaction(async (manager) => {
-      const linked = await manager.findOneBy(User, { googleId: profile.sub });
-      if (linked) {
-        await manager.update(User, linked.id, { avatarUrl: profile.picture });
-        return { kind: 'session', userId: linked.id, verifiedNow: false };
-      }
+    const linked = await manager.findOneBy(User, { googleId: identity.sub });
+    if (linked) {
+      await manager.update(User, linked.id, { avatarUrl: identity.picture });
+      return { kind: 'session', userId: linked.id, verifiedNow: false };
+    }
 
-      const user = await manager.findOneBy(User, { email });
-      if (!user) return { kind: 'signup' };
-      if (user.googleId !== null) return { kind: 'error', error: 'google' };
+    const user = await manager.findOneBy(User, { email: identity.email });
+    if (!user) return { kind: 'signup' };
+    if (user.googleId !== null) return { kind: 'error', error: 'google' };
 
-      await manager.update(User, user.id, {
-        googleId: profile.sub,
-        avatarUrl: profile.picture,
-        emailVerifiedAt: user.emailVerifiedAt ?? new Date(),
-      });
-      await this.emails.enqueue(
-        googleLinkedEmail({ to: user.email, name: user.name }),
-        { manager },
-      );
-      return {
-        kind: 'session',
-        userId: user.id,
-        verifiedNow: user.emailVerifiedAt === null,
-      };
+    await manager.update(User, user.id, {
+      googleId: identity.sub,
+      avatarUrl: identity.picture,
+      emailVerifiedAt: user.emailVerifiedAt ?? new Date(),
     });
+    await this.emails.enqueue(
+      googleLinkedEmail({ to: user.email, name: user.name }),
+      { manager },
+    );
+    return {
+      kind: 'session',
+      userId: user.id,
+      verifiedNow: user.emailVerifiedAt === null,
+    };
+  }
+
+  // Encerra a sessão que o navegador tinha e abre a da conta do Google.
+  async openSession(
+    { userId, verifiedNow }: { userId: string; verifiedNow: boolean },
+    response: CookieResponse,
+    currentSessionId: string | undefined,
+  ): Promise<void> {
+    if (verifiedNow) this.events.record('user.email_verified', { userId });
+    if (currentSessionId) await this.sessions.revoke(currentSessionId);
+    await this.sessions.create(userId, response);
+  }
+
+  // Devolve null para g_signup ausente, adulterado ou vencido.
+  readSignup(value: string | undefined): GoogleSignup | null {
+    return readSignedCookie<GoogleSignup>(this.secret(), value);
+  }
+
+  clearSignup(response: CookieResponse): void {
+    response.clearCookie(GOOGLE_SIGNUP_COOKIE, this.cookieOptions('/'));
   }
 
   private secret(): string {

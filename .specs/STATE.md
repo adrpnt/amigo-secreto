@@ -150,11 +150,11 @@
 ## Handoff
 
 - **Feature**: 03-auth (`.specs/features/03-auth/`), em execução
-- **Phase / Task**: fase 1 (T1 a T7) concluída na branch `pntadr/per-93-fase-1-contas-sessao-csrf-e-rate-limit`; gate Build verde (146 testes na API, 16 unitários e 16 e2e no web)
-- **Completed**: T1 a T7; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
+- **Phase / Task**: fase 3 (T15 a T20) em andamento na branch `pntadr/per-95-fase-3-google-e-perfil-na-api`; T15 a T17 commitadas (247 testes na API)
+- **Completed**: fases 1 e 2 (PRs #12 e #13 mergeados); T15 a T17; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 1, atualizar a `main`, criar a branch da PER-94 e executar a fase 2 (T8 a T14)
-- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
+- **Next step**: T18 (`GET` e `PATCH /users/me`), depois T19 e T20, gate Build da fase, push e PR
+- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98; PER-95 em In Progress com T15 a T17 marcadas
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-93-fase-1-contas-sessao-csrf-e-rate-limit
+- **Branch**: pntadr/per-95-fase-3-google-e-perfil-na-api

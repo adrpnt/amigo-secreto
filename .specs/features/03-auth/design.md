@@ -167,6 +167,7 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
   - `GET /auth/google/start?next=` - 302 para `GOOGLE_AUTH_URL` com `client_id`, `redirect_uri=WEB_URL/api/auth/google/callback`, `scope=openid email profile`, `state`, `code_challenge` (S256); cookie assinado `g_oauth` por 10 min.
   - `GET /auth/google/callback?code&state` - confere `state` com o cookie, troca o code em `GOOGLE_TOKEN_URL`, decodifica o `id_token` e confere `aud`, `iss` e `exp`; segue os ramos do diagrama.
   - `POST /auth/google/complete` `{ name, acceptTerms, marketingOptIn }` - lê `g_signup`; se o e-mail ganhou conta nesse meio-tempo, vincula em vez de criar.
+  - `GET /auth/google/signup` - devolve `{ name, email }` do `g_signup` válido, para a tela "Complete seu cadastro" preencher o nome; `401` sem ele.
 - **Cookies assinados**: `g_oauth` e `g_signup` levam JSON em base64url com HMAC-SHA256 por `AUTH_SECRET`, `HttpOnly`, `SameSite=Lax`, `Path=/api/auth/google` (o `g_signup` com `Path=/`).
 - **Configuração**: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` (obrigatórias em produção), `GOOGLE_AUTH_URL` e `GOOGLE_TOKEN_URL` com os endereços do Google como padrão.
 
