@@ -6,6 +6,7 @@ import { EmailModule } from './email/email.module.js';
 import { HealthModule } from './health/health.module.js';
 import { JobsSchedulerModule } from './jobs/jobs-scheduler.module.js';
 import { ObservabilityModule } from './observability/observability.module.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ObservabilityModule } from './observability/observability.module.js';
     HealthModule,
     EmailModule,
     JobsSchedulerModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

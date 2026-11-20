@@ -103,10 +103,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] `apps/api/src/users/users.module.ts` criado e importado no `AppModule`
-- [ ] Testes em `test/user-table.int-spec.ts`: `tabela user > é criada pela migration com as colunas da conta`, `> recusa dois e-mails iguais`, `> recusa dois googleId iguais` e `> é removida ao reverter a migration`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 110 tests pass na API
+- [x] `apps/api/src/users/users.module.ts` criado e importado no `AppModule`
+- [x] Testes em `test/user-table.int-spec.ts`: `tabela user > é criada pela migration com as colunas da conta`, `> recusa dois e-mails iguais`, `> recusa dois googleId iguais` e `> é removida ao reverter a migration`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 110 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -1339,7 +1339,7 @@ Proof: run e2e | ✓ provedores falsos › o e-mail enfileirado pela API chega �
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** none
+**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois.
 **Dispatched:** none
 **Walked:** none
 
