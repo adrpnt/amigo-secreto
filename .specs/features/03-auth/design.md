@@ -133,11 +133,11 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
 ### API: `AuthTokensService`
 
 - **Purpose**: Links de uso único enviados por e-mail.
-- **Location**: `apps/api/src/auth/auth-token.service.ts`
+- **Location**: `apps/api/src/auth/auth-tokens.service.ts`
 - **Interfaces**:
-  - `issue(userId, type, { ttl, newEmail?, next? }, manager): Promise<string>` - apaga os tokens não usados do mesmo tipo e usuário, grava o SHA-256 do novo e devolve o valor bruto para o link.
+  - `issue(userId, type, { newEmail?, next? }, manager): Promise<string>` - apaga os tokens não usados do mesmo tipo e usuário, grava o SHA-256 do novo e devolve o valor bruto para o link.
   - `consume(rawToken, type, manager): Promise<AuthToken | null>` - `SELECT ... FOR UPDATE`; nulo se vencido, usado ou inexistente; marca `usedAt`.
-- **Tipos**: `email_verification` (7 dias), `password_reset` (1 hora), `email_change` (7 dias).
+- **Tipos**: `email_verification` (7 dias), `password_reset` (1 hora), `email_change` (7 dias); a validade é do tipo, definida no serviço.
 
 ### API: `AuthService` e `AuthController`
 
