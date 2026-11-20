@@ -7,6 +7,7 @@ import { Public } from '../../src/auth/decorators/public.decorator.js';
 import { validateEnvironment } from '../../src/config/env.validation.js';
 import { DatabaseModule } from '../../src/database/database.module.js';
 import { HealthModule } from '../../src/health/health.module.js';
+import { ObservabilityModule } from '../../src/observability/observability.module.js';
 
 @Controller('fixtures/auth')
 class AuthFixtureController {
@@ -18,6 +19,12 @@ class AuthFixtureController {
   @All('mutation')
   mutation(): { ok: true } {
     return { ok: true };
+  }
+
+  // Erro inesperado numa rota com sessão, para o teste de sigilo.
+  @Post('failure')
+  failure(): never {
+    throw new Error('Falha forçada na rota da conta');
   }
 
   @Public()
@@ -37,6 +44,7 @@ class AuthFixtureController {
   imports: [
     ConfigModule.forRoot({ isGlobal: true, validate: validateEnvironment }),
     DatabaseModule,
+    ObservabilityModule,
     AuthModule,
     HealthModule,
   ],

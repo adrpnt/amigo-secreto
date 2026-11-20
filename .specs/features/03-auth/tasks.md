@@ -258,10 +258,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] `auth-token.entity.ts` e a migration criados
-- [ ] Testes em `test/auth-tokens.int-spec.ts`: `AuthTokensService > guarda só o SHA-256 do token`, `> invalida o token não usado do mesmo tipo ao emitir outro`, `> consome o token uma vez só`, `> recusa o token vencido`, `> recusa o token de outro tipo`, `> vence em 7 dias a confirmação, em 1 hora a recuperação e em 7 dias a troca de e-mail` e `> consome o mesmo token uma vez só com duas transações simultâneas`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 153 tests pass na API
+- [x] `auth-token.entity.ts` e a migration criados
+- [x] Testes em `test/auth-tokens.int-spec.ts`: `AuthTokensService > guarda só o SHA-256 do token`, `> invalida o token não usado do mesmo tipo ao emitir outro`, `> consome o token uma vez só`, `> recusa o token vencido`, `> recusa o token de outro tipo`, `> vence em 7 dias a confirmação, em 1 hora a recuperação e em 7 dias a troca de e-mail` e `> consome o mesmo token uma vez só com duas transações simultâneas`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 153 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -280,9 +280,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `src/auth/auth-emails.spec.ts`: `e-mails da conta > confirmação tem o assunto "Confirme seu e-mail no Amigo Secreto" e o botão "Confirmar e-mail" com o link`, `> já tem conta tem o assunto "Você já tem uma conta no Amigo Secreto" e os botões "Entrar" e "Redefinir senha"`, `> recuperação tem o assunto "Redefina sua senha do Amigo Secreto" e o botão "Redefinir senha" com o link`, `> senha alterada tem o assunto "Sua senha do Amigo Secreto foi alterada"`, `> novo e-mail tem o assunto "Confirme seu novo e-mail no Amigo Secreto" e o botão "Confirmar novo e-mail" com o link`, `> e-mail antigo tem o assunto "Pedido de troca de e-mail no Amigo Secreto"` e `> Google vinculado tem o assunto "Conta Google vinculada ao Amigo Secreto"`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 160 tests pass na API
+- [x] Testes em `src/auth/auth-emails.spec.ts`: `e-mails da conta > confirmação tem o assunto "Confirme seu e-mail no Amigo Secreto" e o botão "Confirmar e-mail" com o link`, `> já tem conta tem o assunto "Você já tem uma conta no Amigo Secreto" e os botões "Entrar" e "Redefinir senha"`, `> recuperação tem o assunto "Redefina sua senha do Amigo Secreto" e o botão "Redefinir senha" com o link`, `> senha alterada tem o assunto "Sua senha do Amigo Secreto foi alterada"`, `> novo e-mail tem o assunto "Confirme seu novo e-mail no Amigo Secreto" e o botão "Confirmar novo e-mail" com o link`, `> e-mail antigo tem o assunto "Pedido de troca de e-mail no Amigo Secreto"` e `> Google vinculado tem o assunto "Conta Google vinculada ao Amigo Secreto"`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 160 tests pass na API
 
 **Tests**: unit
 **Gate**: quick
@@ -301,10 +301,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Rota em `auth.controller.ts` e DTO em `dto/register.dto.ts`
-- [ ] Testes em `test/register.int-spec.ts`: `cadastro > cria a conta não confirmada com a data e a versão dos termos e responde 202 com o e-mail`, `> enfileira o e-mail de confirmação na mesma transação`, `> grava o opt-in de marketing com a data quando a caixa vem marcada`, `> grava a conta sem opt-in quando a caixa vem desmarcada`, `> recusa com 400 sem a caixa de termos`, `> recusa com 400 senha de 7 ou de 129 caracteres`, `> recusa com 400 nome vazio depois do trim ou com 81 caracteres`, `> recusa com 400 e-mail inválido`, `> responde igual para e-mail já cadastrado com outra caixa de letras, sem mudar a conta, e enfileira o aviso já tem conta`, `> não abre sessão`, `> guarda a senha como hash argon2id`, `> guarda o e-mail sem espaços nas pontas e em minúsculas`, `> emite user.registered com method password e o id, sem e-mail nem nome`, `> cria uma conta só com dois cadastros simultâneos do mesmo e-mail`, `> responde 429 no 6º cadastro do mesmo e-mail em 1 hora sem enfileirar e-mail` e `> responde 429 no 21º cadastro do mesmo IP em 1 hora`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 176 tests pass na API
+- [x] Rota em `auth.controller.ts`, DTO em `dto/register.dto.ts`, `safeNext` da API em `src/auth/safe-next.ts` e `TERMS_VERSION` em `packages/shared`
+- [x] Testes em `test/register.int-spec.ts`: `cadastro > cria a conta não confirmada com a data e a versão dos termos e responde 202 com o e-mail`, `> enfileira o e-mail de confirmação na mesma transação`, `> grava o opt-in de marketing com a data quando a caixa vem marcada`, `> grava a conta sem opt-in quando a caixa vem desmarcada`, `> recusa com 400 sem a caixa de termos`, `> recusa com 400 senha de 7 ou de 129 caracteres`, `> recusa com 400 nome vazio depois do trim ou com 81 caracteres`, `> recusa com 400 e-mail inválido`, `> responde igual para e-mail já cadastrado com outra caixa de letras, sem mudar a conta, e enfileira o aviso já tem conta`, `> não abre sessão`, `> guarda a senha como hash argon2id`, `> guarda o e-mail sem espaços nas pontas e em minúsculas`, `> emite user.registered com method password e o id, sem e-mail nem nome`, `> cria uma conta só com dois cadastros simultâneos do mesmo e-mail`, `> responde 429 no 6º cadastro do mesmo e-mail em 1 hora sem enfileirar e-mail`, `> responde 429 no 21º cadastro do mesmo IP em 1 hora` e `> troca por /perfil um destino de outro site`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 177 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -315,7 +315,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 #### T11: Criar a confirmação de e-mail e o reenvio
 
-**What**: `POST /auth/email/verify { token }` confirma, emite `user.email_verified`, abre a sessão e devolve `{ next }` (do token ou `/perfil`), `410` para link vencido, usado ou substituído; `POST /auth/email/resend` autenticado, com limites de 5 por e-mail e 20 por IP por hora, invalida o link anterior e enfileira outro.
+**What**: `POST /auth/email/verify { token }` confirma, emite `user.email_verified`, abre a sessão e devolve `{ next }` (do token ou `/perfil`), `410` para link vencido, usado ou substituído; `POST /auth/email/verification-link` autenticado, com limites de 5 por e-mail e 20 por IP por hora, invalida o link anterior e enfileira outro.
 **Where**: `apps/api/src/auth/email-verification.service.ts`
 **Depends on**: T10
 **Reuses**: `AuthTokensService`, `SessionsService`, `auth-emails.ts`
@@ -323,10 +323,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Rotas em `auth.controller.ts`
-- [ ] Testes em `test/email-verification.int-spec.ts`: `confirmação de e-mail > confirma o e-mail, abre a sessão e devolve o destino do cadastro`, `> devolve /perfil como destino quando o cadastro não tinha origem`, `> emite user.email_verified`, `> responde 410 a link vencido`, `> responde 410 a link usado`, `> responde 410 a link substituído por um reenvio`, `> responde 410 ao link de quem já confirmou por outro caminho`, `> reenvio invalida o link anterior e enfileira um novo`, `> reenvio exige sessão` e `> responde 429 no 6º reenvio em 1 hora`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 186 tests pass na API
+- [x] Rotas em `auth.controller.ts`
+- [x] Testes em `test/email-verification.int-spec.ts`: `confirmação de e-mail > confirma o e-mail, abre a sessão e devolve o destino do cadastro`, `> devolve /perfil como destino quando o cadastro não tinha origem`, `> emite user.email_verified`, `> responde 410 a link vencido`, `> responde 410 a link usado`, `> responde 410 a link substituído por um reenvio`, `> responde 410 ao link de quem já confirmou por outro caminho`, `> reenvio invalida o link anterior e enfileira um novo`, `> reenvio exige sessão`, `> responde 429 no 6º reenvio em 1 hora`, `> encerra a sessão que o navegador já tinha ao confirmar` e `> reenvio responde 409 "Seu e-mail já está confirmado." a quem já confirmou`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 189 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -345,10 +345,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Rotas em `auth.controller.ts`
-- [ ] Testes em `test/login.int-spec.ts`: `login e logout > abre a sessão com a senha certa e devolve o usuário`, `> responde 401 "E-mail ou senha incorretos." a e-mail sem conta`, `> responde 401 "E-mail ou senha incorretos." a senha errada`, `> responde 401 "E-mail ou senha incorretos." a conta só Google`, `> encerra a sessão e apaga o cookie no logout`, `> mantém duas sessões independentes em dois logins`, `> encerra todas as sessões em sair de todos os dispositivos`, `> responde 429 na 11ª tentativa do mesmo e-mail em 15 minutos sem verificar a senha`, `> responde 429 na 31ª tentativa do mesmo IP em 15 minutos`, `> conta as tentativas pelo IP do X-Forwarded-For com TRUST_PROXY_HOPS 1` e `> troca o token CSRF ao abrir e ao encerrar a sessão`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 197 tests pass na API
+- [x] Rotas em `auth.controller.ts`
+- [x] Testes em `test/login.int-spec.ts`: `login e logout > abre a sessão com a senha certa e devolve o usuário`, `> responde 401 "E-mail ou senha incorretos." a e-mail sem conta`, `> responde 401 "E-mail ou senha incorretos." a senha errada`, `> responde 401 "E-mail ou senha incorretos." a conta só Google`, `> encerra a sessão e apaga o cookie no logout`, `> mantém duas sessões independentes em dois logins`, `> encerra todas as sessões em sair de todos os dispositivos`, `> responde 429 na 11ª tentativa do mesmo e-mail em 15 minutos sem verificar a senha`, `> responde 429 na 31ª tentativa do mesmo IP em 15 minutos`, `> conta as tentativas pelo IP do X-Forwarded-For com TRUST_PROXY_HOPS 1`, `> troca o token CSRF ao abrir e ao encerrar a sessão`, `> encerra a sessão que o navegador já tinha ao entrar` e `> recusa com 400 e-mail inválido ou senha vazia sem contar tentativa`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 202 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -367,10 +367,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Rotas em `auth.controller.ts`
-- [ ] Testes em `test/password-reset.int-spec.ts`: `recuperação de senha > responde 202 igual com e sem conta`, `> enfileira o e-mail com link de 1 hora e invalida o anterior`, `> não enfileira e-mail para e-mail sem conta`, `> troca a senha, confirma o e-mail, encerra todas as sessões e abre uma nova`, `> enfileira o aviso de senha alterada`, `> responde 410 a link com mais de 1 hora`, `> responde 410 a link usado`, `> responde 410 a link substituído por um pedido mais novo`, `> cria a senha de uma conta só Google, que passa a entrar com e-mail e senha`, `> responde 429 no 6º pedido do mesmo e-mail em 1 hora sem enfileirar e-mail` e `> recusa com 400 senha nova com menos de 8 ou mais de 128 caracteres`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 208 tests pass na API
+- [x] Rotas em `auth.controller.ts`
+- [x] Testes em `test/password-reset.int-spec.ts`: `recuperação de senha > responde 202 igual com e sem conta`, `> enfileira o e-mail com link de 1 hora e invalida o anterior`, `> não enfileira e-mail para e-mail sem conta`, `> troca a senha, confirma o e-mail, encerra todas as sessões e abre uma nova`, `> enfileira o aviso de senha alterada`, `> responde 410 a link com mais de 1 hora`, `> responde 410 a link usado`, `> responde 410 a link substituído por um pedido mais novo`, `> cria a senha de uma conta só Google, que passa a entrar com e-mail e senha`, `> responde 429 no 6º pedido do mesmo e-mail em 1 hora sem enfileirar e-mail`, `> recusa com 400 senha nova com menos de 8 ou mais de 128 caracteres` e `> emite user.email_verified quando a conta não tinha o e-mail confirmado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 214 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -389,9 +389,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes: `sigilo da conta > não escreve senha, token de sessão, token de link nem cookie no log`, `> não manda senha, token nem cookie ao Sentry num erro 500`, `> não devolve hash de senha nem de token nas respostas da conta` e `> não devolve senha nem token nas respostas de erro 400`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 212 tests pass na API
+- [x] Testes: `sigilo da conta > não escreve senha, token de sessão, token de link nem cookie no log`, `> não manda senha, token nem cookie ao Sentry num erro 500`, `> não devolve hash de senha nem de token nas respostas da conta` e `> não devolve senha nem token nas respostas de erro 400`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
+- [x] Test count: 218 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -415,7 +415,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] `apps/api/test/fake-google.ts` criado
 - [ ] Testes em `test/google-oidc.int-spec.ts`: `GoogleOidcClient > monta a URL de autorização com client_id, redirect_uri, scope openid email profile, state e code_challenge S256`, `> troca o code com code_verifier e client secret e devolve sub, e-mail, email_verified, nome e foto`, `> recusa id_token com aud de outro cliente`, `> recusa id_token com iss fora do Google`, `> recusa id_token vencido` e `> falha em 10 segundos quando o Google não responde`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 218 tests pass na API
+- [ ] Test count: 224 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -429,7 +429,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 **What**: `GET /auth/google/start?next=` (cookie assinado `g_oauth` com `state`, verifier e destino por 10 min; `404` sem Google configurado) e `GET /auth/google/callback` com os ramos do design: sessão de conta vinculada, vínculo de e-mail verificado com aviso, `g_signup` para `/completar-cadastro`, `erro=google_nao_verificado` e `erro=google`; foto atualizada a cada login; `googleEnabled` no `GET /auth/session`.
 **Where**: `apps/api/src/auth/google/google-auth.service.ts`
 **Depends on**: T15
-**Reuses**: `GoogleOidcClient`, `SessionsService`, `auth-emails.ts`, `fake-google.ts`, `safeNext` da API (no mesmo arquivo de cookies assinados)
+**Reuses**: `GoogleOidcClient`, `SessionsService`, `auth-emails.ts`, `fake-google.ts`, `safeNext` da API (`src/auth/safe-next.ts`, criado na T10)
 **Requirement**: AUTH-04
 
 **Done when**:
@@ -437,7 +437,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] `google-auth.controller.ts` e `signed-cookie.ts` criados
 - [ ] Testes em `test/google-login.int-spec.ts`: `login com Google > start redireciona ao Google e grava o cookie g_oauth com state, verifier e destino`, `> start responde 404 sem Google configurado`, `> GET /auth/session informa googleEnabled false sem GOOGLE_CLIENT_ID fora de production`, `> abre a sessão da conta já vinculada e leva ao destino`, `> vincula a conta com senha de e-mail verificado, confirma o e-mail, abre a sessão e enfileira o aviso de Google vinculado`, `> leva e-mail verificado sem conta a /completar-cadastro com o cookie g_signup`, `> recusa e-mail não verificado com erro=google_nao_verificado sem criar, vincular nem abrir sessão`, `> volta a /entrar com erro=google quando o state difere do cookie`, `> volta a /entrar com erro=google quando a pessoa cancela no Google`, `> volta a /entrar com erro=google quando o Google recusa o code`, `> atualiza a foto da conta vinculada a cada login` e `> troca por /perfil um destino de outro site`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 230 tests pass na API
+- [ ] Test count: 236 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -459,7 +459,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] Rota em `google-auth.controller.ts` e DTO `dto/google-complete.dto.ts`
 - [ ] Testes em `test/google-signup.int-spec.ts`: `completar cadastro com Google > cria a conta confirmada, vinculada e com a foto do Google, abre a sessão e devolve o destino`, `> emite user.registered com method google e o id, sem e-mail nem nome`, `> recusa com 400 sem a caixa de termos`, `> grava o opt-in de marketing quando a caixa vem marcada`, `> vincula em vez de criar quando o e-mail ganhou conta no meio-tempo` e `> responde 401 sem o cookie g_signup, com ele vencido ou adulterado`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 236 tests pass na API
+- [ ] Test count: 242 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -481,7 +481,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] `users.service.ts` e `dto/update-profile.dto.ts` criados
 - [ ] Testes em `test/profile.int-spec.ts`: `perfil > GET /users/me devolve nome, e-mail, foto e opt-in`, `> PATCH grava o nome sem os espaços das pontas`, `> PATCH recusa com 400 nome vazio ou com 81 caracteres e mantém o anterior` e `> PATCH grava o opt-in com a data da mudança`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 240 tests pass na API
+- [ ] Test count: 246 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -503,7 +503,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] Rota em `users.controller.ts` e DTO `dto/change-password.dto.ts`
 - [ ] Testes em `test/password-change.int-spec.ts`: `troca de senha > troca a senha, mantém a sessão atual e encerra as outras`, `> enfileira o aviso de senha alterada`, `> recusa com 400 "Senha atual incorreta." sem mudar nada`, `> cria a senha de conta só Google sem pedir a atual`, `> recusa com 400 senha nova com menos de 8 ou mais de 128 caracteres` e `> mantém válido o link de recuperação pendente`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 246 tests pass na API
+- [ ] Test count: 252 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -525,7 +525,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] Rotas em `users.controller.ts` e `auth.controller.ts`, DTO `dto/change-email.dto.ts`
 - [ ] Testes em `test/email-change.int-spec.ts`: `troca de e-mail > enfileira o link para o e-mail novo e o aviso para o atual e responde com o e-mail novo`, `> mantém o e-mail atual para login até a confirmação`, `> troca o e-mail pelo novo, já confirmado, ao confirmar o link`, `> responde 409 "Este e-mail já está em uso por outra conta." quando o e-mail novo ganhou conta`, `> recusa com 400 "Senha atual incorreta." sem enfileirar e-mail`, `> recusa conta sem senha pedindo para criar uma senha antes`, `> responde 410 a link vencido`, `> responde 410 a link usado` e `> responde 410 a link substituído por um pedido mais novo`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm test`
-- [ ] Test count: 255 tests pass na API
+- [ ] Test count: 261 tests pass na API
 
 **Tests**: integration
 **Gate**: full
@@ -987,6 +987,7 @@ Proof: run e2e | ✓ confirmação de e-mail › o link do e-mail confirma, abre
 
 **C12** - Confirmar emite `user.email_verified` (AUTH-02, AC 2)
 Proof: run api | ✓ confirmação de e-mail > emite user.email_verified
+Proof: run api | ✓ recuperação de senha > emite user.email_verified quando a conta não tinha o e-mail confirmado
 
 **C13** - Link de confirmação vencido, usado ou substituído mostra "Este link expirou ou já foi usado.", com "Reenviar e-mail" para quem está logado sem confirmar (AUTH-02, AC 3)
 Proof: run api | ✓ confirmação de e-mail > responde 410 a link vencido
@@ -1216,6 +1217,7 @@ Proof: run web | ✓ safeNext > troca por /perfil um caminho que começa com /\
 Proof: run web | ✓ safeNext > troca por /perfil um endereço com esquema
 Proof: run web | ✓ safeNext > troca por /perfil um valor ausente
 Proof: run api | ✓ login com Google > troca por /perfil um destino de outro site
+Proof: run api | ✓ cadastro > troca por /perfil um destino de outro site
 
 **C58** - Sem sessão, o cabeçalho mostra "Entrar", que leva a `/entrar` (AUTH-09, AC 3)
 Proof: run e2e | ✓ cabeçalho › sem sessão mostra "Entrar", que leva a /entrar
@@ -1339,7 +1341,7 @@ Proof: run e2e | ✓ provedores falsos › o e-mail enfileirado pela API chega �
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois. (2026-11-20, T3) `AUTH_SECRET` fora de produção tem o padrão fixo `amigo-secreto-dev-auth-secret`; o `.env.example` traz `AUTH_SECRET=` vazio, e vazio conta como ausente, como em `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` - user: "Vazio = ausente (Recomendado)"; em produção `AUTH_SECRET` só precisa não ser vazia - user: "Só não vazia (Recomendado)"; a API do e2e recebe `AUTH_SECRET=e2e-auth-secret`, `GOOGLE_CLIENT_ID=e2e-google-client`, `GOOGLE_CLIENT_SECRET=e2e-google-secret`, `TRUST_PROXY_HOPS=0` e `WEB_URL=http://localhost:3000` - user: "Pode (Recomendado)". Os três testes de integração que sobem a API em production (`email-send`, `swagger`, `email-secrecy`) passaram a receber essas variáveis por `test/account-env.ts`, sem mudar asserção. (2026-11-20, T4) o 429 leva `Retry-After` por uma `TooManyAttemptsException` com `retryAfterSeconds`, que o `AllExceptionsFilter` grava como cabeçalho; o teste do 429 sobe uma rota de fixture e confere status, mensagem e cabeçalho - user: "Exceção + filtro (Recomendado)". Com N = 1 a mensagem é "Muitas tentativas. Tente de novo em 1 minuto."; spec e design atualizados - user: '"em 1 minuto" (Recomendado)'. (2026-11-20, T5) a resposta HTTP é tipada por um tipo local mínimo em `src/auth/cookies.ts` (`CookieResponse`), sem `@types/express` - user: "Tipo local mínimo (Recomendado)". `touch` recebe o token bruto do cookie (`touch(session, response, rawToken)`) para reenviar o `sid` - user: "Manter (Recomendado)"; o arquivo é `sessions.service.ts`, como a task e a classe; design corrigido - user: "sessions.service.ts (Recomendado)". (2026-11-20, T6) o 401 do guard responde `{ statusCode: 401, message: "Entre para continuar.", error: "Unauthorized" }` - user: '"Entre para continuar." (Recomendado)'. (2026-11-20, T7) `GET /auth/session` mantém o cookie `csrf` que já vale para a sessão atual e só emite outro quando ele falta ou não vale - user: "Mantém o atual (Recomendado)"; o cookie `csrf` tem `Max-Age` de 30 dias, como o `sid` - user: "30 dias, como o sid (Recomendado)"; o 403 responde `{ statusCode: 403, message: "Recarregue a página e tente de novo.", error: "Forbidden" }` - user: '"Recarregue a página e tente de novo." (Recomendado)'. O gate Build da T7 não subiu o e2e porque um container de outro projeto ocupava a porta 3000; o e2e passou a subir o site na porta própria 3200 (`playwright.config.ts`), em commit à parte antes da T7 - user: "Porta fixa própria (Recomendado)" e "Commit próprio antes da T7 (Recomendado)". O helper de `test/session-guard.int-spec.ts` passou a guardar só o cookie `sid`, porque abrir sessão agora grava também o `csrf`; nenhuma asserção mudou.
+**Settled mid-build:** (2026-11-20, T1) colunas da tabela `user` sem tamanho no design: `termsVersion` varchar(20), `passwordHash` e `avatarUrl` varchar sem limite - user: "Manter assim (Recomendado)"; `marketingOptIn` com default false no banco - user: "Default false (Recomendado)". Contagem inicial conferida: 106 testes na API antes da T1, 110 depois. (2026-11-20, T3) `AUTH_SECRET` fora de produção tem o padrão fixo `amigo-secreto-dev-auth-secret`; o `.env.example` traz `AUTH_SECRET=` vazio, e vazio conta como ausente, como em `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` - user: "Vazio = ausente (Recomendado)"; em produção `AUTH_SECRET` só precisa não ser vazia - user: "Só não vazia (Recomendado)"; a API do e2e recebe `AUTH_SECRET=e2e-auth-secret`, `GOOGLE_CLIENT_ID=e2e-google-client`, `GOOGLE_CLIENT_SECRET=e2e-google-secret`, `TRUST_PROXY_HOPS=0` e `WEB_URL=http://localhost:3000` - user: "Pode (Recomendado)". Os três testes de integração que sobem a API em production (`email-send`, `swagger`, `email-secrecy`) passaram a receber essas variáveis por `test/account-env.ts`, sem mudar asserção. (2026-11-20, T4) o 429 leva `Retry-After` por uma `TooManyAttemptsException` com `retryAfterSeconds`, que o `AllExceptionsFilter` grava como cabeçalho; o teste do 429 sobe uma rota de fixture e confere status, mensagem e cabeçalho - user: "Exceção + filtro (Recomendado)". Com N = 1 a mensagem é "Muitas tentativas. Tente de novo em 1 minuto."; spec e design atualizados - user: '"em 1 minuto" (Recomendado)'. (2026-11-20, T5) a resposta HTTP é tipada por um tipo local mínimo em `src/auth/cookies.ts` (`CookieResponse`), sem `@types/express` - user: "Tipo local mínimo (Recomendado)". `touch` recebe o token bruto do cookie (`touch(session, response, rawToken)`) para reenviar o `sid` - user: "Manter (Recomendado)"; o arquivo é `sessions.service.ts`, como a task e a classe; design corrigido - user: "sessions.service.ts (Recomendado)". (2026-11-20, T6) o 401 do guard responde `{ statusCode: 401, message: "Entre para continuar.", error: "Unauthorized" }` - user: '"Entre para continuar." (Recomendado)'. (2026-11-20, T7) `GET /auth/session` mantém o cookie `csrf` que já vale para a sessão atual e só emite outro quando ele falta ou não vale - user: "Mantém o atual (Recomendado)"; o cookie `csrf` tem `Max-Age` de 30 dias, como o `sid` - user: "30 dias, como o sid (Recomendado)"; o 403 responde `{ statusCode: 403, message: "Recarregue a página e tente de novo.", error: "Forbidden" }` - user: '"Recarregue a página e tente de novo." (Recomendado)'. O gate Build da T7 não subiu o e2e porque um container de outro projeto ocupava a porta 3000; o e2e passou a subir o site na porta própria 3200 (`playwright.config.ts`), em commit à parte antes da T7 - user: "Porta fixa própria (Recomendado)" e "Commit próprio antes da T7 (Recomendado)". O helper de `test/session-guard.int-spec.ts` passou a guardar só o cookie `sid`, porque abrir sessão agora grava também o `csrf`; nenhuma asserção mudou. (2026-11-20, T8) o arquivo é `auth-tokens.service.ts`, como a task e a classe; design corrigido - user: "auth-tokens.service.ts (Recomendado)"; a validade fica no serviço, por tipo (7 dias, 1 hora, 7 dias), e `issue` perde o `ttl`: `issue(userId, type, { newEmail?, next? }, manager)`; design corrigido - user: "No serviço, por tipo (Recomendado)". Colunas da `auth_token` sem tamanho no design: `type` enum do Postgres, `newEmail` varchar(254), `next` varchar sem limite, `tokenHash` char(64) único, índice em `userId` com FK `ON DELETE CASCADE` - user: "Aplicar assim (Recomendado)". (2026-11-20, T9) parágrafos e links dos e-mails da conta, todos abrindo com "Olá, {nome}." e links em `WEB_URL`: confirmação → `/confirmar-email?token=X`; já tem conta → "Entrar" `/entrar` e "Redefinir senha" `/esqueci-a-senha`; recuperação → `/redefinir-senha?token=X`; novo e-mail → `/confirmar-email?token=X&tipo=troca`; senha alterada, e-mail antigo (mostra o endereço novo) e Google vinculado sem botão; textos exatos em `src/auth/auth-emails.ts` e no teste - user: "Aprovar como está (Recomendado)". (2026-11-20, T10) a versão vigente dos termos é `TERMS_VERSION = '2026-11-19'` em `packages/shared`, lida pela API e pelo site - user: "packages/shared (Recomendado)"; o `safeNext` da API nasce na T10 em `src/auth/safe-next.ts`, com as mesmas regras do site (destino inválido ou ausente vira `/perfil`), e o cadastro grava no token o destino já validado; teste a mais `cadastro > troca por /perfil um destino de outro site` na C57, contagens da API das T10 a T20 somam 1, e a T16 reusa o arquivo - user: "Criar safeNext da API na T10 (Recomendado)"; a resposta `202 { email }` devolve o e-mail normalizado, e o aviso "já tem conta" cumprimenta com o nome da conta existente - user: "Normalizado + nome da conta (Recomendado)"; a corrida do cadastro usa `INSERT ... ON CONFLICT (email) DO NOTHING`, e sem linha devolvida segue o caminho "já tem conta" na mesma transação; as chaves do rate limit usam a rota `register` - user: "INSERT ... ON CONFLICT DO NOTHING (Recomendado)". (2026-11-20, T11) confirmar o e-mail encerra a sessão que o navegador já tinha (da mesma conta ou de outra) e abre a do dono do link - user: "Encerra a atual e abre a nova (Recomendado)"; reenvio para quem já confirmou responde 409 "Seu e-mail já está confirmado." sem emitir link - user: '409 "Seu e-mail já está confirmado." (Recomendado)'; o reenvio mantém o destino do link pendente (sem link pendente, `/perfil`), responde `202 { email }` e usa a rota `email-verification-link` nas chaves de rate limit - user: "Mantém o destino do link pendente + 202 { email } (Recomendado)". A T11 ganha os testes `> encerra a sessão que o navegador já tinha ao confirmar` e `> reenvio responde 409 "Seu e-mail já está confirmado." a quem já confirmou`; contagens da API das T11 a T20 somam 2. O teste `fronteira do Resend` recusa "resend" fora de `email/` e `config/`: a rota de reenvio passa a `POST /auth/email/verification-link`, o método a `sendVerificationLink` e a chave do rate limit a `email-verification-link`; design e T11 corrigidos - user: "Renomear a rota (Recomendado)". (2026-11-20, T12) o login encerra a sessão que o navegador já tinha, como a confirmação na T11 - user: "Encerra a anterior, como na T11 (Recomendado)"; o DTO do login exige e-mail válido (normalizado) e senha de 1 a 128 caracteres, e fora disso responde 400 antes do rate limit - user: "400 de validação (Recomendado)"; `logout-all` também troca o token CSRF, como o `logout` (AD-013); chaves do rate limit na rota `login`. A T12 ganha os testes `> encerra a sessão que o navegador já tinha ao entrar` e `> recusa com 400 e-mail inválido ou senha vazia sem contar tentativa`; contagens da API das T12 a T20 somam 2. (2026-11-20, T13) a recuperação segue as regras do cadastro e do login: `POST /auth/password/forgot { email, next? }` com e-mail normalizado e validado (400 se inválido), `next` pelo `safeNext` gravado no link, `202 { email }` com e sem conta e chave de rate limit `password-forgot`; `POST /auth/password/reset { token, password }` devolve `200 { next }` e também encerra a sessão de outra conta que o navegador tivesse; sem testes novos, o teste da troca de senha confere o destino e a sessão da outra conta - user: "Sim, as mesmas regras (Recomendado)". Toda confirmação de e-mail emite `user.email_verified` (AUTH-02 AC 2), inclusive a redefinição de senha e o vínculo do Google (T16), só na passagem de não confirmado para confirmado; a T13 ganha o teste `> emite user.email_verified quando a conta não tinha o e-mail confirmado` e as contagens da API das T13 a T20 somam 1 - user: "Sim, quando confirma agora (Recomendado)". (2026-11-20, T14) o gate Build da fase pegou no typecheck `const webUrl = this.config.get('WEB_URL', { infer: true })` como `string | undefined` nos serviços da T10, T11 e T13 (os gates por task não rodam typecheck); corrigido com `const webUrl: string` em commit próprio antes da T14 - user: "Commit próprio antes da T14 (Recomendado)"; daqui em diante cada task roda também `pnpm --filter @amigo-secreto/api typecheck`. No teste de sigilo, o Sentry manda além do evento um `client_report` do SDK (contagem de descartes); o teste conta os envelopes de evento e procura vazamento em todos.
 **Dispatched:** none
 **Walked:** none
 

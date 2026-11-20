@@ -133,11 +133,11 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
 ### API: `AuthTokensService`
 
 - **Purpose**: Links de uso único enviados por e-mail.
-- **Location**: `apps/api/src/auth/auth-token.service.ts`
+- **Location**: `apps/api/src/auth/auth-tokens.service.ts`
 - **Interfaces**:
-  - `issue(userId, type, { ttl, newEmail?, next? }, manager): Promise<string>` - apaga os tokens não usados do mesmo tipo e usuário, grava o SHA-256 do novo e devolve o valor bruto para o link.
+  - `issue(userId, type, { newEmail?, next? }, manager): Promise<string>` - apaga os tokens não usados do mesmo tipo e usuário, grava o SHA-256 do novo e devolve o valor bruto para o link.
   - `consume(rawToken, type, manager): Promise<AuthToken | null>` - `SELECT ... FOR UPDATE`; nulo se vencido, usado ou inexistente; marca `usedAt`.
-- **Tipos**: `email_verification` (7 dias), `password_reset` (1 hora), `email_change` (7 dias).
+- **Tipos**: `email_verification` (7 dias), `password_reset` (1 hora), `email_change` (7 dias); a validade é do tipo, definida no serviço.
 
 ### API: `AuthService` e `AuthController`
 
@@ -150,12 +150,14 @@ As regras que mudam o que a pessoa vê (validação, enumeração, limites, vali
   - `POST /auth/logout` (autenticada) - `204`, encerra a sessão e apaga `sid`.
   - `POST /auth/logout-all` (autenticada) - `204`, encerra todas.
   - `POST /auth/email/verify` `{ token }` - confirma, emite `user.email_verified`, abre sessão, devolve `{ next }`.
-  - `POST /auth/email/resend` (autenticada) - `202`.
+  - `POST /auth/email/verification-link` (autenticada) - `202 { email }`; pede um novo link de confirmação.
   - `POST /auth/password/forgot` `{ email }` - sempre `202`.
   - `POST /auth/password/reset` `{ token, password }` - troca, confirma o e-mail, `revokeAll`, abre sessão, avisa, devolve `{ next }`.
   - `POST /auth/email/change/confirm` `{ token }` - troca o e-mail; `409` "Este e-mail já está em uso por outra conta.".
 - **Links nos e-mails**: `WEB_URL` + `/confirmar-email?token=...`, `/redefinir-senha?token=...`, `/confirmar-email?token=...&tipo=troca`. A página do site faz o `POST`; o `GET` do link não muda nada, para leitores de link de antivírus não gastarem o token.
-- **Corrida no cadastro**: o índice único de `email` decide; a violação vira o caminho "já tem conta".
+- **Corrida no cadastro**: o índice único de `email` decide, por `INSERT ... ON CONFLICT (email) DO NOTHING`; sem linha devolvida, a mesma transação segue o caminho "já tem conta".
+- **Destino**: `safeNext` da API em `src/auth/safe-next.ts`, com as regras do `safeNext` do site; o cadastro grava no token o destino já validado.
+- **Versão dos termos**: `TERMS_VERSION` em `packages/shared`.
 
 ### API: `GoogleAuthService` e `GoogleAuthController`
 
