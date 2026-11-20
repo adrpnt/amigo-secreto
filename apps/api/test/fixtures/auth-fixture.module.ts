@@ -1,5 +1,5 @@
 import type { SessionUser } from '@amigo-secreto/shared';
-import { Controller, Get, Module } from '@nestjs/common';
+import { All, Controller, Get, Module, Post } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '../../src/auth/auth.module.js';
 import { CurrentUser } from '../../src/auth/decorators/current-user.decorator.js';
@@ -13,6 +13,17 @@ class AuthFixtureController {
   @Get('protected')
   protectedRoute(@CurrentUser() user: SessionUser): SessionUser {
     return user;
+  }
+
+  @All('mutation')
+  mutation(): { ok: true } {
+    return { ok: true };
+  }
+
+  @Public()
+  @Post('public-mutation')
+  publicMutation(): { ok: true } {
+    return { ok: true };
   }
 
   @Public()

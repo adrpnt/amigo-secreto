@@ -59,8 +59,8 @@ async function openSession(
 ): Promise<{ sessionId: string; token: string }> {
   let token = '';
   const response: CookieResponse = {
-    cookie: (_name, value) => {
-      token = value;
+    cookie: (name, value) => {
+      if (name === 'sid') token = value;
     },
     clearCookie: () => undefined,
   };

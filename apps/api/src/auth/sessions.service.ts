@@ -12,6 +12,7 @@ import {
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import type { User } from '../users/user.entity.js';
 import type { CookieOptions, CookieResponse } from './cookies.js';
+import { CSRF_COOKIE, issueCsrfToken } from './csrf-token.js';
 import { Session } from './session.entity.js';
 
 export const SESSION_COOKIE = 'sid';
@@ -51,6 +52,7 @@ export class SessionsService {
       }),
     );
     response.cookie(SESSION_COOKIE, token, this.cookieOptions());
+    this.issueCsrf(response, session.id);
     return session;
   }
 
@@ -84,8 +86,10 @@ export class SessionsService {
     response.cookie(SESSION_COOKIE, rawToken, this.cookieOptions());
   }
 
-  async revoke(sessionId: string): Promise<void> {
+  // Com a resposta, troca o token CSRF por um sem sessão.
+  async revoke(sessionId: string, response?: CookieResponse): Promise<void> {
     await this.sessions.delete(sessionId);
+    if (response) this.issueCsrf(response, null);
   }
 
   async revokeAll(
@@ -98,6 +102,19 @@ export class SessionsService {
       ? { userId, id: Not(except) }
       : { userId };
     await sessions.delete(where);
+  }
+
+  // Cookie csrf legível pelo site, com a validade do sid; vale só para a
+  // sessão informada (ou para a ausência dela).
+  issueCsrf(response: CookieResponse, sessionId: string | null): void {
+    response.cookie(
+      CSRF_COOKIE,
+      issueCsrfToken(
+        this.config.get('AUTH_SECRET', { infer: true }),
+        sessionId,
+      ),
+      { ...this.cookieOptions(), httpOnly: false },
+    );
   }
 
   cookieOptions(): CookieOptions {
