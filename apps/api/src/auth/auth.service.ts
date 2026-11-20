@@ -43,7 +43,7 @@ export class AuthService {
       { key: rateLimitKey('register', 'ip', ip), limit: 20, windowMs: HOUR_MS },
     ]);
     const passwordHash = await this.passwords.hash(dto.password);
-    const webUrl = this.config.get('WEB_URL', { infer: true });
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
 
     const createdId = await this.dataSource.transaction(async (manager) => {
       const now = new Date();

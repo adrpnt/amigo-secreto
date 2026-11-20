@@ -49,7 +49,7 @@ export class PasswordResetService {
         windowMs: HOUR_MS,
       },
     ]);
-    const webUrl = this.config.get('WEB_URL', { infer: true });
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
 
     await this.dataSource.transaction(async (manager) => {
       const user = await manager.findOneBy(User, { email });

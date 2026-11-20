@@ -83,7 +83,7 @@ export class EmailVerificationService {
         windowMs: HOUR_MS,
       },
     ]);
-    const webUrl = this.config.get('WEB_URL', { infer: true });
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
 
     await this.dataSource.transaction(async (manager) => {
       // O link novo leva aonde o pendente levaria.
