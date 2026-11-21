@@ -212,157 +212,6 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 ---
 
-### Phase 2: API de grupos
-
-```
-T8 → T9 → T10 → T11 → T12 → T13 → T14 → T15
-```
-
-### Phase 3: Componentes do site
-
-```
-T16 → T17 → T18 → T19 → T20 → T21 → T22 → T23
-```
-
-### Phase 4: Telas e navegação
-
-```
-T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
-```
-
----
-
-## Task Breakdown
-
-### Phase 1: Regras compartilhadas e tabelas
-
-#### T1: Criar as regras dos campos do grupo no shared
-
-**What**: `packages/shared/src/groups.ts` com `GroupStatus`, `GroupInput`, `GroupFieldErrors`, `GroupSummary`, `MyGroupsResponse`, `GroupDetail`, `GROUP_MESSAGES`, `normalizeGroupInput` e `validateGroupInput(input, { now, saved })`, exportados no `index.ts`; textos medidos em pontos de código.
-**Where**: `packages/shared/src/groups.ts`
-**Depends on**: None
-**Reuses**: medida de `apps/api/src/users/name-length.ts`
-**Requirement**: GRP-01, GRP-04
-
-**Done when**:
-
-- [x] Testes em `src/groups.spec.ts` (imports explícitos de `vitest`): `validateGroupInput > aceita nome com 1 e com 80 pontos de código, inclusive emojis`, `> recusa nome vazio depois do trim e com 81 pontos de código com a mensagem do nome`, `> aceita recado com 1000 pontos de código e recusa com 1001`, `> aceita valores 1 e 100000 e recusa 0, 100001 e 50.5`, `> recusa o valor final sem o inicial`, `> recusa valor inicial maior que o final e aceita iguais`, `> recusa sorteio previsto ou confraternização no passado`, `> aceita data igual à gravada mesmo no passado`, `> recusa data alterada para o passado mesmo com data gravada`, `> recusa sorteio previsto igual ou depois da confraternização`, `> aceita local com 200 pontos de código e recusa com 201`, `> devolve uma mensagem por campo quando vários campos falham`; `normalizeGroupInput > tira os espaços das pontas e troca texto vazio por null`, `> grava o máximo igual ao mínimo quando só o mínimo vem`, `> mantém as quebras de linha do recado`
-- [x] Mensagens iguais às da spec (GRP-01 AC 5 a 12)
-- [x] Gate check passes: `pnpm --filter @amigo-secreto/shared lint && pnpm --filter @amigo-secreto/shared typecheck && pnpm --filter @amigo-secreto/shared test`
-- [x] Test count: 15 tests pass no shared
-
-**Tests**: unit
-**Gate**: Shared
-
-**Commit**: `feat(shared): add group field rules and messages`
-
----
-
-#### T2: Criar as datas no horário de Brasília no shared
-
-**What**: `packages/shared/src/brasilia-time.ts` com `brasiliaInputToIso`, `isoToBrasiliaInput`, `formatBrasiliaDateTime` e `formatBrasiliaDate`, com o deslocamento de `America/Sao_Paulo` calculado pelo `Intl` no instante da data; exportados no `index.ts`.
-**Where**: `packages/shared/src/brasilia-time.ts`
-**Depends on**: T1
-**Reuses**: nenhum
-**Requirement**: GRP-01
-
-**Done when**:
-
-- [x] Testes em `src/brasilia-time.spec.ts`: `brasiliaInputToIso > converte 2026-12-20T19:00 para 2026-12-20T22:00:00.000Z`, `isoToBrasiliaInput > devolve o valor do campo no horário de Brasília`, `formatBrasiliaDateTime > formata 2026-12-20T22:00:00.000Z como 20/12/2026 às 19:00`, `formatBrasiliaDate > formata a data no horário de Brasília, inclusive perto da meia-noite UTC`
-- [x] Gate check passes: `pnpm --filter @amigo-secreto/shared lint && pnpm --filter @amigo-secreto/shared typecheck && pnpm --filter @amigo-secreto/shared test`
-- [x] Test count: 19 tests pass no shared
-
-**Tests**: unit
-**Gate**: Shared
-
-**Commit**: `feat(shared): convert and format dates in brasilia time`
-
----
-
-#### T3: Criar a entidade Group e a migration da tabela
-
-**What**: Entidade `Group` com as colunas e as restrições do design (`CHECK` do status, dos valores e do `closedAt`; índice em `ownerId`), `GroupsModule` com `TypeOrmModule.forFeature`, importado no `AppModule`, e migration `CreateGroupTable` gerada por `migration:generate`.
-**Where**: `apps/api/src/groups/group.entity.ts`
-**Depends on**: T2
-**Reuses**: `apps/api/src/users/user.entity.ts`, `apps/api/src/jobs/job.entity.ts`, migration `CreateUserTable`
-**Requirement**: GRP-01
-
-**Done when**:
-
-- [x] Testes em `test/group-table.int-spec.ts`: `tabela group > é criada pela migration com as colunas do grupo`, `> recusa mínimo maior que máximo e só um dos valores`, `> recusa status fora de OPEN, DRAWN e CLOSED`, `> exige closedAt só no status CLOSED`, `> é removida ao reverter a migration`
-- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [x] Test count: 287 tests pass na API
-
-**Tests**: integration
-**Gate**: Full
-
-**Commit**: `feat(api): add the group table`
-
----
-
-#### T4: Criar a entidade Membership e a migration da tabela
-
-**What**: Entidade `Membership` (status `PENDING`, `APPROVED`, `REJECTED`; único `(groupId, userId)`; índice em `userId`; `groupId` em cascata, `userId` com `RESTRICT`) registrada no `GroupsModule`, e migration `CreateMembershipTable`.
-**Where**: `apps/api/src/groups/membership.entity.ts`
-**Depends on**: T3
-**Reuses**: padrão da T3
-**Requirement**: GRP-01, GRP-02
-
-**Done when**:
-
-- [x] Testes em `test/membership-table.int-spec.ts`: `tabela membership > recusa duas participações da mesma pessoa no mesmo grupo`, `> apaga as participações com o grupo`, `> recusa status fora de PENDING, APPROVED e REJECTED`, `> impede apagar um usuário com participação`
-- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [x] Test count: 291 tests pass na API
-
-**Tests**: integration
-**Gate**: Full
-
-**Commit**: `feat(api): add the membership table`
-
----
-
-#### T5: Enfileirar muitos jobs numa instrução
-
-**What**: `JobQueue.enqueueMany(type, payloads, { manager })` com `INSERT` de várias linhas em lotes de 1.000; lista vazia não toca o banco.
-**Where**: `apps/api/src/jobs/job-queue.service.ts`
-**Depends on**: T4
-**Reuses**: `JobQueue.enqueue`
-**Requirement**: GRP-05, GRP-09
-
-**Done when**:
-
-- [x] Testes em `test/job-queue.int-spec.ts`: `JobQueue > enqueueMany grava um job por item em lotes de 1000`, `> enqueueMany com lista vazia não grava nada`, `> enqueueMany desfaz com a transação de origem`
-- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [x] Test count: 294 tests pass na API
-
-**Tests**: integration
-**Gate**: Full
-
-**Commit**: `feat(api): enqueue many jobs in one statement`
-
----
-
-#### T6: Enfileirar muitos e-mails numa transação
-
-**What**: `EmailService.enqueueMany(messages, { manager })` com as checagens de destinatário e de URL do `enqueue` em todas as mensagens antes de gravar qualquer uma, sobre o `JobQueue.enqueueMany`.
-**Where**: `apps/api/src/email/email.service.ts`
-**Depends on**: T5
-**Reuses**: `EmailService.enqueue`
-**Requirement**: GRP-05, GRP-09
-
-**Done when**:
-
-- [x] Testes em `test/email-service.int-spec.ts`: `EmailService > enqueueMany grava um job email.send por mensagem`, `> enqueueMany recusa a lista inteira quando um destinatário é inválido`
-- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [x] Test count: 296 tests pass na API
-
-**Tests**: integration
-**Gate**: Full
-
-**Commit**: `feat(api): enqueue many emails in one transaction`
-
----
-
 #### T7: Conferir o acesso ao grupo
 
 **What**: `GroupAccess` com `requireMember` e `requireOrganizer` (`manager` e `lock` opcionais), exportado pelo `GroupsModule`: id que não é UUID, grupo inexistente ou sem participação `APPROVED` → 404 "Grupo não encontrado."; não organizador → 403 "Só quem organiza pode alterar o grupo."; `lock` faz `SELECT ... FOR UPDATE` na linha do grupo.
@@ -373,9 +222,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/group-access.int-spec.ts`: `acesso ao grupo > responde 404 para id que não é UUID`, `> responde 404 para grupo inexistente`, `> responde 404 para quem não participa e para participação pendente ou recusada`, `> responde 403 para participante aprovado que não organiza`, `> devolve o grupo e a participação do organizador`, `> trava a linha do grupo até a transação terminar`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 302 tests pass na API
+- [x] Testes em `test/group-access.int-spec.ts`: `acesso ao grupo > responde 404 para id que não é UUID`, `> responde 404 para grupo inexistente`, `> responde 404 para quem não participa e para participação pendente ou recusada`, `> responde 403 para participante aprovado que não organiza`, `> devolve o grupo e a participação do organizador`, `> trava a linha do grupo até a transação terminar`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 302 tests pass na API
 - [x] Gate Build da fase verde; push e PR da fase 1
 
 **Tests**: integration
@@ -397,10 +246,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/groups/group-emails.spec.ts`: `e-mails de grupo > aviso de exclusão tem o assunto, o texto e o botão Ver meus grupos`, `> aviso de encerramento tem o assunto, o texto e o botão Ver grupo`, `> mostram o nome do grupo com marcação HTML como texto`
-- [ ] `src/auth/auth-emails.spec.ts` passa sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 305 tests pass na API
+- [x] Testes em `src/groups/group-emails.spec.ts`: `e-mails de grupo > aviso de exclusão tem o assunto, o texto e o botão Ver meus grupos`, `> aviso de encerramento tem o assunto, o texto e o botão Ver grupo`, `> mostram o nome do grupo com marcação HTML como texto`
+- [x] `src/auth/auth-emails.spec.ts` passa sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 305 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick
@@ -419,10 +268,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-create.int-spec.ts`: `criar grupo > cria o grupo ABERTO só com o nome, com a pessoa organizadora e participante aprovada`, `> grava todos os campos opcionais enviados`, `> grava mínimo e máximo iguais quando só o valor inicial vem`, `> grava a faixa quando os dois valores vêm`, `> recusa com 400 e a mensagem do campo nome vazio ou com 81 caracteres`, `> recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres`, `> recusa com 400 recado com 1001 caracteres`, `> recusa com 400 valor fora de 1 a 100000 ou não inteiro`, `> recusa com 400 o valor final sem o inicial`, `> recusa com 400 valor inicial maior que o final`, `> recusa com 400 data no passado`, `> recusa com 400 sorteio previsto depois da confraternização`, `> recusa com 400 local com 201 caracteres`, `> recusa com 429 a 21ª criação da hora e aceita a 20ª`, `> não conta no limite a criação recusada com 400`, `> cria o grupo para conta com e-mail não confirmado`, `> grava as datas com o fuso e devolve o mesmo instante`, `> emite group.created com o groupId e sem dados pessoais`, `> não emite group.created quando a criação é recusada`, `> responde 401 sem sessão`
-- [ ] Cada recusa confere logo depois que nenhum grupo foi gravado (L-018)
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 325 tests pass na API
+- [x] Testes em `test/groups-create.int-spec.ts`: `criar grupo > cria o grupo ABERTO só com o nome, com a pessoa organizadora e participante aprovada`, `> grava todos os campos opcionais enviados`, `> grava mínimo e máximo iguais quando só o valor inicial vem`, `> grava a faixa quando os dois valores vêm`, `> recusa com 400 e a mensagem do campo nome vazio ou com 81 caracteres`, `> recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres`, `> recusa com 400 recado com 1001 caracteres`, `> recusa com 400 valor fora de 1 a 100000 ou não inteiro`, `> recusa com 400 o valor final sem o inicial`, `> recusa com 400 valor inicial maior que o final`, `> recusa com 400 data no passado`, `> recusa com 400 sorteio previsto depois da confraternização`, `> recusa com 400 local com 201 caracteres`, `> recusa com 429 a 21ª criação da hora e aceita a 20ª`, `> não conta no limite a criação recusada com 400`, `> cria o grupo para conta com e-mail não confirmado`, `> grava as datas com o fuso e devolve o mesmo instante`, `> emite group.created com o groupId e sem dados pessoais`, `> não emite group.created quando a criação é recusada`, `> responde 401 sem sessão`
+- [x] Cada recusa confere logo depois que nenhum grupo foi gravado (L-018)
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 325 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -441,9 +290,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-list.int-spec.ts`: `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo`, `> não lista grupo de que a pessoa não participa nem participação pendente ou recusada`, `> conta só os participantes aprovados`, `> marca isOrganizer só no grupo que a pessoa organiza`, `> devolve listas vazias para quem não participa de nenhum grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 330 tests pass na API
+- [x] Testes em `test/groups-list.int-spec.ts`: `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo`, `> não lista grupo de que a pessoa não participa nem participação pendente ou recusada`, `> conta só os participantes aprovados`, `> marca isOrganizer só no grupo que a pessoa organiza`, `> devolve listas vazias para quem não participa de nenhum grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 330 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -462,9 +311,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-detail.int-spec.ts`: `ver grupo > devolve os dados do grupo, o nome de quem organiza e isOrganizer ao participante aprovado`, `> responde 404 igual para id inexistente, id que não é UUID e grupo de que a pessoa não participa`, `> devolve o recado com quebras de linha e marcação HTML como texto`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 333 tests pass na API
+- [x] Testes em `test/groups-detail.int-spec.ts`: `ver grupo > devolve os dados do grupo, o nome de quem organiza e isOrganizer ao participante aprovado`, `> responde 404 igual para id inexistente, id que não é UUID e grupo de que a pessoa não participa`, `> devolve o recado com quebras de linha e marcação HTML como texto`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 333 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -483,9 +332,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-update.int-spec.ts`: `editar grupo > grava os campos enviados em grupo ABERTO`, `> grava os campos enviados em grupo SORTEADO`, `> apaga o campo opcional enviado como null`, `> recusa com 400 a mesma regra da criação e não altera o grupo`, `> aceita uma data gravada que ficou no passado quando ela não muda`, `> recusa com 400 uma data alterada para o passado`, `> responde 403 ao participante que não organiza e não altera o grupo`, `> responde 409 em grupo ENCERRADO e não altera o grupo`, `> responde 409 à edição que espera o encerramento terminar`, `> responde 404 à edição de grupo excluído`, `> emite group.updated com os nomes dos campos que mudaram e sem dados pessoais`, `> não emite group.updated quando nada muda nem quando a edição é recusada`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 345 tests pass na API
+- [x] Testes em `test/groups-update.int-spec.ts`: `editar grupo > grava os campos enviados em grupo ABERTO`, `> grava os campos enviados em grupo SORTEADO`, `> apaga o campo opcional enviado como null`, `> recusa com 400 a mesma regra da criação e não altera o grupo`, `> aceita uma data gravada que ficou no passado quando ela não muda`, `> recusa com 400 uma data alterada para o passado`, `> responde 403 ao participante que não organiza e não altera o grupo`, `> responde 409 em grupo ENCERRADO e não altera o grupo`, `> responde 409 à edição que espera o encerramento terminar`, `> responde 404 à edição de grupo excluído`, `> emite group.updated com os nomes dos campos que mudaram e sem dados pessoais`, `> não emite group.updated quando nada muda nem quando a edição é recusada`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 345 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -504,9 +353,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-delete.int-spec.ts`: `excluir grupo > apaga o grupo e as participações`, `> exclui grupo ABERTO, SORTEADO e ENCERRADO`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> responde 403 ao participante que não organiza e não apaga nada`, `> responde 404 a grupo que não existe mais e não enfileira e-mail`, `> exclui uma vez e responde 404 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> desfaz a exclusão e os avisos quando a gravação falha`, `> emite group.deleted com o groupId, o status e sem dados pessoais`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 354 tests pass na API
+- [x] Testes em `test/groups-delete.int-spec.ts`: `excluir grupo > apaga o grupo e as participações`, `> exclui grupo ABERTO, SORTEADO e ENCERRADO`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> responde 403 ao participante que não organiza e não apaga nada`, `> responde 404 a grupo que não existe mais e não enfileira e-mail`, `> exclui uma vez e responde 404 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> desfaz a exclusão e os avisos quando a gravação falha`, `> emite group.deleted com o groupId, o status e sem dados pessoais`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 354 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -525,9 +374,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-close.int-spec.ts` (grupo posto em `DRAWN` direto no banco): `encerrar grupo > passa o grupo SORTEADO para ENCERRADO e grava a data do encerramento`, `> responde 409 em grupo ABERTO ou ENCERRADO e não muda o grupo`, `> responde 403 ao participante que não organiza e não muda o grupo`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> encerra uma vez e responde 409 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> emite group.closed com trigger manual e sem dados pessoais`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 361 tests pass na API
+- [x] Testes em `test/groups-close.int-spec.ts` (grupo posto em `DRAWN` direto no banco): `encerrar grupo > passa o grupo SORTEADO para ENCERRADO e grava a data do encerramento`, `> responde 409 em grupo ABERTO ou ENCERRADO e não muda o grupo`, `> responde 403 ao participante que não organiza e não muda o grupo`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> encerra uma vez e responde 409 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> emite group.closed com trigger manual e sem dados pessoais`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 361 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -546,10 +395,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Teste em `test/swagger.int-spec.ts`: `Swagger > documenta as rotas de grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 362 tests pass na API
-- [ ] Gate Build da fase verde; push e PR da fase 2
+- [x] Teste em `test/swagger.int-spec.ts`: `Swagger > documenta as rotas de grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 362 tests pass na API
+- [x] Gate Build da fase verde; push e PR da fase 2
 
 **Tests**: integration
 **Gate**: Full
@@ -1286,7 +1135,7 @@ Proof: run api | ✓ criar grupo > recusa com 429 a 21ª criação da hora e ace
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito.
+**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15".
 **Dispatched:** none
 **Walked:** none
 

@@ -6,9 +6,23 @@ import { inject } from 'vitest';
 import { configureApp } from '../src/app.setup.js';
 import { stubAccountEnv } from './account-env.js';
 
+type OpenApiOperation = {
+  tags?: string[];
+  responses: Record<string, { schema?: unknown; content?: unknown }>;
+  requestBody?: {
+    content: Record<string, { schema: { $ref?: string } }>;
+  };
+};
+
 type OpenApiDocument = {
   openapi: string;
-  paths: Record<string, Record<string, { responses: Record<string, unknown> }>>;
+  paths: Record<string, Record<string, OpenApiOperation>>;
+  components: {
+    schemas: Record<
+      string,
+      { properties: Record<string, unknown>; required?: string[] }
+    >;
+  };
 };
 
 async function createApp(nodeEnv: string): Promise<INestApplication> {
@@ -79,5 +93,57 @@ describe('Swagger', () => {
     expect(
       Object.keys(document.paths['/health']?.get?.responses ?? {}),
     ).toEqual(expect.arrayContaining(['200', '503']));
+  });
+
+  it('documenta as rotas de grupo', async () => {
+    const server = await serverFor('development');
+
+    const response = await request(server).get('/docs-json');
+    const document = response.body as OpenApiDocument;
+    const operation = (path: string, method: string) =>
+      document.paths[path]?.[method];
+    const expected: [string, string, string[]][] = [
+      ['/groups', 'post', ['201', '400', '401', '429']],
+      ['/groups', 'get', ['200', '401']],
+      ['/groups/{id}', 'get', ['200', '401', '404']],
+      ['/groups/{id}', 'put', ['200', '400', '401', '403', '404', '409']],
+      ['/groups/{id}', 'delete', ['204', '401', '403', '404']],
+      ['/groups/{id}/close', 'post', ['200', '401', '403', '404', '409']],
+    ];
+
+    for (const [path, method, statuses] of expected) {
+      const documented = operation(path, method);
+      expect(documented?.tags).toEqual(['groups']);
+      expect(Object.keys(documented?.responses ?? {}).sort()).toEqual(
+        [...statuses].sort(),
+      );
+    }
+
+    for (const [path, method] of [
+      ['/groups', 'post'],
+      ['/groups/{id}', 'put'],
+    ]) {
+      const documented = operation(path, method);
+      expect(
+        documented.requestBody?.content['application/json'].schema.$ref,
+      ).toBe('#/components/schemas/GroupInputDto');
+      expect(JSON.stringify(documented.responses['400'])).toContain('"fields"');
+    }
+
+    const input = document.components.schemas.GroupInputDto;
+    expect(Object.keys(input.properties).sort()).toEqual(
+      [
+        'name',
+        'description',
+        'giftMinValue',
+        'giftMaxValue',
+        'drawScheduledAt',
+        'eventAt',
+        'eventLocation',
+        'isOnlineEvent',
+        'requiresApproval',
+      ].sort(),
+    );
+    expect(input.required).toEqual(['name']);
   });
 });

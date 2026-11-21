@@ -169,11 +169,12 @@
 ## Handoff
 
 - **Feature**: 04-groups (`.specs/features/04-groups/`), em execução
-- **Phase / Task**: fase 1 (T1 a T7) concluída na branch da PER-107; gate Build verde (shared 19, web 39, API 305, e2e 60)
-- **Completed**: T1 a T7; respostas do usuário sobre o campo das mensagens de faixa e de ordem das datas, e a contagem inicial da API (285), em `**Settled mid-build:**`
+- **Phase / Task**: fase 2 (T8 a T15) concluída na branch da PER-108; gate Build verde (shared 19, web 39, API 365, e2e 60)
+- **Completed**: T1 a T15; respostas do usuário sobre o formato do corpo de `/groups` (número não inteiro, campo ausente, fuso obrigatório) e o Swagger com decorators manuais, em `**Settled mid-build:**`
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 1; depois, fase 2 (T8 a T15) na branch da PER-108 a partir da `main` atualizada
-- **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (PR aberto), PER-108, PER-109, PER-110
+- **Next step**: revisão e merge do PR da fase 2; depois, fase 3 (T16 a T23) na branch da PER-109 a partir da `main` atualizada
+- **Note for phase 3**: com só o "Valor do presente" fora da faixa, o `normalizeGroupInput` copia o mínimo para o máximo e o `validateGroupInput` devolve a mensagem nos dois campos (`giftMinValue` e `giftMaxValue`); o `GroupForm` (T22) precisa decidir se mostra a mensagem também no "Até (R$)" vazio
+- **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (mergeada), PER-108 (PR aberto), PER-109, PER-110
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-107-fase-1-regras-compartilhadas-e-tabelas
+- **Branch**: pntadr/per-108-fase-2-api-de-grupos
