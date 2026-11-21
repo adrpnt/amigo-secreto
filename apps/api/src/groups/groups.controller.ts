@@ -3,7 +3,16 @@ import type {
   MyGroupsResponse,
   SessionUser,
 } from '@amigo-secreto/shared';
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { GroupInputDto } from './dto/group-input.dto.js';
 import { GroupsService } from './groups.service.js';
@@ -40,5 +49,14 @@ export class GroupsController {
     @Body() body: GroupInputDto,
   ): Promise<GroupDetail> {
     return this.groups.update(user, id, body);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  remove(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return this.groups.remove(user, id);
   }
 }

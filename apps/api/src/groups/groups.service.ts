@@ -9,7 +9,10 @@ import {
   validateGroupInput,
 } from '@amigo-secreto/shared';
 import { ConflictException, Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { DataSource, type EntityManager } from 'typeorm';
+import type { EnvironmentVariables } from '../config/env.validation.js';
+import { EmailService } from '../email/email.service.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import {
   RateLimitService,
@@ -19,6 +22,7 @@ import { User } from '../users/user.entity.js';
 import type { GroupInputDto } from './dto/group-input.dto.js';
 import { GroupAccess } from './group-access.service.js';
 import { Group } from './group.entity.js';
+import { groupDeletedEmail } from './group-emails.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
 
@@ -33,6 +37,14 @@ const MY_GROUPS_SQL = `
   JOIN membership m ON m."groupId" = g.id
   WHERE m."userId" = $1 AND m.status = 'APPROVED'
   ORDER BY g."createdAt" DESC, g.id DESC`;
+
+// Quem recebe os avisos do grupo: participantes aprovados, menos quem organiza.
+const NOTICE_RECIPIENTS_SQL = `
+  SELECT u.name, u.email
+  FROM membership m
+  JOIN "user" u ON u.id = m."userId"
+  WHERE m."groupId" = $1 AND m.status = 'APPROVED' AND m."userId" <> $2
+  ORDER BY m."joinedAt", m.id`;
 
 type MyGroupRow = {
   id: string;
@@ -144,6 +156,8 @@ export class GroupsService {
     private readonly access: GroupAccess,
     private readonly rateLimit: RateLimitService,
     private readonly events: BusinessEventsService,
+    private readonly email: EmailService,
+    private readonly config: ConfigService<EnvironmentVariables, true>,
   ) {}
 
   async create(user: SessionUser, body: GroupInputDto): Promise<GroupDetail> {
@@ -257,5 +271,42 @@ export class GroupsService {
       });
     }
     return toGroupDetail(group, { id: user.id, name: user.name }, user.id);
+  }
+
+  // Os avisos entram na transação da exclusão: se ela falha, nenhum sai.
+  // Um segundo pedido simultâneo espera a trava e encontra o grupo apagado.
+  async remove(user: SessionUser, groupId: string): Promise<void> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+
+    const status = await this.dataSource.transaction(async (manager) => {
+      const { group } = await this.access.requireOrganizer(user.id, groupId, {
+        manager,
+        lock: true,
+      });
+      const recipients = await this.noticeRecipients(manager, group);
+      await this.email.enqueueMany(
+        recipients.map((recipient) =>
+          groupDeletedEmail({
+            to: recipient.email,
+            name: recipient.name,
+            groupName: group.name,
+            organizerName: user.name,
+            webUrl,
+          }),
+        ),
+        { manager },
+      );
+      await manager.getRepository(Group).delete({ id: group.id });
+      return group.status;
+    });
+
+    this.events.record('group.deleted', { groupId, status });
+  }
+
+  private noticeRecipients(
+    manager: EntityManager,
+    group: Group,
+  ): Promise<{ name: string; email: string }[]> {
+    return manager.query(NOTICE_RECIPIENTS_SQL, [group.id, group.ownerId]);
   }
 }

@@ -353,9 +353,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-delete.int-spec.ts`: `excluir grupo > apaga o grupo e as participações`, `> exclui grupo ABERTO, SORTEADO e ENCERRADO`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> responde 403 ao participante que não organiza e não apaga nada`, `> responde 404 a grupo que não existe mais e não enfileira e-mail`, `> exclui uma vez e responde 404 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> desfaz a exclusão e os avisos quando a gravação falha`, `> emite group.deleted com o groupId, o status e sem dados pessoais`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 354 tests pass na API
+- [x] Testes em `test/groups-delete.int-spec.ts`: `excluir grupo > apaga o grupo e as participações`, `> exclui grupo ABERTO, SORTEADO e ENCERRADO`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> responde 403 ao participante que não organiza e não apaga nada`, `> responde 404 a grupo que não existe mais e não enfileira e-mail`, `> exclui uma vez e responde 404 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> desfaz a exclusão e os avisos quando a gravação falha`, `> emite group.deleted com o groupId, o status e sem dados pessoais`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 354 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
