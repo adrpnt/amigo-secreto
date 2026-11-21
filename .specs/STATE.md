@@ -149,12 +149,12 @@
 
 ## Handoff
 
-- **Feature**: 03-auth (`.specs/features/03-auth/`), em execução
-- **Phase / Task**: fase 5 (T27 a T32) concluída na branch `pntadr/per-97-fase-5-cadastro-login-termos-e-confirmacao-no`; gate Build verde (268 testes na API, 39 unitários e 38 e2e no web)
-- **Completed**: fases 1 a 5; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
+- **Feature**: 03-auth (`.specs/features/03-auth/`), em fechamento
+- **Phase / Task**: fase 6 (T33 a T39) concluída na branch `pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil` (último commit de task `03ba1a9`); gate Build verde (268 testes na API, 39 unitários e 60 e2e no web)
+- **Completed**: fases 1 a 6; decisões da execução na linha `**Settled mid-build:**` do `tasks.md` (as da fase 5 ficaram no parágrafo "Linhas esperadas das provas", logo abaixo do cabeçalho)
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 5, atualizar a `main`, criar a branch da PER-98 e executar a fase 6 (T33 a T39), a última: o fechamento da feature roda antes do PR; as contagens de testes unitários do web nas tasks seguintes somam 2 (extras da T25 e da T28); a T39 também passa a conferir o e-mail escrito na `/perfil` no teste da troca de e-mail
-- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
+- **Next step**: fechamento da feature antes do push (AD-010): walk das histórias, `check_proofs.py 03-auth`, Verifier (sem screens sub-agent: nenhum critério cita captura), correções, `check_proofs.py` de novo, `validate_verification.py 03-auth` com saída 0, lições; só então push e PR da PER-98
+- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98 (PER-98 em In Progress, T33 a T39 marcadas)
 - **Blockers**: none
-- **Uncommitted files**: none
-- **Branch**: pntadr/per-97-fase-5-cadastro-login-termos-e-confirmacao-no
+- **Uncommitted files**: este handoff
+- **Branch**: pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil
