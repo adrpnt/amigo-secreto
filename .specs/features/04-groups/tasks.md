@@ -525,9 +525,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/components/group-card.test.tsx`: `GroupCard > mostra nome, status, participantes e a linha da data`, `> mostra a tag Você organiza só para quem organiza`, `> é um link para a página do grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 57 tests pass no web
+- [x] Testes em `src/components/group-card.test.tsx`: `GroupCard > mostra nome, status, participantes e a linha da data`, `> mostra a tag Você organiza só para quem organiza`, `> é um link para a página do grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 58 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
