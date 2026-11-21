@@ -1,8 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import type { APIRequestContext, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { PASSWORD, registerAccount, signIn } from './support/account';
 import { expect, test } from './support/fixtures';
-
-const PASSWORD = 'senha-forte-123';
 
 function newEmail(): string {
   return `cadastro-${randomUUID()}@example.com`;
@@ -13,26 +12,6 @@ async function fillSignUp(page: Page, email: string, password = PASSWORD) {
   await page.getByLabel('E-mail', { exact: true }).fill(email);
   await page.getByLabel('Senha', { exact: true }).fill(password);
   await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
-}
-
-async function csrfToken(request: APIRequestContext): Promise<string> {
-  await request.get('/api/auth/session');
-  const { cookies } = await request.storageState();
-  return cookies.find((cookie) => cookie.name === 'csrf')?.value ?? '';
-}
-
-// Cria a conta e entra pela API, no mesmo contexto do navegador da página.
-async function registerAndSignIn(page: Page, email: string) {
-  const register = await page.request.post('/api/auth/register', {
-    headers: { 'X-CSRF-Token': await csrfToken(page.request) },
-    data: { name: 'Ana Souza', email, password: PASSWORD, acceptTerms: true },
-  });
-  expect(register.status()).toBe(202);
-  const login = await page.request.post('/api/auth/login', {
-    headers: { 'X-CSRF-Token': await csrfToken(page.request) },
-    data: { email, password: PASSWORD },
-  });
-  expect(login.status()).toBe(200);
 }
 
 test.describe('cadastro', () => {
@@ -125,7 +104,9 @@ test.describe('cadastro', () => {
   test('leva a pessoa logada que abre /cadastro direto ao destino', async ({
     page,
   }) => {
-    await registerAndSignIn(page, newEmail());
+    const email = newEmail();
+    await registerAccount(page.request, email);
+    await signIn(page.request, email);
 
     await page.goto('/cadastro?next=%2Fconvite%2Fabc');
     await expect(page).toHaveURL('/convite/abc');

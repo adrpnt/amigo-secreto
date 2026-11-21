@@ -3,12 +3,14 @@
 import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { type FormEvent, type ReactNode, useState } from 'react';
+import { FieldError } from '@/components/field-error';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiFetch } from '@/lib/api-fetch';
+import { isValidEmail } from '@/lib/email';
 
 type SignUpValues = {
   name: string;
@@ -21,18 +23,16 @@ type FieldName = keyof SignUpValues;
 type FieldErrors = Partial<Record<FieldName, string>>;
 
 const GENERIC_ERROR = 'Algo deu errado. Tente de novo.';
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Mesmas regras do cadastro na API, com as mensagens do site.
 function validate(values: SignUpValues): FieldErrors {
   const errors: FieldErrors = {};
   const name = values.name.trim();
-  const email = values.email.trim();
 
   if (name.length === 0) errors.name = 'Informe seu nome.';
   else if (name.length > 80) errors.name = 'Use até 80 caracteres.';
 
-  if (!EMAIL_PATTERN.test(email) || email.length > 254) {
+  if (!isValidEmail(values.email)) {
     errors.email = 'Informe um e-mail válido.';
   }
 
@@ -46,19 +46,6 @@ function validate(values: SignUpValues): FieldErrors {
     errors.acceptTerms = 'Marque esta caixa para criar a conta.';
   }
   return errors;
-}
-
-function FieldError({ id, message }: { id: string; message?: string }) {
-  if (!message) return null;
-  return (
-    <p
-      id={id}
-      className="flex items-center gap-1.5 text-body-sm text-destructive"
-    >
-      <CircleAlert aria-hidden className="size-4 shrink-0" />
-      {message}
-    </p>
-  );
 }
 
 export function SignUpForm({
