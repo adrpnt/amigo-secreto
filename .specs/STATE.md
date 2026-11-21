@@ -170,9 +170,9 @@
 
 - **Feature**: 04-groups (`.specs/features/04-groups/`), em execução
 - **Phase / Task**: fase 1 (T1 a T7) na branch da PER-107
-- **Completed**: T1 a T6
+- **Completed**: T1 a T7
 - **In-progress** (file:line): none
-- **Next step**: T7 (`GroupAccess`); ao fechar a T7, gate Build, push e PR da fase 1
+- **Next step**: gate Build da fase 1, push e PR
 - **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (In Progress), PER-108, PER-109, PER-110
 - **Blockers**: none
 - **Uncommitted files**: none

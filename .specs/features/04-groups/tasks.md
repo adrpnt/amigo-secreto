@@ -212,6 +212,157 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 ---
 
+### Phase 2: API de grupos
+
+```
+T8 → T9 → T10 → T11 → T12 → T13 → T14 → T15
+```
+
+### Phase 3: Componentes do site
+
+```
+T16 → T17 → T18 → T19 → T20 → T21 → T22 → T23
+```
+
+### Phase 4: Telas e navegação
+
+```
+T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
+```
+
+---
+
+## Task Breakdown
+
+### Phase 1: Regras compartilhadas e tabelas
+
+#### T1: Criar as regras dos campos do grupo no shared
+
+**What**: `packages/shared/src/groups.ts` com `GroupStatus`, `GroupInput`, `GroupFieldErrors`, `GroupSummary`, `MyGroupsResponse`, `GroupDetail`, `GROUP_MESSAGES`, `normalizeGroupInput` e `validateGroupInput(input, { now, saved })`, exportados no `index.ts`; textos medidos em pontos de código.
+**Where**: `packages/shared/src/groups.ts`
+**Depends on**: None
+**Reuses**: medida de `apps/api/src/users/name-length.ts`
+**Requirement**: GRP-01, GRP-04
+
+**Done when**:
+
+- [x] Testes em `src/groups.spec.ts` (imports explícitos de `vitest`): `validateGroupInput > aceita nome com 1 e com 80 pontos de código, inclusive emojis`, `> recusa nome vazio depois do trim e com 81 pontos de código com a mensagem do nome`, `> aceita recado com 1000 pontos de código e recusa com 1001`, `> aceita valores 1 e 100000 e recusa 0, 100001 e 50.5`, `> recusa o valor final sem o inicial`, `> recusa valor inicial maior que o final e aceita iguais`, `> recusa sorteio previsto ou confraternização no passado`, `> aceita data igual à gravada mesmo no passado`, `> recusa data alterada para o passado mesmo com data gravada`, `> recusa sorteio previsto igual ou depois da confraternização`, `> aceita local com 200 pontos de código e recusa com 201`, `> devolve uma mensagem por campo quando vários campos falham`; `normalizeGroupInput > tira os espaços das pontas e troca texto vazio por null`, `> grava o máximo igual ao mínimo quando só o mínimo vem`, `> mantém as quebras de linha do recado`
+- [x] Mensagens iguais às da spec (GRP-01 AC 5 a 12)
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/shared lint && pnpm --filter @amigo-secreto/shared typecheck && pnpm --filter @amigo-secreto/shared test`
+- [x] Test count: 15 tests pass no shared
+
+**Tests**: unit
+**Gate**: Shared
+
+**Commit**: `feat(shared): add group field rules and messages`
+
+---
+
+#### T2: Criar as datas no horário de Brasília no shared
+
+**What**: `packages/shared/src/brasilia-time.ts` com `brasiliaInputToIso`, `isoToBrasiliaInput`, `formatBrasiliaDateTime` e `formatBrasiliaDate`, com o deslocamento de `America/Sao_Paulo` calculado pelo `Intl` no instante da data; exportados no `index.ts`.
+**Where**: `packages/shared/src/brasilia-time.ts`
+**Depends on**: T1
+**Reuses**: nenhum
+**Requirement**: GRP-01
+
+**Done when**:
+
+- [x] Testes em `src/brasilia-time.spec.ts`: `brasiliaInputToIso > converte 2026-12-20T19:00 para 2026-12-20T22:00:00.000Z`, `isoToBrasiliaInput > devolve o valor do campo no horário de Brasília`, `formatBrasiliaDateTime > formata 2026-12-20T22:00:00.000Z como 20/12/2026 às 19:00`, `formatBrasiliaDate > formata a data no horário de Brasília, inclusive perto da meia-noite UTC`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/shared lint && pnpm --filter @amigo-secreto/shared typecheck && pnpm --filter @amigo-secreto/shared test`
+- [x] Test count: 19 tests pass no shared
+
+**Tests**: unit
+**Gate**: Shared
+
+**Commit**: `feat(shared): convert and format dates in brasilia time`
+
+---
+
+#### T3: Criar a entidade Group e a migration da tabela
+
+**What**: Entidade `Group` com as colunas e as restrições do design (`CHECK` do status, dos valores e do `closedAt`; índice em `ownerId`), `GroupsModule` com `TypeOrmModule.forFeature`, importado no `AppModule`, e migration `CreateGroupTable` gerada por `migration:generate`.
+**Where**: `apps/api/src/groups/group.entity.ts`
+**Depends on**: T2
+**Reuses**: `apps/api/src/users/user.entity.ts`, `apps/api/src/jobs/job.entity.ts`, migration `CreateUserTable`
+**Requirement**: GRP-01
+
+**Done when**:
+
+- [x] Testes em `test/group-table.int-spec.ts`: `tabela group > é criada pela migration com as colunas do grupo`, `> recusa mínimo maior que máximo e só um dos valores`, `> recusa status fora de OPEN, DRAWN e CLOSED`, `> exige closedAt só no status CLOSED`, `> é removida ao reverter a migration`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 287 tests pass na API
+
+**Tests**: integration
+**Gate**: Full
+
+**Commit**: `feat(api): add the group table`
+
+---
+
+#### T4: Criar a entidade Membership e a migration da tabela
+
+**What**: Entidade `Membership` (status `PENDING`, `APPROVED`, `REJECTED`; único `(groupId, userId)`; índice em `userId`; `groupId` em cascata, `userId` com `RESTRICT`) registrada no `GroupsModule`, e migration `CreateMembershipTable`.
+**Where**: `apps/api/src/groups/membership.entity.ts`
+**Depends on**: T3
+**Reuses**: padrão da T3
+**Requirement**: GRP-01, GRP-02
+
+**Done when**:
+
+- [x] Testes em `test/membership-table.int-spec.ts`: `tabela membership > recusa duas participações da mesma pessoa no mesmo grupo`, `> apaga as participações com o grupo`, `> recusa status fora de PENDING, APPROVED e REJECTED`, `> impede apagar um usuário com participação`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 291 tests pass na API
+
+**Tests**: integration
+**Gate**: Full
+
+**Commit**: `feat(api): add the membership table`
+
+---
+
+#### T5: Enfileirar muitos jobs numa instrução
+
+**What**: `JobQueue.enqueueMany(type, payloads, { manager })` com `INSERT` de várias linhas em lotes de 1.000; lista vazia não toca o banco.
+**Where**: `apps/api/src/jobs/job-queue.service.ts`
+**Depends on**: T4
+**Reuses**: `JobQueue.enqueue`
+**Requirement**: GRP-05, GRP-09
+
+**Done when**:
+
+- [x] Testes em `test/job-queue.int-spec.ts`: `JobQueue > enqueueMany grava um job por item em lotes de 1000`, `> enqueueMany com lista vazia não grava nada`, `> enqueueMany desfaz com a transação de origem`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 294 tests pass na API
+
+**Tests**: integration
+**Gate**: Full
+
+**Commit**: `feat(api): enqueue many jobs in one statement`
+
+---
+
+#### T6: Enfileirar muitos e-mails numa transação
+
+**What**: `EmailService.enqueueMany(messages, { manager })` com as checagens de destinatário e de URL do `enqueue` em todas as mensagens antes de gravar qualquer uma, sobre o `JobQueue.enqueueMany`.
+**Where**: `apps/api/src/email/email.service.ts`
+**Depends on**: T5
+**Reuses**: `EmailService.enqueue`
+**Requirement**: GRP-05, GRP-09
+
+**Done when**:
+
+- [x] Testes em `test/email-service.int-spec.ts`: `EmailService > enqueueMany grava um job email.send por mensagem`, `> enqueueMany recusa a lista inteira quando um destinatário é inválido`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 296 tests pass na API
+
+**Tests**: integration
+**Gate**: Full
+
+**Commit**: `feat(api): enqueue many emails in one transaction`
+
+---
+
 #### T7: Conferir o acesso ao grupo
 
 **What**: `GroupAccess` com `requireMember` e `requireOrganizer` (`manager` e `lock` opcionais), exportado pelo `GroupsModule`: id que não é UUID, grupo inexistente ou sem participação `APPROVED` → 404 "Grupo não encontrado."; não organizador → 403 "Só quem organiza pode alterar o grupo."; `lock` faz `SELECT ... FOR UPDATE` na linha do grupo.
