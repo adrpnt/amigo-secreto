@@ -504,9 +504,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Teste em `src/components/status-tag.test.tsx`: `StatusTag > escreve ABERTO, SORTEADO e ENCERRADO com ícone`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 54 tests pass no web
+- [x] Teste em `src/components/status-tag.test.tsx`: `StatusTag > escreve ABERTO, SORTEADO e ENCERRADO com ícone`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 55 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
