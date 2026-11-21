@@ -6,6 +6,7 @@ import { JobsModule } from '../jobs/jobs.module.js';
 import { EMAIL_TRANSPORT } from './email-transport.js';
 import { EMAIL_SEND_JOB, EmailService } from './email.service.js';
 import { LogTransport } from './log.transport.js';
+import { MailpitTransport } from './mailpit.transport.js';
 import { ResendTransport } from './resend.transport.js';
 import { SendEmailHandler } from './send-email.handler.js';
 
@@ -17,10 +18,15 @@ import { SendEmailHandler } from './send-email.handler.js';
     {
       provide: EMAIL_TRANSPORT,
       inject: [ConfigService],
-      useFactory: (config: ConfigService<EnvironmentVariables, true>) =>
-        config.get('RESEND_API_KEY', { infer: true })
-          ? new ResendTransport(config)
-          : new LogTransport(),
+      useFactory: (config: ConfigService<EnvironmentVariables, true>) => {
+        if (config.get('RESEND_API_KEY', { infer: true })) {
+          return new ResendTransport(config);
+        }
+        if (config.get('MAILPIT_URL', { infer: true })) {
+          return new MailpitTransport(config);
+        }
+        return new LogTransport();
+      },
     },
   ],
   exports: [EmailService],

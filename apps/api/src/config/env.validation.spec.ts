@@ -97,6 +97,22 @@ describe('validateEnvironment', () => {
     }
   });
 
+  it('aceita MAILPIT_URL ausente ou vazia e lança erro que a nomeia quando não é uma URL http', () => {
+    const base = { NODE_ENV: 'development', DATABASE_URL: VALID_DATABASE_URL };
+
+    expect(validateEnvironment(base).MAILPIT_URL).toBeUndefined();
+    expect(
+      validateEnvironment({ ...base, MAILPIT_URL: '' }).MAILPIT_URL,
+    ).toBeUndefined();
+    expect(
+      validateEnvironment({ ...base, MAILPIT_URL: 'http://localhost:8025' })
+        .MAILPIT_URL,
+    ).toBe('http://localhost:8025');
+    expect(
+      invalidVariables({ ...base, MAILPIT_URL: 'localhost:8025' }),
+    ).toEqual(['MAILPIT_URL']);
+  });
+
   for (const name of [
     'GOOGLE_CLIENT_ID',
     'GOOGLE_CLIENT_SECRET',

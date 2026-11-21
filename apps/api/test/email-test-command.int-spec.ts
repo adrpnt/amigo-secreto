@@ -41,6 +41,7 @@ describe('email:test', () => {
             NODE_ENV: 'development',
             DATABASE_URL: databaseUrl,
             RESEND_API_KEY: '',
+            MAILPIT_URL: '',
           },
         },
       );

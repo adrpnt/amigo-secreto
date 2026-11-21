@@ -58,6 +58,15 @@ export class EnvironmentVariables {
   })
   RESEND_BASE_URL: string = 'https://api.resend.com';
 
+  // Caixa de entrada local para desenvolvimento; só usada sem RESEND_API_KEY.
+  @IsOptional()
+  @IsUrl({
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    require_tld: false,
+  })
+  MAILPIT_URL?: string;
+
   @ValidateIf(isProduction)
   @IsUrl({
     protocols: ['http', 'https'],
@@ -103,6 +112,7 @@ export class EnvironmentVariables {
 
 // Valor vazio no .env conta como ausente (ex.: GOOGLE_CLIENT_ID= no .env.example).
 const EMPTY_AS_ABSENT = [
+  'MAILPIT_URL',
   'WEB_URL',
   'AUTH_SECRET',
   'GOOGLE_CLIENT_ID',

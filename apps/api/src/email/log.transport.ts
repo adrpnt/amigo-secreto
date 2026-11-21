@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import type { EmailTransport } from './email-transport.js';
 import type { RenderedEmail } from './email.types.js';
 
-// Fora de produção sem RESEND_API_KEY: o e-mail fica no log para quem
+// Fora de produção sem RESEND_API_KEY nem MAILPIT_URL: o e-mail fica no log para quem
 // desenvolve. A validação do ambiente impede este transporte em produção.
 @Injectable()
 export class LogTransport implements EmailTransport {
