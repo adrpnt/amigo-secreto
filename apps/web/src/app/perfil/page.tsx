@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { UserAvatar } from '@/components/user-avatar';
 import { requireUser } from '@/lib/session';
 import { MarketingPreference } from './marketing-preference';
+import { PasswordForm } from './password-form';
 import { ProfileNameForm } from './profile-name-form';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default async function ProfilePage() {
 
       <ProfileNameForm name={user.name} />
       <MarketingPreference marketingOptIn={user.marketingOptIn} />
+      <PasswordForm hasPassword={user.hasPassword} />
     </main>
   );
 }

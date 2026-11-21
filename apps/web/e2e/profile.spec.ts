@@ -9,6 +9,7 @@ import {
 } from './support/account';
 import { expect, test } from './support/fixtures';
 
+const NEW_PASSWORD = 'senha-nova-456';
 const MARKETING = 'Quero receber novidades do Amigo Secreto por e-mail.';
 
 function newEmail(): string {
@@ -35,6 +36,13 @@ async function setMarketingOptIn(page: Page, marketingOptIn: boolean) {
     data: { marketingOptIn },
   });
   expect(response.status()).toBe(200);
+}
+
+async function changePassword(page: Page, current: string | null) {
+  if (current !== null) {
+    await page.getByLabel('Senha atual', { exact: true }).fill(current);
+  }
+  await page.getByLabel('Senha nova', { exact: true }).fill(NEW_PASSWORD);
 }
 
 test.describe('perfil', () => {
@@ -124,5 +132,72 @@ test.describe('perfil', () => {
     await expect(
       page.getByRole('checkbox', { name: MARKETING }),
     ).not.toBeChecked();
+  });
+
+  test('troca a senha e continua logado', async ({ page, request }) => {
+    const email = await signedInAs(page);
+    // Outra sessão da mesma conta, em outro navegador.
+    await signIn(request, email);
+    await page.goto('/perfil');
+
+    await changePassword(page, PASSWORD);
+    await page.getByRole('button', { name: 'Trocar senha' }).click();
+
+    await expect(
+      page.getByText('Senha alterada.', { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel('Senha nova', { exact: true })).toHaveValue(
+      '',
+    );
+    expect((await me(page)).email).toBe(email);
+    const otherSession = await request.get('/api/auth/session');
+    expect(((await otherSession.json()) as { user: unknown }).user).toBeNull();
+    await signIn(request, email, NEW_PASSWORD);
+  });
+
+  test('mostra "Senha atual incorreta." com a senha atual errada', async ({
+    page,
+    request,
+  }) => {
+    const email = await signedInAs(page);
+    await page.goto('/perfil');
+
+    await changePassword(page, 'senha-errada-123');
+    await page.getByRole('button', { name: 'Trocar senha' }).click();
+
+    const current = page.getByLabel('Senha atual', { exact: true });
+    await expect(current).toHaveAttribute('aria-invalid', 'true');
+    await expect(current).toHaveAccessibleDescription(
+      /Senha atual incorreta\./,
+    );
+    await expect(
+      page.getByText('Senha alterada.', { exact: true }),
+    ).toHaveCount(0);
+    await signIn(request, email, PASSWORD);
+  });
+
+  test('conta Google cria a senha sem pedir a atual', async ({
+    page,
+    request,
+  }) => {
+    await page.goto('/entrar');
+    await page.getByRole('link', { name: 'Entrar com Google' }).click();
+    await page.getByRole('link', { name: 'Verificada nova' }).click();
+    await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
+    await page.getByRole('button', { name: 'Criar conta' }).click();
+    await expect(page).toHaveURL('/perfil');
+    const { email } = await me(page);
+
+    await expect(page.getByLabel('Senha atual', { exact: true })).toHaveCount(
+      0,
+    );
+    await changePassword(page, null);
+    await page.getByRole('button', { name: 'Criar senha' }).click();
+
+    await expect(
+      page.getByText('Senha alterada.', { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel('Senha atual', { exact: true })).toBeVisible();
+    await signIn(request, email, NEW_PASSWORD);
   });
 });
