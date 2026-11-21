@@ -169,11 +169,11 @@
 ## Handoff
 
 - **Feature**: 04-groups (`.specs/features/04-groups/`), em execução
-- **Phase / Task**: fase 1 (T1 a T7) na branch da PER-107
-- **Completed**: T1 a T7
+- **Phase / Task**: fase 1 (T1 a T7) concluída na branch da PER-107; gate Build verde (shared 19, web 39, API 305, e2e 60)
+- **Completed**: T1 a T7; respostas do usuário sobre o campo das mensagens de faixa e de ordem das datas, e a contagem inicial da API (285), em `**Settled mid-build:**`
 - **In-progress** (file:line): none
-- **Next step**: gate Build da fase 1, push e PR
-- **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (In Progress), PER-108, PER-109, PER-110
+- **Next step**: revisão e merge do PR da fase 1; depois, fase 2 (T8 a T15) na branch da PER-108 a partir da `main` atualizada
+- **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (PR aberto), PER-108, PER-109, PER-110
 - **Blockers**: none
 - **Uncommitted files**: none
 - **Branch**: pntadr/per-107-fase-1-regras-compartilhadas-e-tabelas

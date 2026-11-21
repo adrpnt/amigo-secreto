@@ -376,7 +376,7 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 - [ ] Testes em `test/group-access.int-spec.ts`: `acesso ao grupo > responde 404 para id que não é UUID`, `> responde 404 para grupo inexistente`, `> responde 404 para quem não participa e para participação pendente ou recusada`, `> responde 403 para participante aprovado que não organiza`, `> devolve o grupo e a participação do organizador`, `> trava a linha do grupo até a transação terminar`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
 - [ ] Test count: 302 tests pass na API
-- [ ] Gate Build da fase verde; push e PR da fase 1
+- [x] Gate Build da fase verde; push e PR da fase 1
 
 **Tests**: integration
 **Gate**: Full
