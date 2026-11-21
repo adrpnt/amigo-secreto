@@ -14,6 +14,7 @@ import { JobRunner } from '../src/jobs/job-runner.service.js';
 import { AppLogger } from '../src/observability/app-logger.js';
 import { ObservabilityModule } from '../src/observability/observability.module.js';
 import { stubAccountEnv } from './account-env.js';
+import { type FakeMailpit, startFakeMailpit } from './fake-mailpit.js';
 import { type FakeResend, startFakeResend } from './fake-resend.js';
 import { createIsolatedDatabase } from './isolated-database.js';
 
@@ -32,6 +33,7 @@ describe('envio de e-mail', () => {
   const output: string[] = [];
   let databaseUrl: string;
   let resend: FakeResend;
+  let mailpit: FakeMailpit;
   let app: INestApplicationContext | undefined;
 
   beforeAll(async () => {
@@ -41,10 +43,12 @@ describe('envio de e-mail', () => {
     });
     databaseUrl = await createIsolatedDatabase('email_send');
     resend = await startFakeResend();
+    mailpit = await startFakeMailpit();
   });
 
   afterAll(async () => {
     await resend.close();
+    await mailpit.close();
     vi.unstubAllEnvs();
     vi.restoreAllMocks();
   });
@@ -52,6 +56,7 @@ describe('envio de e-mail', () => {
   beforeEach(() => {
     output.length = 0;
     resend.reset();
+    mailpit.reset();
   });
 
   afterEach(async () => {
@@ -66,6 +71,7 @@ describe('envio de e-mail', () => {
   async function start(env: Record<string, string>) {
     vi.stubEnv('DATABASE_URL', databaseUrl);
     vi.stubEnv('RESEND_BASE_URL', resend.url);
+    vi.stubEnv('MAILPIT_URL', '');
     stubAccountEnv();
     for (const [name, value] of Object.entries(env)) {
       vi.stubEnv(name, value);
@@ -211,6 +217,7 @@ describe('envio de e-mail', () => {
     await runWhenDue(runner, findJob, job);
 
     expect(resend.requests).toHaveLength(0);
+    expect(mailpit.requests).toHaveLength(0);
     const logged = logRecords().filter(
       (record) =>
         record.message === 'E-mail não enviado: RESEND_API_KEY ausente',
@@ -241,6 +248,50 @@ describe('envio de e-mail', () => {
     expect(resend.requests[0]?.body.from).toBe(
       'Amigo Secreto <onboarding@resend.dev>',
     );
+    expect((await findJob(job.id))?.status).toBe('DONE');
+  });
+
+  it('sem RESEND_API_KEY e com MAILPIT_URL fora de produção envia ao Mailpit, emite email.sent e marca DONE sem chamar o Resend', async () => {
+    const { emails, runner, findJob } = await start({
+      NODE_ENV: 'development',
+      RESEND_API_KEY: '',
+      MAILPIT_URL: mailpit.url,
+      EMAIL_FROM: SENDER,
+    });
+
+    const job = await emails.enqueue(MESSAGE);
+    await runWhenDue(runner, findJob, job);
+
+    const rendered = renderEmail(MESSAGE);
+    expect(resend.requests).toHaveLength(0);
+    expect(mailpit.requests).toHaveLength(1);
+    expect(mailpit.requests[0]?.url).toBe('/api/v1/send');
+    expect(mailpit.requests[0]?.body).toEqual({
+      From: { Name: 'Amigo Secreto', Email: 'nao-responda@amigo.example' },
+      To: [{ Name: '', Email: 'ana@example.com' }],
+      Subject: 'Resultado do sorteio do grupo Família',
+      HTML: rendered.html,
+      Text: rendered.text,
+    });
+    expect(emailSentEvents()).toEqual([
+      expect.objectContaining({ event: 'email.sent', jobId: job.id }),
+    ]);
+    expect((await findJob(job.id))?.status).toBe('DONE');
+  });
+
+  it('com RESEND_API_KEY envia ao Resend mesmo com MAILPIT_URL', async () => {
+    const { emails, runner, findJob } = await start({
+      NODE_ENV: 'development',
+      RESEND_API_KEY: 're_test_key',
+      MAILPIT_URL: mailpit.url,
+      EMAIL_FROM: SENDER,
+    });
+
+    const job = await emails.enqueue(MESSAGE);
+    await runWhenDue(runner, findJob, job);
+
+    expect(resend.requests).toHaveLength(1);
+    expect(mailpit.requests).toHaveLength(0);
     expect((await findJob(job.id))?.status).toBe('DONE');
   });
 });
