@@ -16,7 +16,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 **Run web**: `pnpm turbo run test --force --filter=@amigo-secreto/web -- --reporter=verbose`
 **Run e2e**: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
-Linhas esperadas das provas: o nome de cada teste é o que a check escreve; a task que cria o teste usa exatamente esse texto em `describe`/`it` (o Vitest separa com `>`, o reporter `list` do Playwright com `›`). Contagens de teste partem da `main` em 2026-11-19 (`ac05a4c`), contando `it(`/`test(`: 106 na API, 16 unitários no web e 16 no e2e; a primeira execução confere, e um desvio só de contagem inicial é registrado em `**Settled mid-build:**`.
+Linhas esperadas das provas: o nome de cada teste é o que a check escreve; a task que cria o teste usa exatamente esse texto em `describe`/`it` (o Vitest separa com `>`, o reporter `list` do Playwright com `›`). Contagens de teste partem da `main` em 2026-11-19 (`ac05a4c`), contando `it(`/`test(`: 106 na API, 16 unitários no web e 16 no e2e; a primeira execução confere, e um desvio só de contagem inicial é registrado em `**Settled mid-build:**`. (2026-11-21, T27) os `Depends on` da T21, T22 e T26 passam a seguir a ordem executada na fase 4 (T22 ← T20, T21 ← T25, T26 ← T21), corrigidos no commit da T27; `page.tsx` fica no servidor (lê a sessão e leva quem está logado ao destino) e o formulário é o componente cliente `cadastro/signup-form.tsx`; a tela de sucesso substitui o formulário com o e-mail normalizado devolvido pela API; o 429 mostra a mensagem da API e qualquer outra falha "Algo deu errado. Tente de novo.", num Alert destructive acima do botão; o `next` da query vai à API e ao link "Entrar"; o botão fica desabilitado durante o envio - user: "Confirmo todos (Recomendado)". Os erros por campo vêm da validação no site, com as regras da API, ao enviar; depois do primeiro envio o erro some ao corrigir; um 400 que ainda passe vira "Algo deu errado. Tente de novo."; textos: nome vazio "Informe seu nome.", nome com mais de 80 "Use até 80 caracteres.", e-mail inválido "Informe um e-mail válido.", senha com menos de 8 "A senha precisa ter pelo menos 8 caracteres.", com mais de 128 "A senha pode ter até 128 caracteres.", termos desmarcados "Marque esta caixa para criar a conta." - user: "Validação no site (Recomendado)". Textos da tela: título "Criar conta"; campos "Nome", "E-mail", "Senha" com a ajuda "Pelo menos 8 caracteres."; caixa de termos com "Termos de uso" e "Política de privacidade" abrindo em nova aba; marketing "Quero receber novidades do Amigo Secreto por e-mail."; botão "Criar conta" (enviando: "Criando conta…"); rodapé "Já tem conta? Entrar"; sucesso com o título "Confira seu e-mail" e o texto da spec - user: "Aprovar como está (Recomendado)". A T28 também põe o `GoogleButton` na `/cadastro`, acima do formulário com um divisor "ou", sem e2e novo - user: "Sim, na T28 (Recomendado)".
 
 ---
 
@@ -540,7 +540,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **What**: `pnpm dlx shadcn@latest add button input label checkbox alert dropdown-menu avatar` no estilo `base-vega` já configurado, com `@base-ui/react` (e `class-variance-authority` se o botão pedir); classes ajustadas aos tokens do design system.
 **Where**: `apps/web/src/components/ui/`
-**Depends on**: T20
+**Depends on**: T25
 **Reuses**: `components.json`, `globals.css`, design system "Cristal e Gelo"
 **Requirement**: AUTH-09
 
@@ -561,7 +561,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **What**: `safeNext(value)` aceita só caminho que começa com `/`, não com `//` nem `/\`, sem esquema, e que não é `/entrar` nem `/cadastro`; senão `/perfil`.
 **Where**: `apps/web/src/lib/safe-next.ts`
-**Depends on**: T21
+**Depends on**: T20
 **Reuses**: nada
 **Requirement**: AUTH-09
 
@@ -645,7 +645,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **What**: Servidor de provedores falsos (Node, sem dependência) como `webServer` do Playwright: guarda os e-mails recebidos pela rota do Resend e expõe a última mensagem por destinatário; simula o Google com uma página de escolha de identidade (verificada nova, não verificada, cancelar); a API do e2e recebe `RESEND_BASE_URL`, `GOOGLE_*`, `AUTH_SECRET`, `WEB_URL` e `TRUST_PROXY_HOPS=1`; fixture que manda um `X-Forwarded-For` próprio por teste e helper `lastEmailTo(email)`.
 **Where**: `apps/web/e2e/support/fake-providers.ts`
-**Depends on**: T25
+**Depends on**: T21
 **Reuses**: `playwright.config.ts`, `scripts/e2e.ts`
 **Requirement**: AUTH-01
 
@@ -675,9 +675,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `e2e/signup.spec.ts`: `cadastro › cria a conta e mostra "Enviamos um e-mail para X. Abra o link para confirmar sua conta."`, `› mostra a mesma tela para um e-mail já cadastrado`, `› mostra o erro do campo para senha com menos de 8 caracteres`, `› a caixa de termos tem links para /termos e /privacidade` e `› leva a pessoa logada que abre /cadastro direto ao destino`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 22 e2e tests pass
+- [x] Testes em `e2e/signup.spec.ts`: `cadastro › cria a conta e mostra "Enviamos um e-mail para X. Abra o link para confirmar sua conta."`, `› mostra a mesma tela para um e-mail já cadastrado`, `› mostra o erro do campo para senha com menos de 8 caracteres`, `› a caixa de termos tem links para /termos e /privacidade` e `› leva a pessoa logada que abre /cadastro direto ao destino`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 22 e2e tests pass
 
 **Tests**: e2e
 **Gate**: e2e
