@@ -16,7 +16,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 **Run web**: `pnpm turbo run test --force --filter=@amigo-secreto/web -- --reporter=verbose`
 **Run e2e**: `pnpm turbo run test:e2e --force --filter=@amigo-secreto/web`
 
-Linhas esperadas das provas: o nome de cada teste é o que a check escreve; a task que cria o teste usa exatamente esse texto em `describe`/`it` (o Vitest separa com `>`, o reporter `list` do Playwright com `›`). Contagens de teste partem da `main` em 2026-11-19 (`ac05a4c`), contando `it(`/`test(`: 106 na API, 16 unitários no web e 16 no e2e; a primeira execução confere, e um desvio só de contagem inicial é registrado em `**Settled mid-build:**`.
+Linhas esperadas das provas: o nome de cada teste é o que a check escreve; a task que cria o teste usa exatamente esse texto em `describe`/`it` (o Vitest separa com `>`, o reporter `list` do Playwright com `›`). Contagens de teste partem da `main` em 2026-11-19 (`ac05a4c`), contando `it(`/`test(`: 106 na API, 16 unitários no web e 16 no e2e; a primeira execução confere, e um desvio só de contagem inicial é registrado em `**Settled mid-build:**`. (2026-11-21, T27) os `Depends on` da T21, T22 e T26 passam a seguir a ordem executada na fase 4 (T22 ← T20, T21 ← T25, T26 ← T21), corrigidos no commit da T27; `page.tsx` fica no servidor (lê a sessão e leva quem está logado ao destino) e o formulário é o componente cliente `cadastro/signup-form.tsx`; a tela de sucesso substitui o formulário com o e-mail normalizado devolvido pela API; o 429 mostra a mensagem da API e qualquer outra falha "Algo deu errado. Tente de novo.", num Alert destructive acima do botão; o `next` da query vai à API e ao link "Entrar"; o botão fica desabilitado durante o envio - user: "Confirmo todos (Recomendado)". Os erros por campo vêm da validação no site, com as regras da API, ao enviar; depois do primeiro envio o erro some ao corrigir; um 400 que ainda passe vira "Algo deu errado. Tente de novo."; textos: nome vazio "Informe seu nome.", nome com mais de 80 "Use até 80 caracteres.", e-mail inválido "Informe um e-mail válido.", senha com menos de 8 "A senha precisa ter pelo menos 8 caracteres.", com mais de 128 "A senha pode ter até 128 caracteres.", termos desmarcados "Marque esta caixa para criar a conta." - user: "Validação no site (Recomendado)". Textos da tela: título "Criar conta"; campos "Nome", "E-mail", "Senha" com a ajuda "Pelo menos 8 caracteres."; caixa de termos com "Termos de uso" e "Política de privacidade" abrindo em nova aba; marketing "Quero receber novidades do Amigo Secreto por e-mail."; botão "Criar conta" (enviando: "Criando conta…"); rodapé "Já tem conta? Entrar"; sucesso com o título "Confira seu e-mail" e o texto da spec - user: "Aprovar como está (Recomendado)". A T28 também põe o `GoogleButton` na `/cadastro`, acima do formulário com um divisor "ou", sem e2e novo - user: "Sim, na T28 (Recomendado)". (2026-11-21, T28) o navegador interno é detectado no servidor: a página lê o User-Agent por `headers()` e passa `inAppBrowser` ao botão - user: "No servidor, pelo cabeçalho (Recomendado)"; o botão é outline, largura toda, com o "G" colorido do Google em SVG à esquerda - user: "Outline com o 'G' do Google (Recomendado)"; no navegador interno, Alert info com ícone e "Para entrar com Google, abra esta página no navegador do celular.", e abaixo o botão secondary "Copiar link"; ao copiar, "Link copiado." aparece como aviso passageiro no rodapé (fundo `foreground`, texto `background`, `role=status`, some em 3 s); se o navegador não deixar copiar, aparece um campo só de leitura com o endereço selecionado - user: "Alert info + toast (Recomendado)". Props `googleEnabled`, `next` e `inAppBrowser`; sem `next` o link vai a `/api/auth/google/start` sem parâmetro; na `/cadastro` o botão fica acima do formulário com o divisor "ou", e a página lê a sessão por `getSession()`; meta de 38 testes unitários no web (37 da task + o extra da T25) - user: "Confirmo todos (Recomendado)". A T28 ganha o teste `GoogleButton > mostra o endereço selecionado num campo quando o navegador não deixa copiar`; o web passa a 39 testes na T28, e as contagens do web das tasks seguintes somam 2 - user: "Sim, um 5º teste (Recomendado)". (2026-11-21, T29) `/entrar` segue o padrão da `/cadastro`: página no servidor e formulário cliente `entrar/signin-form.tsx`, Google acima com o divisor "ou", botão desabilitado no envio, validação no site ao enviar com o erro sumindo ao corrigir. Textos: título "Entrar"; campos "E-mail" e "Senha"; link "Esqueci a senha" sob a senha, para `/esqueci-a-senha` com o `next`; botão "Entrar" (enviando: "Entrando…"); rodapé "Não tem conta? Criar conta" para `/cadastro` com o `next`; erros de campo "Informe um e-mail válido." e "Informe sua senha."; Alert destructive acima do botão com a mensagem da API no 401 e no 429, "Não foi possível entrar com Google. Tente de novo." para `?erro=google`, "Não foi possível entrar com Google. Entre com e-mail e senha." para `?erro=google_nao_verificado` e "Algo deu errado. Tente de novo." no resto; os erros de `?erro=` aparecem ao abrir e são trocados pelo resultado do próximo envio - user: "Aprovar como está (Recomendado)". Depois do login o site faz `router.replace(destino)` e `router.refresh()` - user: "router.replace + refresh (Recomendado)". Na T29, `csrfToken`, `registerAccount` e `signIn` saem do `signup.spec.ts` para `e2e/support/account.ts`, sem mudar asserção - user: "e2e/support/account.ts (Recomendado)". Na T29, `FieldError` vai para `src/components/field-error.tsx` e a regra de e-mail para `isValidEmail` em `src/lib/email.ts`; a `/cadastro` passa a importar de lá, sem mudar comportamento - user: "Extrair na T29 (Recomendado)". (2026-11-21, T30) componente comum em `app/(legal)/legal-document.tsx`, aba "<Título> · Amigo Secreto"; cada página mostra o título ("Termos de uso" ou "Política de privacidade"), "Versão 2026-11-19" e "Este texto é provisório. A versão completa {dos Termos de uso | da Política de privacidade} será publicada aqui antes do lançamento do Amigo Secreto." - user: "Aviso curto de provisório (Recomendado)" e "Versão 2026-11-19 (Recomendado)". (2026-11-21, T31) o link de troca que dá certo leva a `/perfil` com `router.replace` + `router.refresh()`; até a `/perfil` existir o e2e confere a URL e o e-mail da sessão pela API, e a T39 passa a conferir o e-mail escrito na `/perfil` - user: "Leva a /perfil (Recomendado)". Nas telas "Este link expirou ou já foi usado." e "Este e-mail já está em uso por outra conta.", o próximo passo depende da sessão: logado sem confirmar, num link de confirmação, botão "Reenviar e-mail"; logado nos outros casos, link "Ir para o perfil"; sem sessão, link "Entrar" - user: "Por sessão (Recomendado)". Enquanto confirma, "Confirmando seu e-mail…"; sem token na URL, "Este link expirou ou já foi usado." sem chamar a API; o POST roda uma vez só por abertura; confirmação certa faz `router.replace(next da API)` + `router.refresh()`; "Reenviar e-mail" mostra "Enviamos um novo link para X.", a mensagem da API no 409 e no 429 e "Algo deu errado. Tente de novo." no resto; os testes esperam o e-mail na caixa falsa, com timeout de 60 s por teste - user: "Confirmo todos (Recomendado)". (2026-11-21, T32) a faixa é um componente de servidor em `<Suspense fallback={null}>` no layout; erro ao ler a sessão só esconde a faixa - user: "Faixa some + Suspense (Recomendado)"; largura toda abaixo do cabeçalho, fundo `warning-subtle`, ícone de e-mail, texto e botão outline "Reenviar e-mail", empilhados no celular e lado a lado no desktop; ao reenviar, "Enviamos um novo link para X." fica no lugar do botão; no 409 e no 429 a mensagem da API aparece e o botão continua - user: "Faixa warning-subtle (Recomendado)"; `ResendVerification` sai de `confirmar-email/email-confirmation.tsx` para `src/components/resend-verification.tsx`, usado pela faixa e pela página, sem mudar comportamento - user: "Extrair para components/ (Recomendado)". O gate Build da fase pegou dois "Reenviar e-mail" na `/confirmar-email` de quem está logado sem confirmar (faixa + página); a faixa não aparece na `/confirmar-email` (wrapper cliente com `usePathname`), o teste da T31 fica como está, e o teste `faixa de confirmação › some depois da confirmação` passa a conferir que a faixa não aparece na `/confirmar-email` - user: "Faixa some na /confirmar-email (Recomendado)". (2026-11-21, CI do PR da fase 5) o CI falhou no lint do web: o tipo global `PageProps` só existe depois do `next typegen`, o `.next/` local escondia a falta, e no CI o lint roda antes do build; o script `lint` do web passa a rodar `next typegen` antes do ESLint, como o `typecheck`, em commit próprio na branch da fase - user: "typegen antes do lint (Recomendado)" e "Commit próprio na branch (Recomendado)". (2026-11-21, CI do PR da fase 5) o teste da fundação `tema › pinta o primeiro quadro no tema salvo` falhou no CI e falha cerca de 1% das rodadas locais com a faixa no layout (0 em 280 na `main`): o next-themes aplica o tema num script no `<body>`, e o código cliente novo acrescenta um `<script async>` no `<head>` que pode rodar antes, com um quadro desenhado no tema do sistema; a faixa no cliente também falhou (2 em 200). O layout ganha um script no `<head>` que aplica o tema salvo (chave `theme`, padrão `system`, classe no `<html>` e `color-scheme`), em commit próprio; 500 de 500 rodadas verdes - user: "Sim, script no <head> (Recomendado)". O `catch` da faixa engolia o sinal de rota dinâmica do Next, e `/termos`, `/privacidade` e o 404 saíam estáticos e sem faixa; a faixa segue no servidor, dentro do `Suspense`, e o `catch` chama `unstable_rethrow` antes de esconder a faixa, como a documentação do Next 16 indica; essas páginas passam a dinâmicas - user: "Servidor + unstable_rethrow (Recomendado)". O `unstable_rethrow` sozinho não bastou: no build o `getSession()` falha antes de ler os cookies, porque o `API_INTERNAL_URL` não existe, e esse erro comum não leva o sinal; a faixa chama `await connection()` antes do `try`, como a `/`. O teste `faixa de confirmação › aparece para quem entrou sem confirmar...` passa a conferir a faixa também na `/termos`.
 
 ---
 
@@ -540,7 +540,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **What**: `pnpm dlx shadcn@latest add button input label checkbox alert dropdown-menu avatar` no estilo `base-vega` já configurado, com `@base-ui/react` (e `class-variance-authority` se o botão pedir); classes ajustadas aos tokens do design system.
 **Where**: `apps/web/src/components/ui/`
-**Depends on**: T20
+**Depends on**: T25
 **Reuses**: `components.json`, `globals.css`, design system "Cristal e Gelo"
 **Requirement**: AUTH-09
 
@@ -561,7 +561,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **What**: `safeNext(value)` aceita só caminho que começa com `/`, não com `//` nem `/\`, sem esquema, e que não é `/entrar` nem `/cadastro`; senão `/perfil`.
 **Where**: `apps/web/src/lib/safe-next.ts`
-**Depends on**: T21
+**Depends on**: T20
 **Reuses**: nada
 **Requirement**: AUTH-09
 
@@ -645,7 +645,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **What**: Servidor de provedores falsos (Node, sem dependência) como `webServer` do Playwright: guarda os e-mails recebidos pela rota do Resend e expõe a última mensagem por destinatário; simula o Google com uma página de escolha de identidade (verificada nova, não verificada, cancelar); a API do e2e recebe `RESEND_BASE_URL`, `GOOGLE_*`, `AUTH_SECRET`, `WEB_URL` e `TRUST_PROXY_HOPS=1`; fixture que manda um `X-Forwarded-For` próprio por teste e helper `lastEmailTo(email)`.
 **Where**: `apps/web/e2e/support/fake-providers.ts`
-**Depends on**: T25
+**Depends on**: T21
 **Reuses**: `playwright.config.ts`, `scripts/e2e.ts`
 **Requirement**: AUTH-01
 
@@ -675,9 +675,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `e2e/signup.spec.ts`: `cadastro › cria a conta e mostra "Enviamos um e-mail para X. Abra o link para confirmar sua conta."`, `› mostra a mesma tela para um e-mail já cadastrado`, `› mostra o erro do campo para senha com menos de 8 caracteres`, `› a caixa de termos tem links para /termos e /privacidade` e `› leva a pessoa logada que abre /cadastro direto ao destino`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 22 e2e tests pass
+- [x] Testes em `e2e/signup.spec.ts`: `cadastro › cria a conta e mostra "Enviamos um e-mail para X. Abra o link para confirmar sua conta."`, `› mostra a mesma tela para um e-mail já cadastrado`, `› mostra o erro do campo para senha com menos de 8 caracteres`, `› a caixa de termos tem links para /termos e /privacidade` e `› leva a pessoa logada que abre /cadastro direto ao destino`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 22 e2e tests pass
 
 **Tests**: e2e
 **Gate**: e2e
@@ -696,9 +696,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `src/components/google-button.test.tsx`: `GoogleButton > não aparece com googleEnabled false`, `> leva a /api/auth/google/start com o destino`, `> mostra a orientação e "Copiar link" no lugar do botão no navegador interno` e `> copia o endereço da página e mostra "Link copiado."`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 37 tests pass no web
+- [x] Testes em `src/components/google-button.test.tsx`: `GoogleButton > não aparece com googleEnabled false`, `> leva a /api/auth/google/start com o destino`, `> mostra a orientação e "Copiar link" no lugar do botão no navegador interno`, `> copia o endereço da página e mostra "Link copiado."` e `> mostra o endereço selecionado num campo quando o navegador não deixa copiar`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 39 tests pass no web
 
 **Tests**: unit
 **Gate**: web
@@ -717,9 +717,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `e2e/login.spec.ts`: `login › entra com a senha certa e cai em /perfil`, `› mostra "E-mail ou senha incorretos." com a senha errada`, `› volta à página de origem depois do login`, `› mostra "Muitas tentativas. Tente de novo em 15 minutos." na 11ª tentativa`, `› leva a pessoa logada que abre /entrar direto ao destino` e `› com o user agent do WhatsApp mostra a orientação no lugar do Google e o formulário continua funcionando`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 28 e2e tests pass
+- [x] Testes em `e2e/login.spec.ts`: `login › entra com a senha certa e cai em /perfil`, `› mostra "E-mail ou senha incorretos." com a senha errada`, `› volta à página de origem depois do login`, `› mostra "Muitas tentativas. Tente de novo em 15 minutos." na 11ª tentativa`, `› leva a pessoa logada que abre /entrar direto ao destino` e `› com o user agent do WhatsApp mostra a orientação no lugar do Google e o formulário continua funcionando`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 28 e2e tests pass
 
 **Tests**: e2e
 **Gate**: e2e
@@ -738,9 +738,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `e2e/legal.spec.ts`: `termos › /termos mostra o título, a versão vigente e o texto provisório` e `› /privacidade mostra o título, a versão vigente e o texto provisório`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 30 e2e tests pass
+- [x] Testes em `e2e/legal.spec.ts`: `termos › /termos mostra o título, a versão vigente e o texto provisório` e `› /privacidade mostra o título, a versão vigente e o texto provisório`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 30 e2e tests pass
 
 **Tests**: e2e
 **Gate**: e2e
@@ -759,9 +759,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `e2e/email-confirmation.spec.ts`: `confirmação de e-mail › o link do e-mail confirma, abre a sessão e leva ao perfil`, `› o link aberto de novo mostra "Este link expirou ou já foi usado."`, `› o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar`, `› o link de troca de e-mail troca o e-mail mostrado no perfil` e `› o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta."`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 35 e2e tests pass
+- [x] Testes em `e2e/email-confirmation.spec.ts`: `confirmação de e-mail › o link do e-mail confirma, abre a sessão e leva ao perfil`, `› o link aberto de novo mostra "Este link expirou ou já foi usado."`, `› o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar`, `› o link de troca de e-mail troca o e-mail mostrado no perfil` e `› o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta."`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 35 e2e tests pass
 
 **Tests**: e2e
 **Gate**: e2e
@@ -780,10 +780,10 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] `apps/web/src/app/layout.tsx` mostra a faixa
-- [ ] Testes em `e2e/email-banner.spec.ts`: `faixa de confirmação › aparece para quem entrou sem confirmar com "Confirme seu e-mail: enviamos um link para X."`, `› "Reenviar e-mail" mostra "Enviamos um novo link para X."` e `› some depois da confirmação`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 38 e2e tests pass
+- [x] `apps/web/src/app/layout.tsx` mostra a faixa
+- [x] Testes em `e2e/email-banner.spec.ts`: `faixa de confirmação › aparece para quem entrou sem confirmar com "Confirme seu e-mail: enviamos um link para X."`, `› "Reenviar e-mail" mostra "Enviamos um novo link para X."` e `› some depois da confirmação`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 38 e2e tests pass
 
 **Tests**: e2e
 **Gate**: e2e
@@ -934,6 +934,7 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 - [ ] Testes em `e2e/profile.spec.ts`: `perfil › pedir a troca de e-mail mostra "Enviamos um link para X."`, `› conta sem senha vê o pedido para criar uma senha antes de trocar o e-mail` e `› "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm build && pnpm test && pnpm test:e2e`
 - [ ] Test count: 59 e2e tests pass
+- [ ] O teste `confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil` passa a conferir o e-mail escrito na `/perfil`
 
 **Tests**: e2e
 **Gate**: e2e
@@ -1291,6 +1292,7 @@ Proof: run web | ✓ GoogleButton > leva a /api/auth/google/start com o destino
 
 **C75** - "Copiar link" copia o endereço e mostra "Link copiado." (AUTH-14, AC 2)
 Proof: run web | ✓ GoogleButton > copia o endereço da página e mostra "Link copiado."
+Proof: run web | ✓ GoogleButton > mostra o endereço selecionado num campo quando o navegador não deixa copiar
 
 **C76** - No navegador interno, o formulário de e-mail e senha continua funcionando (AUTH-14, AC 3)
 Proof: run e2e | ✓ login › com o user agent do WhatsApp mostra a orientação no lugar do Google e o formulário continua funcionando
