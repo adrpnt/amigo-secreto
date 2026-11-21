@@ -150,11 +150,11 @@
 ## Handoff
 
 - **Feature**: 03-auth (`.specs/features/03-auth/`), em execução
-- **Phase / Task**: fase 3 (T15 a T20) concluída na branch `pntadr/per-95-fase-3-google-e-perfil-na-api`; gate Build verde (268 testes na API, 16 unitários e 16 e2e no web)
-- **Completed**: fases 1 a 3; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
+- **Phase / Task**: fase 4 (T21 a T26) concluída na branch `pntadr/per-96-fase-4-base-do-site`, na ordem T22, T23, T24, T25, T21, T26 (o registro do shadcn entregava `import { cn } from "cn"`); gate Build verde (268 testes na API, 34 unitários e 17 e2e no web)
+- **Completed**: fases 1 a 4; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 3, atualizar a `main`, criar a branch da PER-96 e executar a fase 4 (T21 a T26)
+- **Next step**: depois do merge do PR da fase 4, atualizar a `main`, criar a branch da PER-97 e executar a fase 5 (T27 a T32); as contagens de testes unitários do web nas tasks seguintes somam 1 (teste a mais da T25)
 - **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-95-fase-3-google-e-perfil-na-api
+- **Branch**: pntadr/per-96-fase-4-base-do-site
