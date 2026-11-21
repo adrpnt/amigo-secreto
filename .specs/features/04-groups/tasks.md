@@ -159,9 +159,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/membership-table.int-spec.ts`: `tabela membership > recusa duas participações da mesma pessoa no mesmo grupo`, `> apaga as participações com o grupo`, `> recusa status fora de PENDING, APPROVED e REJECTED`, `> impede apagar um usuário com participação`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 291 tests pass na API
+- [x] Testes em `test/membership-table.int-spec.ts`: `tabela membership > recusa duas participações da mesma pessoa no mesmo grupo`, `> apaga as participações com o grupo`, `> recusa status fora de PENDING, APPROVED e REJECTED`, `> impede apagar um usuário com participação`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 291 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
