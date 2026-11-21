@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsString, Length, ValidateIf } from 'class-validator';
+import { IsBoolean, IsString, ValidateIf } from 'class-validator';
+import { NameLength } from '../name-length.js';
 
 function trim({ value }: { value: unknown }): unknown {
   return typeof value === 'string' ? value.trim() : value;
@@ -10,7 +11,7 @@ export class UpdateProfileDto {
   @ValidateIf((dto: UpdateProfileDto) => dto.name !== undefined)
   @Transform(trim)
   @IsString()
-  @Length(1, 80)
+  @NameLength()
   name?: string;
 
   @ValidateIf((dto: UpdateProfileDto) => dto.marketingOptIn !== undefined)

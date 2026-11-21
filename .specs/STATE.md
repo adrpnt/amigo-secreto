@@ -149,12 +149,12 @@
 
 ## Handoff
 
-- **Feature**: 03-auth (`.specs/features/03-auth/`), em execução
-- **Phase / Task**: fase 5 (T27 a T32) concluída na branch `pntadr/per-97-fase-5-cadastro-login-termos-e-confirmacao-no`; gate Build verde (268 testes na API, 39 unitários e 38 e2e no web)
-- **Completed**: fases 1 a 5; decisões da execução na linha `**Settled mid-build:**` do `tasks.md`
+- **Feature**: 03-auth (`.specs/features/03-auth/`), concluída
+- **Phase / Task**: fase 6 (T33 a T39) e fechamento da feature na branch `pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil`
+- **Completed**: fases 1 a 6; walk das 14 histórias; Verifier com 6 achados, todos fechados por commit (`c5b5eb6`, `9ec98a6`, `287a271`, `a9fc76e`, `24066cf`, `42be894`), com o critério novo AUTH-12 AC 8 e a check C87; `check_proofs.py` com 233 pass e 0 fail; `validate_verification.py 03-auth` com saída 0; lições L-015 a L-020 (candidatas)
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 5, atualizar a `main`, criar a branch da PER-98 e executar a fase 6 (T33 a T39), a última: o fechamento da feature roda antes do PR; as contagens de testes unitários do web nas tasks seguintes somam 2 (extras da T25 e da T28); a T39 também passa a conferir o e-mail escrito na `/perfil` no teste da troca de e-mail
+- **Next step**: push e PR da PER-98; depois do merge, abrir a feature `04-groups` (Specify), carregando as lições confirmadas
 - **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-97-fase-5-cadastro-login-termos-e-confirmacao-no
+- **Branch**: pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil

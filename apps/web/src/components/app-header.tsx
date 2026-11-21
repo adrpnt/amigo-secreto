@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { ThemeToggle } from './theme-toggle';
+import { UserMenu } from './user-menu';
 
 export function AppHeader() {
   return (
@@ -11,6 +13,9 @@ export function AppHeader() {
         Amigo Secreto
       </Link>
       <ThemeToggle />
+      <Suspense fallback={null}>
+        <UserMenu />
+      </Suspense>
     </header>
   );
 }

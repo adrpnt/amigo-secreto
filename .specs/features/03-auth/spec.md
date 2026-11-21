@@ -308,6 +308,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 5. IF a senha atual está errada THEN o sistema SHALL recusar com 400 e "Senha atual incorreta." sem enfileirar e-mail.
 6. IF a conta não tem senha THEN o sistema SHALL pedir que a pessoa crie uma senha antes de trocar o e-mail.
 7. IF o link tem mais de 7 dias, já foi usado ou foi substituído por um pedido mais novo THEN o sistema SHALL mostrar "Este link expirou ou já foi usado."
+8. WHEN a troca de e-mail é confirmada THEN o sistema SHALL invalidar os links de recuperação de senha e de confirmação de e-mail ainda não usados da conta, enviados ao e-mail antigo. (Acrescentado em 2026-11-21, achado da verificação.)
 
 **Independent Test**: Pedir a troca com a senha certa enfileira dois e-mails; o login continua com o e-mail antigo até o link; abrir o link troca o e-mail.
 

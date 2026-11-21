@@ -16,6 +16,14 @@ const INTERNAL_ERROR = {
   error: 'Internal Server Error',
 };
 
+// JSON malformado: a mensagem do parser repete um trecho do corpo, que pode
+// trazer a senha.
+const INVALID_BODY = {
+  statusCode: HttpStatus.BAD_REQUEST,
+  message: 'Corpo da requisição inválido.',
+  error: 'Bad Request',
+};
+
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
@@ -44,10 +52,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     // Um 500 nunca devolve a mensagem original, mesmo vinda de uma HttpException.
-    const body =
-      isHttpException && !isInternalError
-        ? httpExceptionBody(exception)
-        : INTERNAL_ERROR;
+    let body: object = INTERNAL_ERROR;
+    if (isHttpException && !isInternalError) {
+      body =
+        exception.cause instanceof SyntaxError
+          ? INVALID_BODY
+          : httpExceptionBody(exception);
+    }
     const response: unknown = host.switchToHttp().getResponse();
     const { httpAdapter } = this.adapterHost;
     if (exception instanceof TooManyAttemptsException) {

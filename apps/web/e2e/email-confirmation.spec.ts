@@ -109,6 +109,9 @@ test.describe('confirmação de e-mail', () => {
     await page.goto(link);
 
     await expect(page).toHaveURL('/perfil');
+    await expect(
+      page.getByRole('main').getByText(newAddress, { exact: true }),
+    ).toBeVisible();
     expect(await sessionUser(page)).toMatchObject({
       email: newAddress,
       emailVerified: true,

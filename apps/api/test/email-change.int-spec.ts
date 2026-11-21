@@ -214,6 +214,34 @@ describe('troca de e-mail', () => {
     expect((await login(account.email)).status).toBe(401);
   });
 
+  it('invalida os links de recuperação e de confirmação pendentes ao confirmar a troca', async () => {
+    const account = await createAccount({ verified: false });
+    await post('/auth/password/forgot', await anonymous(), {
+      email: account.email,
+    }).expect(202);
+    const resetToken = (await linkTo(account.email)).searchParams.get('token')!;
+    await post('/auth/email/verification-link', account.cookies, {}).expect(
+      202,
+    );
+    const verificationToken = (await linkTo(account.email)).searchParams.get(
+      'token',
+    )!;
+    const newEmail = newAddress();
+    await requestChange(account, { newEmail, password: PASSWORD });
+
+    expect((await confirm(await tokenFor(newEmail))).status).toBe(200);
+
+    const verify = await post('/auth/email/verify', await anonymous(), {
+      token: verificationToken,
+    });
+    const reset = await post('/auth/password/reset', await anonymous(), {
+      token: resetToken,
+      password: 'senha-nova-456',
+    });
+    expect([reset.status, verify.status]).toEqual([410, 410]);
+    expect((await login(newEmail)).status).toBe(200);
+  });
+
   it('responde 409 "Este e-mail já está em uso por outra conta." quando o e-mail novo ganhou conta', async () => {
     const account = await createAccount();
     const newEmail = newAddress();

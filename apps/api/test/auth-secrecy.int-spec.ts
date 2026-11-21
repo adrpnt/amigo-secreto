@@ -267,4 +267,23 @@ describe('sigilo da conta', () => {
     expect(leaked(bodies)).toEqual([]);
     expect(bodies).not.toContain(MARK);
   });
+
+  it('responde 400 "Corpo da requisição inválido." a JSON malformado, sem trecho do corpo', async () => {
+    const csrf = await anonymousCsrf();
+
+    const response = await request(server)
+      .post('/auth/login')
+      .set('Cookie', cookieHeader({ csrf }))
+      .set('X-CSRF-Token', csrf)
+      .set('Content-Type', 'application/json')
+      .send(`{"email":"${EMAIL}","password":${PASSWORD}}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      statusCode: 400,
+      message: 'Corpo da requisição inválido.',
+      error: 'Bad Request',
+    });
+    expect(response.text).not.toContain(MARK);
+  });
 });

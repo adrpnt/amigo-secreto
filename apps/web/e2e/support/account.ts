@@ -36,14 +36,16 @@ export async function signIn(
 
 const LINK_WAIT_MS = 20_000;
 const LINK_POLL_MS = 250;
-const LINK_PATTERN = /http:\/\/localhost:\d+(\/confirmar-email\?[^\s"<>]+)/;
+const CONFIRMATION_LINK =
+  /http:\/\/localhost:\d+(\/confirmar-email\?[^\s"<>]+)/;
+const RESET_LINK = /http:\/\/localhost:\d+(\/redefinir-senha\?[^\s"<>]+)/;
 
-// Caminho do link de /confirmar-email no último e-mail para o endereço que
-// satisfaz `accept` (por exemplo, o link de troca ou um link diferente do
-// anterior). A fila de e-mails da API roda a cada 10 segundos.
-export async function confirmationLinkTo(
+// Caminho do link que casa com `pattern` no último e-mail para o endereço e
+// satisfaz `accept`. A fila de e-mails da API roda a cada 10 segundos.
+async function linkTo(
   email: string,
-  accept: (path: string) => boolean = () => true,
+  pattern: RegExp,
+  accept: (path: string) => boolean,
 ): Promise<string> {
   const url = `${FAKE_PROVIDERS_URL}/emails/latest?to=${encodeURIComponent(email)}`;
   const deadline = Date.now() + LINK_WAIT_MS;
@@ -51,10 +53,25 @@ export async function confirmationLinkTo(
     const response = await fetch(url);
     if (response.status === 200) {
       const { text } = (await response.json()) as FakeEmail;
-      const path = LINK_PATTERN.exec(text)?.[1];
+      const path = pattern.exec(text)?.[1];
       if (path && accept(path)) return path.replaceAll('&amp;', '&');
     }
     await new Promise((resolve) => setTimeout(resolve, LINK_POLL_MS));
   }
   throw new Error(`Nenhum link para ${email} em ${LINK_WAIT_MS / 1000} s.`);
+}
+
+// Caminho do link de /confirmar-email no último e-mail para o endereço que
+// satisfaz `accept` (por exemplo, o link de troca ou um link diferente do
+// anterior).
+export function confirmationLinkTo(
+  email: string,
+  accept: (path: string) => boolean = () => true,
+): Promise<string> {
+  return linkTo(email, CONFIRMATION_LINK, accept);
+}
+
+// Caminho do link de /redefinir-senha no último e-mail para o endereço.
+export function resetLinkTo(email: string): Promise<string> {
+  return linkTo(email, RESET_LINK, () => true);
 }

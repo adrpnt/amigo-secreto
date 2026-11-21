@@ -338,6 +338,26 @@ describe('confirmação de e-mail', () => {
     expect(await confirmationTokens(email)).toHaveLength(6);
   });
 
+  it('responde 429 no 21º pedido do mesmo IP em 1 hora', async () => {
+    const ip = newIp();
+    const statuses = [];
+    for (let attempt = 1; attempt <= 20; attempt++) {
+      const { userId } = await registerAccount();
+      const session = await openSession(userId);
+      statuses.push(
+        (await post('/auth/email/verification-link', {}, session, ip)).status,
+      );
+    }
+    const { email, userId } = await registerAccount();
+    const session = await openSession(userId);
+
+    const last = await post('/auth/email/verification-link', {}, session, ip);
+
+    expect(statuses).toEqual(Array.from({ length: 20 }, () => 202));
+    expect(last.status).toBe(429);
+    expect(await confirmationTokens(email)).toHaveLength(1);
+  });
+
   it('encerra a sessão que o navegador já tinha ao confirmar', async () => {
     const other = await registerAccount();
     const previous = await openSession(other.userId);

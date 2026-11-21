@@ -4,9 +4,9 @@ import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { type FormEvent, type ReactNode, useState } from 'react';
 import { FieldError } from '@/components/field-error';
+import { TermsConsent } from '@/components/terms-consent';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiFetch } from '@/lib/api-fetch';
@@ -30,7 +30,7 @@ function validate(values: SignUpValues): FieldErrors {
   const name = values.name.trim();
 
   if (name.length === 0) errors.name = 'Informe seu nome.';
-  else if (name.length > 80) errors.name = 'Use até 80 caracteres.';
+  else if ([...name].length > 80) errors.name = 'Use até 80 caracteres.';
 
   if (!isValidEmail(values.email)) {
     errors.email = 'Informe um e-mail válido.';
@@ -185,40 +185,14 @@ export function SignUpForm({
           <FieldError id="signup-password-error" message={errors.password} />
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <Label className="items-start font-normal text-body-sm">
-            <Checkbox
-              className="mt-0.5"
-              checked={values.acceptTerms}
-              onCheckedChange={(checked) => update('acceptTerms', checked)}
-              aria-invalid={errors.acceptTerms ? true : undefined}
-              aria-describedby={
-                errors.acceptTerms ? 'signup-terms-error' : undefined
-              }
-            />
-            <span>
-              Li e aceito os{' '}
-              <Link href="/termos" target="_blank" className="underline">
-                Termos de uso
-              </Link>{' '}
-              e a{' '}
-              <Link href="/privacidade" target="_blank" className="underline">
-                Política de privacidade
-              </Link>
-              , e tenho 18 anos ou autorização dos meus responsáveis
-            </span>
-          </Label>
-          <FieldError id="signup-terms-error" message={errors.acceptTerms} />
-        </div>
-
-        <Label className="items-start font-normal text-body-sm">
-          <Checkbox
-            className="mt-0.5"
-            checked={marketingOptIn}
-            onCheckedChange={(checked) => setMarketingOptIn(checked)}
-          />
-          <span>Quero receber novidades do Amigo Secreto por e-mail.</span>
-        </Label>
+        <TermsConsent
+          errorId="signup-terms-error"
+          acceptTerms={values.acceptTerms}
+          onAcceptTermsChange={(checked) => update('acceptTerms', checked)}
+          termsError={errors.acceptTerms}
+          marketingOptIn={marketingOptIn}
+          onMarketingOptInChange={setMarketingOptIn}
+        />
 
         {formError && (
           <Alert variant="destructive">

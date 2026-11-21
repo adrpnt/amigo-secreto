@@ -2,6 +2,10 @@ import { render, screen, within } from '@testing-library/react';
 import { AppHeader } from './app-header';
 import { ThemeProvider } from './theme-provider';
 
+// O menu da conta é componente de servidor assíncrono, que o Testing Library
+// não renderiza; o e2e do cabeçalho cobre ele.
+vi.mock('./user-menu', () => ({ UserMenu: () => null }));
+
 describe('AppHeader', () => {
   it('mostra o nome Amigo Secreto e o botão de tema', () => {
     render(
