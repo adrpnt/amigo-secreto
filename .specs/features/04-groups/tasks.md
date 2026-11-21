@@ -419,10 +419,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa o cookie da requisição à URL interna da API`, `> lança erro sem API_INTERNAL_URL`
-- [ ] `src/lib/session.test.ts` passa sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 41 tests pass no web
+- [x] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa o cookie da requisição à URL interna da API`, `> lança erro sem API_INTERNAL_URL`
+- [x] `src/lib/session.test.ts` passa sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 41 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -441,9 +441,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/lib/groups.test.ts`: `getGroup > devolve null quando a API responde 404`, `> lança erro quando a API responde 500`, `getMyGroups > lança erro quando a API não responde 200`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 44 tests pass no web
+- [x] Testes em `src/lib/groups.test.ts`: `getGroup > devolve null quando a API responde 404`, `> lança erro quando a API responde 500`, `getMyGroups > lança erro quando a API não responde 200`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 44 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -462,9 +462,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/lib/group-format.test.ts`: `formatGiftValue > mostra R$ 50 quando mínimo e máximo são iguais`, `> mostra R$ 50 a R$ 100 numa faixa`, `participantsLabel > escreve 1 participante e N participantes`, `cardDateLine > mostra Sorteio em dd/mm/aaaa para grupo ABERTO`, `> mostra Confraternização em dd/mm/aaaa para grupo SORTEADO ou ENCERRADO`, `> mostra Sem data definida quando a data do status não existe`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 50 tests pass no web
+- [x] Testes em `src/lib/group-format.test.ts`: `formatGiftValue > mostra R$ 50 quando mínimo e máximo são iguais`, `> mostra R$ 50 a R$ 100 numa faixa`, `> mostra R$ 1.500 com ponto de milhar`, `participantsLabel > escreve 1 participante e N participantes`, `cardDateLine > mostra Sorteio em dd/mm/aaaa para grupo ABERTO`, `> mostra Confraternização em dd/mm/aaaa para grupo SORTEADO ou ENCERRADO`, `> mostra Sem data definida quando a data do status não existe`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 51 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -483,9 +483,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/components/confirm-dialog.test.tsx`: `ConfirmDialog > abre com o título, o texto e os dois botões`, `> põe o foco em Manter grupo e prende o Tab`, `> fecha sem confirmar com Manter grupo, Esc e toque fora`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 53 tests pass no web
+- [x] Testes em `src/components/confirm-dialog.test.tsx`: `ConfirmDialog > abre com o título, o texto e os dois botões`, `> põe o foco em Manter grupo e prende o Tab`, `> fecha sem confirmar com Manter grupo, Esc e toque fora`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 54 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -504,9 +504,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Teste em `src/components/status-tag.test.tsx`: `StatusTag > escreve ABERTO, SORTEADO e ENCERRADO com ícone`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 54 tests pass no web
+- [x] Teste em `src/components/status-tag.test.tsx`: `StatusTag > escreve ABERTO, SORTEADO e ENCERRADO com ícone`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 55 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -525,9 +525,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/components/group-card.test.tsx`: `GroupCard > mostra nome, status, participantes e a linha da data`, `> mostra a tag Você organiza só para quem organiza`, `> é um link para a página do grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 57 tests pass no web
+- [x] Testes em `src/components/group-card.test.tsx`: `GroupCard > mostra nome, status, participantes e a linha da data`, `> mostra a tag Você organiza só para quem organiza`, `> é um link para a página do grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 58 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -546,9 +546,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/app/grupos/group-form.test.tsx`: `GroupForm > mostra a mensagem de cada regra violada antes de enviar`, `> mostra as mensagens dos campos de um 400 da API`, `> mostra a mensagem da API num 429`, `> desabilita o botão e mostra Salvando... durante o envio, na criação e na edição`, `> mantém os campos e mostra Não foi possível salvar. Tente de novo. num erro inesperado`, `> envia as datas digitadas como instantes no horário de Brasília`, `> Voltar leva à página do grupo sem enviar nada`, `> abre preenchido com os dados atuais do grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 65 tests pass no web
+- [x] Testes em `src/app/grupos/group-form.test.tsx`: `GroupForm > mostra a mensagem de cada regra violada antes de enviar`, `> mostra as mensagens dos campos de um 400 da API`, `> mostra a mensagem da API num 429`, `> mostra a mensagem da API num 403 e num 409`, `> desabilita o botão e mostra Salvando... durante o envio, na criação e na edição`, `> mantém os campos e mostra Não foi possível salvar. Tente de novo. num erro inesperado`, `> envia as datas digitadas como instantes no horário de Brasília`, `> Voltar leva à página do grupo sem enviar nada`, `> abre preenchido com os dados atuais do grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 67 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -567,10 +567,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/app/grupos/[id]/group-actions.test.tsx`: `GroupActions > mostra Editar grupo e Excluir grupo ao organizador de grupo ABERTO`, `> mostra Editar grupo, Encerrar grupo e Excluir grupo ao organizador de grupo SORTEADO`, `> mostra só Excluir grupo ao organizador de grupo ENCERRADO`, `> abre a confirmação de exclusão com o texto da spec`, `> exclui e leva a /grupos ao confirmar`, `> abre a confirmação de encerramento com o texto da spec`, `> encerra e atualiza a página ao confirmar`, `> Manter grupo fecha a confirmação de encerramento sem chamar a API`, `> mostra a mensagem da API quando o encerramento recebe 409`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 74 tests pass no web
-- [ ] Gate Build da fase verde; push e PR da fase 3
+- [x] Testes em `src/app/grupos/[id]/group-actions.test.tsx`: `GroupActions > mostra Editar grupo e Excluir grupo ao organizador de grupo ABERTO`, `> mostra Editar grupo, Encerrar grupo e Excluir grupo ao organizador de grupo SORTEADO`, `> mostra só Excluir grupo ao organizador de grupo ENCERRADO`, `> abre a confirmação de exclusão com o texto da spec`, `> exclui e leva a /grupos ao confirmar`, `> abre a confirmação de encerramento com o texto da spec`, `> encerra e atualiza a página ao confirmar`, `> Manter grupo fecha a confirmação de encerramento sem chamar a API`, `> mostra a mensagem da API quando o encerramento recebe 409`, `> desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido`, `> leva a /grupos quando o grupo já foi excluído`, `> mostra Não foi possível concluir. Tente de novo. num erro inesperado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 79 tests pass no web
+- [x] Gate Build da fase verde; push e PR da fase 3
 
 **Tests**: unit
 **Gate**: Web
@@ -909,9 +909,10 @@ Proof: run e2e | ✓ grupos › cria um grupo com todos os campos e mostra cada 
 **C32** - Campo opcional vazio não aparece (GRP-03, AC 2)
 Proof: run web | ✓ GroupDetailView > omite os campos vazios
 
-**C33** - Valor aparece como `R$ 50` ou `R$ 50 a R$ 100` (GRP-03, AC 3)
+**C33** - Valor aparece como `R$ 50` ou `R$ 50 a R$ 100`, com ponto de milhar (GRP-03, AC 3)
 Proof: run web | ✓ formatGiftValue > mostra R$ 50 quando mínimo e máximo são iguais
 Proof: run web | ✓ formatGiftValue > mostra R$ 50 a R$ 100 numa faixa
+Proof: run web | ✓ formatGiftValue > mostra R$ 1.500 com ponto de milhar
 
 **C34** - "Evento online" aparece junto do local quando marcado (GRP-03, AC 4)
 Proof: run web | ✓ GroupDetailView > mostra Evento online junto do local
@@ -1135,7 +1136,7 @@ Proof: run api | ✓ criar grupo > recusa com 429 a 21ª criação da hora e ace
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15".
+**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15". 2026-11-21, na T18, valor do presente a partir de mil reais leva ponto de milhar (`R$ 1.500`, `R$ 1.000 a R$ 2.500`), como na mensagem "R$ 100.000"; GRP-03 AC 3 e a C33 ganham o caso, com o teste `formatGiftValue > mostra R$ 1.500 com ponto de milhar` - user: "Com ponto (Recomendado)", entre essa, "Sem separador" e "Com ponto, sem teste novo". As metas de contagem do web da T18 em diante ficam 1 acima do escrito. 2026-11-21, na T19, o CLI do shadcn não gera o `dialog` (o item `base-vega/dialog` do registro declara a dependência npm `cn` e o CLI roda `pnpm add cn`): o `components/ui/dialog.tsx` é copiado do registro com as trocas que o CLI faz (`cn` de `@/lib/utils`, `Button` de `@/components/ui/button`, ícone do `lucide-react`), sem pacote novo e sem tocar no `button.tsx`; o mesmo vale para o `textarea` na T22 - user: "Copiar do registro (Recomendado)", entre essa, "Escrever sobre o Base UI direto" e "Parar e esperar". 2026-11-21, na T22, decisões do `GroupForm`: com o "Até (R$)" vazio, a mensagem do máximo que o shared copia do mínimo não aparece, nem na validação do site nem num 400 da API; com o "Até" preenchido, cada campo mostra a sua - user: "Só no Valor do presente (Recomendado)", entre essa e "Nos dois campos"; o botão mostra "Salvando…" com o caractere de reticências, como o perfil e o cadastro, e a GRP-01 AC 16 e a GRP-04 AC 10 passam a escrever "Salvando…" (os nomes dos testes ficam) - user: "Salvando… (Recomendado)", entre essa e "Salvando... (três pontos)"; 403 e 409 mostram a mensagem da API no `Alert`, e 404, 400 sem `fields`, 5xx e rede mostram "Não foi possível salvar. Tente de novo." - user: "Mensagem da API no 403 e 409 (Recomendado)", entre essa e "Tudo genérico"; padrões: valor e "Até" lado a lado e as duas datas lado a lado a partir de 640 px, empilhados no celular; valores com `inputMode` numérico; erros por campo só depois do primeiro envio, sumindo ao corrigir; botão principal "Criar grupo" ou "Salvar alterações" e, na edição, "Voltar" como link outline para `/grupos/{id}`; ao salvar, `router.push('/grupos/{id}')`; o form recebe o `GroupDetail` na edição e converte as datas com `isoToBrasiliaInput` - user: "Confirmo todos (Recomendado)", entre essa e "Quero ajustar". A T22 ganha o teste `GroupForm > mostra a mensagem da API num 403 e num 409`, da decisão acima; as metas de contagem do web da T22 em diante ficam 2 acima do escrito. 2026-11-21, na T23, decisões do `GroupActions`: a confirmação fecha e um `Alert` abaixo dos botões mostra a mensagem da API no 403 e no 409; 404 na exclusão (grupo já excluído) leva a `/grupos`; 404 no encerramento, 5xx e rede mostram "Não foi possível concluir. Tente de novo." - user: "Igual ao formulário (Recomendado)", entre essa e "Tudo genérico exceto o 409"; durante o pedido o botão de confirmar fica desabilitado e mostra "Excluindo…" ou "Encerrando…", pelo `ConfirmDialog` (prop `pendingLabel`) - user: "Desabilita e mostra …ndo (Recomendado)", entre essa e "Só desabilita"; "Editar grupo" é link outline para `/grupos/{id}/editar`, "Encerrar grupo" outline e "Excluir grupo" destructive, nessa ordem, quebrando linha no celular - user: "Editar outline, Encerrar outline, Excluir destrutivo (Recomendado)", entre essa e "Editar primário". A T23 ganha os testes `GroupActions > desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido`, `> leva a /grupos quando o grupo já foi excluído` e `> mostra Não foi possível concluir. Tente de novo. num erro inesperado`; a meta de contagem da T23 passa a 79.
 **Dispatched:** none
 **Walked:** none
 

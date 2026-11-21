@@ -98,7 +98,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 13. IF a conta já criou 20 grupos na janela de 1 hora em curso THEN o sistema SHALL recusar com 429, mostrar "Muitas tentativas. Tente de novo em N minutos." ("em 1 minuto." quando N = 1) e não criar o grupo.
 14. WHILE o e-mail da conta não está confirmado o sistema SHALL criar o grupo como para uma conta confirmada.
 15. The sistema SHALL ler as datas digitadas e mostrar as datas gravadas no horário de Brasília (`America/Sao_Paulo`), no formato `20/12/2026 às 19:00`.
-16. WHILE o envio do formulário espera a resposta o site SHALL desabilitar o botão "Criar grupo" e mostrar "Salvando...".
+16. WHILE o envio do formulário espera a resposta o site SHALL desabilitar o botão "Criar grupo" e mostrar "Salvando…".
 17. IF o envio falha por erro inesperado (5xx ou rede) THEN o site SHALL manter os campos preenchidos e mostrar "Não foi possível salvar. Tente de novo."
 
 **Independent Test**: Criar um grupo só com o nome leva à página dele, com status ABERTO e a pessoa como organizadora; enviar um sorteio previsto depois da confraternização devolve 400 com a mensagem e não cria nada.
@@ -141,7 +141,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 1. WHEN um participante aprovado abre `/grupos/{id}` THEN o site SHALL mostrar o nome, o StatusTag, "Organizado por {nome de quem organiza}" e cada campo preenchido entre recado, valor do presente, sorteio previsto, confraternização e local.
 2. IF um campo opcional não está preenchido THEN a página SHALL omiti-lo.
-3. The página SHALL mostrar o valor do presente como `R$ 50` quando mínimo = máximo e como `R$ 50 a R$ 100` quando diferentes.
+3. The página SHALL mostrar o valor do presente como `R$ 50` quando mínimo = máximo e como `R$ 50 a R$ 100` quando diferentes, com ponto de milhar (`R$ 1.500`).
 4. WHILE o grupo tem "Evento online" marcado a página SHALL mostrar "Evento online" junto do local.
 5. WHILE quem vê organiza o grupo e ele exige aprovação a página SHALL mostrar "Entrada com aprovação".
 6. WHILE quem vê organiza um grupo ABERTO a página SHALL mostrar "Editar grupo" e "Excluir grupo".
@@ -173,7 +173,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 7. IF quem envia é participante aprovado mas não organiza o grupo THEN a API SHALL responder 403 "Só quem organiza pode alterar o grupo." e não alterar o grupo.
 8. IF o grupo está ENCERRADO THEN a API SHALL responder 409 "Grupo encerrado não pode ser editado." e não alterar o grupo.
 9. WHEN quem não organiza o grupo, ou o organizador de um grupo ENCERRADO, abre `/grupos/{id}/editar` THEN o site SHALL levar a `/grupos/{id}`.
-10. WHILE o envio do formulário espera a resposta o site SHALL desabilitar o botão "Salvar alterações" e mostrar "Salvando...".
+10. WHILE o envio do formulário espera a resposta o site SHALL desabilitar o botão "Salvar alterações" e mostrar "Salvando…".
 11. WHEN o organizador usa "Voltar" no formulário THEN o site SHALL levar a `/grupos/{id}` sem gravar nada.
 
 **Independent Test**: O organizador troca o valor para uma faixa e apaga o local; a página do grupo mostra a faixa e não mostra local. Outro participante recebe 403 ao tentar o mesmo pela API.
