@@ -311,9 +311,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-detail.int-spec.ts`: `ver grupo > devolve os dados do grupo, o nome de quem organiza e isOrganizer ao participante aprovado`, `> responde 404 igual para id inexistente, id que não é UUID e grupo de que a pessoa não participa`, `> devolve o recado com quebras de linha e marcação HTML como texto`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 333 tests pass na API
+- [x] Testes em `test/groups-detail.int-spec.ts`: `ver grupo > devolve os dados do grupo, o nome de quem organiza e isOrganizer ao participante aprovado`, `> responde 404 igual para id inexistente, id que não é UUID e grupo de que a pessoa não participa`, `> devolve o recado com quebras de linha e marcação HTML como texto`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 333 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

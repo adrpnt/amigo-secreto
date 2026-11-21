@@ -15,7 +15,9 @@ import {
   RateLimitService,
   rateLimitKey,
 } from '../rate-limit/rate-limit.service.js';
+import { User } from '../users/user.entity.js';
 import type { GroupInputDto } from './dto/group-input.dto.js';
+import { GroupAccess } from './group-access.service.js';
 import { Group } from './group.entity.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
@@ -92,6 +94,7 @@ export function toGroupDetail(
 export class GroupsService {
   constructor(
     private readonly dataSource: DataSource,
+    private readonly access: GroupAccess,
     private readonly rateLimit: RateLimitService,
     private readonly events: BusinessEventsService,
   ) {}
@@ -163,5 +166,13 @@ export class GroupsService {
       active: summaries.filter((group) => group.status !== 'CLOSED'),
       closed: summaries.filter((group) => group.status === 'CLOSED'),
     };
+  }
+
+  async get(userId: string, groupId: string): Promise<GroupDetail> {
+    const { group } = await this.access.requireMember(userId, groupId);
+    const owner = await this.dataSource
+      .getRepository(User)
+      .findOneByOrFail({ id: group.ownerId });
+    return toGroupDetail(group, { id: owner.id, name: owner.name }, userId);
   }
 }
