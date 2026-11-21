@@ -588,9 +588,9 @@ T33 → T34 → T35 → T36 → T37 → T38 → T39
 
 **Done when**:
 
-- [ ] Testes em `src/lib/in-app-browser.test.ts`: `isInAppBrowser > reconhece o navegador do WhatsApp`, `> reconhece o navegador do Instagram`, `> reconhece o navegador do Facebook pelo FBAN e pelo FBAV` e `> não reconhece o Chrome nem o Safari do celular`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 26 tests pass no web
+- [x] Testes em `src/lib/in-app-browser.test.ts`: `isInAppBrowser > reconhece o navegador do WhatsApp`, `> reconhece o navegador do Instagram`, `> reconhece o navegador do Facebook pelo FBAN e pelo FBAV` e `> não reconhece o Chrome nem o Safari do celular`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 26 tests pass no web
 
 **Tests**: unit
 **Gate**: web
