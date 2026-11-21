@@ -7,7 +7,7 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
-    "lint": "eslint . --max-warnings 0 && prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
+    "lint": "next typegen && eslint . --max-warnings 0 && prettier --check . --ignore-path ../../.gitignore --ignore-path ../../.prettierignore",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "test:e2e": "node scripts/e2e.ts"
