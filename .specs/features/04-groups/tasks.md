@@ -117,9 +117,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/brasilia-time.spec.ts`: `brasiliaInputToIso > converte 2026-12-20T19:00 para 2026-12-20T22:00:00.000Z`, `isoToBrasiliaInput > devolve o valor do campo no horário de Brasília`, `formatBrasiliaDateTime > formata 2026-12-20T22:00:00.000Z como 20/12/2026 às 19:00`, `formatBrasiliaDate > formata a data no horário de Brasília, inclusive perto da meia-noite UTC`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/shared lint && pnpm --filter @amigo-secreto/shared typecheck && pnpm --filter @amigo-secreto/shared test`
-- [ ] Test count: 19 tests pass no shared
+- [x] Testes em `src/brasilia-time.spec.ts`: `brasiliaInputToIso > converte 2026-12-20T19:00 para 2026-12-20T22:00:00.000Z`, `isoToBrasiliaInput > devolve o valor do campo no horário de Brasília`, `formatBrasiliaDateTime > formata 2026-12-20T22:00:00.000Z como 20/12/2026 às 19:00`, `formatBrasiliaDate > formata a data no horário de Brasília, inclusive perto da meia-noite UTC`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/shared lint && pnpm --filter @amigo-secreto/shared typecheck && pnpm --filter @amigo-secreto/shared test`
+- [x] Test count: 19 tests pass no shared
 
 **Tests**: unit
 **Gate**: Shared
