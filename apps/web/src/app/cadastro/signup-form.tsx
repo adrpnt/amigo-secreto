@@ -30,7 +30,7 @@ function validate(values: SignUpValues): FieldErrors {
   const name = values.name.trim();
 
   if (name.length === 0) errors.name = 'Informe seu nome.';
-  else if (name.length > 80) errors.name = 'Use até 80 caracteres.';
+  else if ([...name].length > 80) errors.name = 'Use até 80 caracteres.';
 
   if (!isValidEmail(values.email)) {
     errors.email = 'Informe um e-mail válido.';

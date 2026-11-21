@@ -258,6 +258,15 @@ describe('cadastro', () => {
     expect(await countUsers(long.email as string)).toBe(0);
   });
 
+  it('recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres', async () => {
+    const body = validBody({ name: '❤️'.repeat(80) });
+
+    const response = await register(body);
+
+    expect(response.status).toBe(400);
+    expect(await countUsers(body.email as string)).toBe(0);
+  });
+
   it('recusa com 400 e-mail inválido', async () => {
     const invalid = `${randomUUID()}@`;
 

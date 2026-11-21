@@ -28,7 +28,7 @@ function validate(values: GoogleSignUpValues): FieldErrors {
   const name = values.name.trim();
 
   if (name.length === 0) errors.name = 'Informe seu nome.';
-  else if (name.length > 80) errors.name = 'Use até 80 caracteres.';
+  else if ([...name].length > 80) errors.name = 'Use até 80 caracteres.';
 
   if (!values.acceptTerms) {
     errors.acceptTerms = 'Marque esta caixa para criar a conta.';

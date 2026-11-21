@@ -224,6 +224,19 @@ describe('completar cadastro com Google', () => {
     expect(await usersWithEmail(signup.email)).toEqual([]);
   });
 
+  it('recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres', async () => {
+    const signup = await googleSignup();
+
+    const response = await complete(
+      { name: '❤️'.repeat(80), acceptTerms: true },
+      signup.cookie,
+    );
+
+    expect(response.status).toBe(400);
+    expect(cookieValue(response, 'sid')).toBeUndefined();
+    expect(await usersWithEmail(signup.email)).toEqual([]);
+  });
+
   it('grava o opt-in de marketing quando a caixa vem marcada', async () => {
     const signup = await googleSignup();
     const before = Date.now();

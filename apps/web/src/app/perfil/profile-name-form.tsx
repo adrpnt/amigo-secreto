@@ -16,7 +16,7 @@ const GENERIC_ERROR = 'Algo deu errado. Tente de novo.';
 function validateName(value: string): string | undefined {
   const name = value.trim();
   if (name.length === 0) return 'Informe seu nome.';
-  if (name.length > 80) return 'Use até 80 caracteres.';
+  if ([...name].length > 80) return 'Use até 80 caracteres.';
   return undefined;
 }
 

@@ -152,6 +152,16 @@ describe('perfil', () => {
     expect((await storedProfile(account.id)).name).toBe('a'.repeat(80));
   });
 
+  it('PATCH recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres, e mantém o anterior', async () => {
+    const account = await createAccount();
+    const cookies = await openSession(account.id);
+
+    const response = await patchProfile(cookies, { name: '❤️'.repeat(80) });
+
+    expect(response.status).toBe(400);
+    expect((await storedProfile(account.id)).name).toBe('Ana Souza');
+  });
+
   it('PATCH grava o opt-in com a data da mudança', async () => {
     const account = await createAccount({ marketingOptIn: false });
     const cookies = await openSession(account.id);
