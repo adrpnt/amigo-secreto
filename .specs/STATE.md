@@ -149,12 +149,12 @@
 
 ## Handoff
 
-- **Feature**: 03-auth (`.specs/features/03-auth/`), em fechamento
-- **Phase / Task**: fase 6 (T33 a T39) concluída na branch `pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil` (último commit de task `03ba1a9`); gate Build verde (268 testes na API, 39 unitários e 60 e2e no web)
-- **Completed**: fases 1 a 6; decisões da execução na linha `**Settled mid-build:**` do `tasks.md` (as da fase 5 ficaram no parágrafo "Linhas esperadas das provas", logo abaixo do cabeçalho)
+- **Feature**: 03-auth (`.specs/features/03-auth/`), concluída
+- **Phase / Task**: fase 6 (T33 a T39) e fechamento da feature na branch `pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil`
+- **Completed**: fases 1 a 6; walk das 14 histórias; Verifier com 6 achados, todos fechados por commit (`c5b5eb6`, `9ec98a6`, `287a271`, `a9fc76e`, `24066cf`, `42be894`), com o critério novo AUTH-12 AC 8 e a check C87; `check_proofs.py` com 233 pass e 0 fail; `validate_verification.py 03-auth` com saída 0; lições L-015 a L-020 (candidatas)
 - **In-progress** (file:line): none
-- **Next step**: fechamento da feature antes do push (AD-010): walk das histórias, `check_proofs.py 03-auth`, Verifier (sem screens sub-agent: nenhum critério cita captura), correções, `check_proofs.py` de novo, `validate_verification.py 03-auth` com saída 0, lições; só então push e PR da PER-98
-- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98 (PER-98 em In Progress, T33 a T39 marcadas)
+- **Next step**: push e PR da PER-98; depois do merge, abrir a feature `04-groups` (Specify), carregando as lições confirmadas
+- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
 - **Blockers**: none
-- **Uncommitted files**: este handoff
+- **Uncommitted files**: none
 - **Branch**: pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil

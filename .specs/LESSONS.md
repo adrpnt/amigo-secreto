@@ -98,6 +98,42 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: apps/api/src/jobs/jobs-scheduler.module.ts:9 (config)
 - last seen: 2026-11-18T21:14:24Z
 
+### L-015 - Medir limites de texto na validação do jeito que a coluna do banco conta, e testar com emojis de vários pontos de código.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `validation` · harmful: 0
+- features: 03-auth
+- evidence: apps/api/src/auth/dto/register.dto.ts:23 (validation)
+- last seen: 2026-11-21T16:59:41Z
+
+### L-016 - Testar que a resposta a um corpo malformado não repete trechos do corpo recebido.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `errors` · harmful: 0
+- features: 03-auth
+- evidence: apps/api/src/observability/all-exceptions.filter.ts:48 (errors)
+- last seen: 2026-11-21T16:59:41Z
+
+### L-017 - Ao trocar o e-mail de uma conta, invalidar os links pendentes mandados ao endereço antigo.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `auth` · harmful: 0
+- features: 03-auth
+- evidence: apps/api/src/users/email-change.service.ts:126 (auth)
+- last seen: 2026-11-21T16:59:41Z
+
+### L-018 - Ler o estado guardado logo depois de cada pedido recusado, antes de qualquer pedido aceito no mesmo teste.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `validation` · harmful: 0
+- features: 03-auth
+- evidence: C41 (validation)
+- last seen: 2026-11-21T16:59:41Z
+
+### L-019 - Provar um limite comum a várias rotas em cada uma delas, não só numa.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `rate-limit` · harmful: 0
+- features: 03-auth
+- evidence: C52 (rate-limit)
+- last seen: 2026-11-21T16:59:41Z
+
+### L-020 - Provar um elemento comum a várias telas em cada tela que o critério cita.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `e2e` · harmful: 0
+- features: 03-auth
+- evidence: C62 (e2e)
+- last seen: 2026-11-21T16:59:41Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

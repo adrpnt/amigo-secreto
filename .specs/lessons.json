@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 15,
+  "next_id": 21,
   "lessons": [
     {
       "id": "L-001",
@@ -256,6 +256,114 @@
       ],
       "created": "2026-11-18T21:14:24Z",
       "last_seen": "2026-11-18T21:14:24Z"
+    },
+    {
+      "id": "L-015",
+      "key": "ac_gap::medir limites de texto na validacao do jeito que a coluna do banco conta e testar com emojis de varios pontos de codigo",
+      "text": "Medir limites de texto na validação do jeito que a coluna do banco conta, e testar com emojis de vários pontos de código.",
+      "signal": "ac_gap",
+      "scope": "validation",
+      "status": "candidate",
+      "features": [
+        "03-auth"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/auth/dto/register.dto.ts:23 (validation)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-21T16:59:41Z"
+    },
+    {
+      "id": "L-016",
+      "key": "ac_gap::testar que a resposta a um corpo malformado nao repete trechos do corpo recebido",
+      "text": "Testar que a resposta a um corpo malformado não repete trechos do corpo recebido.",
+      "signal": "ac_gap",
+      "scope": "errors",
+      "status": "candidate",
+      "features": [
+        "03-auth"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/observability/all-exceptions.filter.ts:48 (errors)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-21T16:59:41Z"
+    },
+    {
+      "id": "L-017",
+      "key": "ac_gap::ao trocar o e mail de uma conta invalidar os links pendentes mandados ao endereco antigo",
+      "text": "Ao trocar o e-mail de uma conta, invalidar os links pendentes mandados ao endereço antigo.",
+      "signal": "ac_gap",
+      "scope": "auth",
+      "status": "candidate",
+      "features": [
+        "03-auth"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/api/src/users/email-change.service.ts:126 (auth)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-21T16:59:41Z"
+    },
+    {
+      "id": "L-018",
+      "key": "weak_test::ler o estado guardado logo depois de cada pedido recusado antes de qualquer pedido aceito no mesmo teste",
+      "text": "Ler o estado guardado logo depois de cada pedido recusado, antes de qualquer pedido aceito no mesmo teste.",
+      "signal": "weak_test",
+      "scope": "validation",
+      "status": "candidate",
+      "features": [
+        "03-auth"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C41 (validation)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-21T16:59:41Z"
+    },
+    {
+      "id": "L-019",
+      "key": "weak_test::provar um limite comum a varias rotas em cada uma delas nao so numa",
+      "text": "Provar um limite comum a várias rotas em cada uma delas, não só numa.",
+      "signal": "weak_test",
+      "scope": "rate-limit",
+      "status": "candidate",
+      "features": [
+        "03-auth"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C52 (rate-limit)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-21T16:59:41Z"
+    },
+    {
+      "id": "L-020",
+      "key": "weak_test::provar um elemento comum a varias telas em cada tela que o criterio cita",
+      "text": "Provar um elemento comum a várias telas em cada tela que o critério cita.",
+      "signal": "weak_test",
+      "scope": "e2e",
+      "status": "candidate",
+      "features": [
+        "03-auth"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C62 (e2e)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-21T16:59:41Z"
     }
   ]
 }
