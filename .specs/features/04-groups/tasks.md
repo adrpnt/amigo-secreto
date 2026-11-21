@@ -462,9 +462,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/lib/group-format.test.ts`: `formatGiftValue > mostra R$ 50 quando mínimo e máximo são iguais`, `> mostra R$ 50 a R$ 100 numa faixa`, `participantsLabel > escreve 1 participante e N participantes`, `cardDateLine > mostra Sorteio em dd/mm/aaaa para grupo ABERTO`, `> mostra Confraternização em dd/mm/aaaa para grupo SORTEADO ou ENCERRADO`, `> mostra Sem data definida quando a data do status não existe`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 50 tests pass no web
+- [x] Testes em `src/lib/group-format.test.ts`: `formatGiftValue > mostra R$ 50 quando mínimo e máximo são iguais`, `> mostra R$ 50 a R$ 100 numa faixa`, `> mostra R$ 1.500 com ponto de milhar`, `participantsLabel > escreve 1 participante e N participantes`, `cardDateLine > mostra Sorteio em dd/mm/aaaa para grupo ABERTO`, `> mostra Confraternização em dd/mm/aaaa para grupo SORTEADO ou ENCERRADO`, `> mostra Sem data definida quando a data do status não existe`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 51 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -909,9 +909,10 @@ Proof: run e2e | ✓ grupos › cria um grupo com todos os campos e mostra cada 
 **C32** - Campo opcional vazio não aparece (GRP-03, AC 2)
 Proof: run web | ✓ GroupDetailView > omite os campos vazios
 
-**C33** - Valor aparece como `R$ 50` ou `R$ 50 a R$ 100` (GRP-03, AC 3)
+**C33** - Valor aparece como `R$ 50` ou `R$ 50 a R$ 100`, com ponto de milhar (GRP-03, AC 3)
 Proof: run web | ✓ formatGiftValue > mostra R$ 50 quando mínimo e máximo são iguais
 Proof: run web | ✓ formatGiftValue > mostra R$ 50 a R$ 100 numa faixa
+Proof: run web | ✓ formatGiftValue > mostra R$ 1.500 com ponto de milhar
 
 **C34** - "Evento online" aparece junto do local quando marcado (GRP-03, AC 4)
 Proof: run web | ✓ GroupDetailView > mostra Evento online junto do local
@@ -1135,7 +1136,7 @@ Proof: run api | ✓ criar grupo > recusa com 429 a 21ª criação da hora e ace
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15".
+**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15". 2026-11-21, na T18, valor do presente a partir de mil reais leva ponto de milhar (`R$ 1.500`, `R$ 1.000 a R$ 2.500`), como na mensagem "R$ 100.000"; GRP-03 AC 3 e a C33 ganham o caso, com o teste `formatGiftValue > mostra R$ 1.500 com ponto de milhar` - user: "Com ponto (Recomendado)", entre essa, "Sem separador" e "Com ponto, sem teste novo". As metas de contagem do web da T18 em diante ficam 1 acima do escrito.
 **Dispatched:** none
 **Walked:** none
 

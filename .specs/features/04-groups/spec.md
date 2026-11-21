@@ -141,7 +141,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 1. WHEN um participante aprovado abre `/grupos/{id}` THEN o site SHALL mostrar o nome, o StatusTag, "Organizado por {nome de quem organiza}" e cada campo preenchido entre recado, valor do presente, sorteio previsto, confraternização e local.
 2. IF um campo opcional não está preenchido THEN a página SHALL omiti-lo.
-3. The página SHALL mostrar o valor do presente como `R$ 50` quando mínimo = máximo e como `R$ 50 a R$ 100` quando diferentes.
+3. The página SHALL mostrar o valor do presente como `R$ 50` quando mínimo = máximo e como `R$ 50 a R$ 100` quando diferentes, com ponto de milhar (`R$ 1.500`).
 4. WHILE o grupo tem "Evento online" marcado a página SHALL mostrar "Evento online" junto do local.
 5. WHILE quem vê organiza o grupo e ele exige aprovação a página SHALL mostrar "Entrada com aprovação".
 6. WHILE quem vê organiza um grupo ABERTO a página SHALL mostrar "Editar grupo" e "Excluir grupo".
