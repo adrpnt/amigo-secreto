@@ -1203,6 +1203,7 @@ Proof: run api | ✓ validateEnvironment > lança erro que nomeia TRUST_PROXY_HO
 Proof: run api | ✓ sigilo da conta > não escreve senha, token de sessão, token de link nem cookie no log
 Proof: run api | ✓ sigilo da conta > não manda senha, token nem cookie ao Sentry num erro 500
 Proof: run api | ✓ sigilo da conta > não devolve senha nem token nas respostas de erro 400
+Proof: run api | ✓ sigilo da conta > responde 400 "Corpo da requisição inválido." a JSON malformado, sem trecho do corpo
 Proof: run api | ✓ validateEnvironment > lança erro que nomeia AUTH_SECRET quando ela falta em production
 
 **C55** - Nenhuma resposta inclui hash de senha ou de token (AUTH-08, AC 8)
