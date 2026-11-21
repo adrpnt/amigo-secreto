@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { FAKE_PROVIDERS_URL } from './e2e/support/fake-providers';
 
 const API_URL = 'http://localhost:3001';
 // Porta própria do e2e, fora da 3000 do `pnpm dev`.
@@ -18,6 +19,12 @@ export default defineConfig({
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: [
     {
+      name: 'fake-providers',
+      command: 'node e2e/support/fake-providers.ts',
+      url: `${FAKE_PROVIDERS_URL}/health`,
+      reuseExistingServer: false,
+    },
+    {
       name: 'api',
       command: 'node --import ./dist/instrument.js dist/main.js',
       cwd: '../api',
@@ -27,12 +34,16 @@ export default defineConfig({
         NODE_ENV: 'production',
         PORT: '3001',
         RESEND_API_KEY: 're_e2e',
+        RESEND_BASE_URL: FAKE_PROVIDERS_URL,
         EMAIL_FROM: 'Amigo Secreto <e2e@example.com>',
         WEB_URL,
         AUTH_SECRET: 'e2e-auth-secret',
         GOOGLE_CLIENT_ID: 'e2e-google-client',
         GOOGLE_CLIENT_SECRET: 'e2e-google-secret',
-        TRUST_PROXY_HOPS: '0',
+        GOOGLE_AUTH_URL: `${FAKE_PROVIDERS_URL}/o/oauth2/v2/auth`,
+        GOOGLE_TOKEN_URL: `${FAKE_PROVIDERS_URL}/token`,
+        // Cada teste manda o próprio X-Forwarded-For (e2e/support/fixtures.ts).
+        TRUST_PROXY_HOPS: '1',
       },
     },
     {
