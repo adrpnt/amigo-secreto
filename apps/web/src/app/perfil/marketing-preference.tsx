@@ -47,8 +47,10 @@ export function MarketingPreference({
   }
 
   return (
-    <section className="flex flex-col gap-4">
-      <h2 className="text-h3">Novidades por e-mail</h2>
+    <section aria-labelledby="marketing-title" className="flex flex-col gap-4">
+      <h2 id="marketing-title" className="text-h3">
+        Novidades por e-mail
+      </h2>
       <Label className="items-start font-normal text-body-sm">
         <Checkbox
           className="mt-0.5"

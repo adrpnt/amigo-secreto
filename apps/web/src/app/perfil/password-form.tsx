@@ -100,9 +100,11 @@ export function PasswordForm({ hasPassword }: { hasPassword: boolean }) {
   }
 
   return (
-    <section className="flex flex-col gap-4">
+    <section aria-labelledby="password-title" className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h2 className="text-h3">Senha</h2>
+        <h2 id="password-title" className="text-h3">
+          Senha
+        </h2>
         {!hasPassword && (
           <p className="text-body-sm text-muted-foreground">
             Crie uma senha para entrar também com e-mail e senha.

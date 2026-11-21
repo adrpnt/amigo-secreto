@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { SessionUser } from '@amigo-secreto/shared';
-import type { Page } from '@playwright/test';
+import type { APIRequestContext, Page } from '@playwright/test';
 import {
   PASSWORD,
   csrfToken,
@@ -38,11 +38,39 @@ async function setMarketingOptIn(page: Page, marketingOptIn: boolean) {
   expect(response.status()).toBe(200);
 }
 
+function emailSection(page: Page) {
+  return page.getByRole('region', { name: 'E-mail', exact: true });
+}
+
+async function sessionEmail(
+  request: APIRequestContext,
+): Promise<string | null> {
+  const response = await request.get('/api/auth/session');
+  const body = (await response.json()) as { user: { email: string } | null };
+  return body.user?.email ?? null;
+}
+
+// Conta só Google, criada pelo Google falso, com a sessão aberta na página.
+async function signedInWithGoogle(page: Page): Promise<string> {
+  await page.goto('/entrar');
+  await page.getByRole('link', { name: 'Entrar com Google' }).click();
+  await page.getByRole('link', { name: 'Verificada nova' }).click();
+  await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
+  await page.getByRole('button', { name: 'Criar conta' }).click();
+  await expect(page).toHaveURL('/perfil');
+  return (await me(page)).email;
+}
+
+function passwordSection(page: Page) {
+  return page.getByRole('region', { name: 'Senha', exact: true });
+}
+
 async function changePassword(page: Page, current: string | null) {
+  const section = passwordSection(page);
   if (current !== null) {
-    await page.getByLabel('Senha atual', { exact: true }).fill(current);
+    await section.getByLabel('Senha atual', { exact: true }).fill(current);
   }
-  await page.getByLabel('Senha nova', { exact: true }).fill(NEW_PASSWORD);
+  await section.getByLabel('Senha nova', { exact: true }).fill(NEW_PASSWORD);
 }
 
 test.describe('perfil', () => {
@@ -146,9 +174,9 @@ test.describe('perfil', () => {
     await expect(
       page.getByText('Senha alterada.', { exact: true }),
     ).toBeVisible();
-    await expect(page.getByLabel('Senha nova', { exact: true })).toHaveValue(
-      '',
-    );
+    await expect(
+      passwordSection(page).getByLabel('Senha nova', { exact: true }),
+    ).toHaveValue('');
     expect((await me(page)).email).toBe(email);
     const otherSession = await request.get('/api/auth/session');
     expect(((await otherSession.json()) as { user: unknown }).user).toBeNull();
@@ -165,7 +193,9 @@ test.describe('perfil', () => {
     await changePassword(page, 'senha-errada-123');
     await page.getByRole('button', { name: 'Trocar senha' }).click();
 
-    const current = page.getByLabel('Senha atual', { exact: true });
+    const current = passwordSection(page).getByLabel('Senha atual', {
+      exact: true,
+    });
     await expect(current).toHaveAttribute('aria-invalid', 'true');
     await expect(current).toHaveAccessibleDescription(
       /Senha atual incorreta\./,
@@ -197,7 +227,68 @@ test.describe('perfil', () => {
     await expect(
       page.getByText('Senha alterada.', { exact: true }),
     ).toBeVisible();
-    await expect(page.getByLabel('Senha atual', { exact: true })).toBeVisible();
+    await expect(
+      passwordSection(page).getByLabel('Senha atual', { exact: true }),
+    ).toBeVisible();
     await signIn(request, email, NEW_PASSWORD);
+  });
+
+  test('pedir a troca de e-mail mostra "Enviamos um link para X."', async ({
+    page,
+  }) => {
+    const email = await signedInAs(page);
+    const newAddress = newEmail();
+    await page.goto('/perfil');
+    const section = emailSection(page);
+
+    await section
+      .getByLabel('E-mail novo', { exact: true })
+      .fill(newAddress.toUpperCase());
+    await section.getByLabel('Senha atual', { exact: true }).fill(PASSWORD);
+    await section.getByRole('button', { name: 'Trocar e-mail' }).click();
+
+    await expect(
+      section.getByText(`Enviamos um link para ${newAddress}.`, {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      section.getByLabel('E-mail novo', { exact: true }),
+    ).toHaveValue('');
+    expect((await me(page)).email).toBe(email);
+  });
+
+  test('conta sem senha vê o pedido para criar uma senha antes de trocar o e-mail', async ({
+    page,
+  }) => {
+    await signedInWithGoogle(page);
+    const section = emailSection(page);
+
+    await expect(
+      section.getByText('Crie uma senha antes de trocar o e-mail.', {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      section.getByLabel('E-mail novo', { exact: true }),
+    ).toHaveCount(0);
+  });
+
+  test('"Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar', async ({
+    page,
+    request,
+  }) => {
+    const email = await signedInAs(page);
+    // Outra sessão da mesma conta, em outro navegador.
+    await signIn(request, email);
+    await page.goto('/perfil');
+
+    await page
+      .getByRole('button', { name: 'Sair de todos os dispositivos' })
+      .click();
+
+    await expect(page).toHaveURL('/entrar');
+    expect(await sessionEmail(page.request)).toBeNull();
+    expect(await sessionEmail(request)).toBeNull();
   });
 });
