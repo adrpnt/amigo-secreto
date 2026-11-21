@@ -246,10 +246,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/groups/group-emails.spec.ts`: `e-mails de grupo > aviso de exclusão tem o assunto, o texto e o botão Ver meus grupos`, `> aviso de encerramento tem o assunto, o texto e o botão Ver grupo`, `> mostram o nome do grupo com marcação HTML como texto`
-- [ ] `src/auth/auth-emails.spec.ts` passa sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 305 tests pass na API
+- [x] Testes em `src/groups/group-emails.spec.ts`: `e-mails de grupo > aviso de exclusão tem o assunto, o texto e o botão Ver meus grupos`, `> aviso de encerramento tem o assunto, o texto e o botão Ver grupo`, `> mostram o nome do grupo com marcação HTML como texto`
+- [x] `src/auth/auth-emails.spec.ts` passa sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 305 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick

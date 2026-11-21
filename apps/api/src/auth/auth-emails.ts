@@ -1,31 +1,8 @@
-import type { EmailBlock, EmailMessage } from '../email/email.types.js';
+import { button, greeting, paragraph, siteUrl } from '../email/email-blocks.js';
+import type { EmailMessage } from '../email/email.types.js';
 
 type Recipient = { to: string; name: string };
 type LinkEmail = Recipient & { token: string; webUrl: string };
-
-function paragraph(text: string): EmailBlock {
-  return { type: 'paragraph', text };
-}
-
-function button(label: string, url: string): EmailBlock {
-  return { type: 'button', label, url };
-}
-
-function greeting(name: string): EmailBlock {
-  return paragraph(`Olá, ${name}.`);
-}
-
-function siteUrl(
-  webUrl: string,
-  path: string,
-  query: Record<string, string> = {},
-): string {
-  const url = new URL(path, webUrl);
-  for (const [key, value] of Object.entries(query)) {
-    url.searchParams.set(key, value);
-  }
-  return url.href;
-}
 
 export function emailVerificationEmail({
   to,
