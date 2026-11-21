@@ -22,7 +22,7 @@ import { User } from '../users/user.entity.js';
 import type { GroupInputDto } from './dto/group-input.dto.js';
 import { GroupAccess } from './group-access.service.js';
 import { Group } from './group.entity.js';
-import { groupDeletedEmail } from './group-emails.js';
+import { groupClosedEmail, groupDeletedEmail } from './group-emails.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
 
@@ -58,6 +58,7 @@ type MyGroupRow = {
 };
 
 export const CLOSED_GROUP_EDIT = 'Grupo encerrado não pode ser editado.';
+export const ONLY_DRAWN_CLOSE = 'Só um grupo sorteado pode ser encerrado.';
 
 const CREATE_LIMIT = 20;
 const CREATE_WINDOW_MS = 60 * 60 * 1000;
@@ -301,6 +302,47 @@ export class GroupsService {
     });
 
     this.events.record('group.deleted', { groupId, status });
+  }
+
+  // Como na exclusão: avisos na mesma transação, e o segundo pedido
+  // simultâneo espera a trava e encontra o grupo já encerrado (409).
+  async close(user: SessionUser, groupId: string): Promise<GroupDetail> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+
+    const group = await this.dataSource.transaction(async (manager) => {
+      const { group } = await this.access.requireOrganizer(user.id, groupId, {
+        manager,
+        lock: true,
+      });
+      if (group.status !== 'DRAWN') {
+        throw new ConflictException(ONLY_DRAWN_CLOSE);
+      }
+      group.status = 'CLOSED';
+      group.closedAt = new Date();
+      await manager.getRepository(Group).save(group);
+
+      const recipients = await this.noticeRecipients(manager, group);
+      await this.email.enqueueMany(
+        recipients.map((recipient) =>
+          groupClosedEmail({
+            to: recipient.email,
+            name: recipient.name,
+            groupName: group.name,
+            organizerName: user.name,
+            groupId: group.id,
+            webUrl,
+          }),
+        ),
+        { manager },
+      );
+      return group;
+    });
+
+    this.events.record('group.closed', {
+      groupId: group.id,
+      trigger: 'manual',
+    });
+    return toGroupDetail(group, { id: user.id, name: user.name }, user.id);
   }
 
   private noticeRecipients(

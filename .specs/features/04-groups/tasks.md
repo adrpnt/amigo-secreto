@@ -374,9 +374,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-close.int-spec.ts` (grupo posto em `DRAWN` direto no banco): `encerrar grupo > passa o grupo SORTEADO para ENCERRADO e grava a data do encerramento`, `> responde 409 em grupo ABERTO ou ENCERRADO e não muda o grupo`, `> responde 403 ao participante que não organiza e não muda o grupo`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> encerra uma vez e responde 409 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> emite group.closed com trigger manual e sem dados pessoais`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 361 tests pass na API
+- [x] Testes em `test/groups-close.int-spec.ts` (grupo posto em `DRAWN` direto no banco): `encerrar grupo > passa o grupo SORTEADO para ENCERRADO e grava a data do encerramento`, `> responde 409 em grupo ABERTO ou ENCERRADO e não muda o grupo`, `> responde 403 ao participante que não organiza e não muda o grupo`, `> enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec`, `> não enfileira aviso para quem organiza nem para participação pendente ou recusada`, `> encerra uma vez e responde 409 ao segundo pedido simultâneo, com os avisos enfileirados uma vez`, `> emite group.closed com trigger manual e sem dados pessoais`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 361 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

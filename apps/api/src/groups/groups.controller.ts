@@ -59,4 +59,13 @@ export class GroupsController {
   ): Promise<void> {
     return this.groups.remove(user, id);
   }
+
+  @Post(':id/close')
+  @HttpCode(200)
+  close(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<GroupDetail> {
+    return this.groups.close(user, id);
+  }
 }
