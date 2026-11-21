@@ -1,6 +1,9 @@
 import {
   type GroupDetail,
   type GroupInput,
+  type GroupStatus,
+  type GroupSummary,
+  type MyGroupsResponse,
   normalizeGroupInput,
   type SessionUser,
   validateGroupInput,
@@ -16,6 +19,29 @@ import type { GroupInputDto } from './dto/group-input.dto.js';
 import { Group } from './group.entity.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
+
+// Grupos em que a pessoa tem participação aprovada, com a contagem de
+// participantes aprovados, do mais novo para o mais antigo.
+const MY_GROUPS_SQL = `
+  SELECT g.id, g.name, g.status, g."ownerId", g."drawScheduledAt", g."eventAt",
+    g."createdAt",
+    (SELECT count(*)::int FROM membership p
+      WHERE p."groupId" = g.id AND p.status = 'APPROVED') AS "participantCount"
+  FROM "group" g
+  JOIN membership m ON m."groupId" = g.id
+  WHERE m."userId" = $1 AND m.status = 'APPROVED'
+  ORDER BY g."createdAt" DESC, g.id DESC`;
+
+type MyGroupRow = {
+  id: string;
+  name: string;
+  status: GroupStatus;
+  ownerId: string;
+  drawScheduledAt: Date | null;
+  eventAt: Date | null;
+  createdAt: Date;
+  participantCount: number;
+};
 
 const CREATE_LIMIT = 20;
 const CREATE_WINDOW_MS = 60 * 60 * 1000;
@@ -117,5 +143,25 @@ export class GroupsService {
 
     this.events.record('group.created', { groupId: group.id });
     return toGroupDetail(group, { id: user.id, name: user.name }, user.id);
+  }
+
+  async listMine(userId: string): Promise<MyGroupsResponse> {
+    const rows = await this.dataSource.query<MyGroupRow[]>(MY_GROUPS_SQL, [
+      userId,
+    ]);
+    const summaries = rows.map((row): GroupSummary => ({
+      id: row.id,
+      name: row.name,
+      status: row.status,
+      participantCount: row.participantCount,
+      isOrganizer: row.ownerId === userId,
+      drawScheduledAt: toIso(row.drawScheduledAt),
+      eventAt: toIso(row.eventAt),
+      createdAt: row.createdAt.toISOString(),
+    }));
+    return {
+      active: summaries.filter((group) => group.status !== 'CLOSED'),
+      closed: summaries.filter((group) => group.status === 'CLOSED'),
+    };
   }
 }

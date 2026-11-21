@@ -290,9 +290,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-list.int-spec.ts`: `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo`, `> não lista grupo de que a pessoa não participa nem participação pendente ou recusada`, `> conta só os participantes aprovados`, `> marca isOrganizer só no grupo que a pessoa organiza`, `> devolve listas vazias para quem não participa de nenhum grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 330 tests pass na API
+- [x] Testes em `test/groups-list.int-spec.ts`: `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo`, `> não lista grupo de que a pessoa não participa nem participação pendente ou recusada`, `> conta só os participantes aprovados`, `> marca isOrganizer só no grupo que a pessoa organiza`, `> devolve listas vazias para quem não participa de nenhum grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 330 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
