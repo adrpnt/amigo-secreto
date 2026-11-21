@@ -441,9 +441,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/lib/groups.test.ts`: `getGroup > devolve null quando a API responde 404`, `> lança erro quando a API responde 500`, `getMyGroups > lança erro quando a API não responde 200`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 44 tests pass no web
+- [x] Testes em `src/lib/groups.test.ts`: `getGroup > devolve null quando a API responde 404`, `> lança erro quando a API responde 500`, `getMyGroups > lança erro quando a API não responde 200`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 44 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
