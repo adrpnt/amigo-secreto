@@ -145,6 +145,7 @@ describe('perfil', () => {
     for (const name of ['', '    ', 'a'.repeat(81), null]) {
       const response = await patchProfile(cookies, { name });
       expect(response.status).toBe(400);
+      expect((await storedProfile(account.id)).name).toBe('Ana Souza');
     }
     const eighty = await patchProfile(cookies, { name: 'a'.repeat(80) });
 
