@@ -1,9 +1,9 @@
 # 03-auth proofs
 
-**HEAD**: 7e06d99
+**HEAD**: d72f2fd
 **Tree**: clean
 **Shell**: /bin/sh
-**Result**: 226 pass, 0 fail
+**Result**: 233 pass, 0 fail
 
 | Check | Proof | Result |
 | --- | --- | --- |
@@ -16,6 +16,8 @@
 | C5 | `run api / ✓ cadastro > recusa com 400 senha de 7 ou de 129 caracteres` | pass |
 | C5 | `run e2e / ✓ cadastro › mostra o erro do campo para senha com menos de 8 caracteres` | pass |
 | C6 | `run api / ✓ cadastro > recusa com 400 nome vazio depois do trim ou com 81 caracteres` | pass |
+| C6 | `run api / ✓ cadastro > recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres` | pass |
+| C6 | `run api / ✓ completar cadastro com Google > recusa com 400 nome com 80 "❤️", que o banco conta como 160 caract` | pass |
 | C7 | `run api / ✓ cadastro > recusa com 400 e-mail inválido` | pass |
 | C8 | `run api / ✓ cadastro > responde igual para e-mail já cadastrado com outra caixa de letras, sem mudar a conta, ` | pass |
 | C8 | `run api / ✓ e-mails da conta > já tem conta tem o assunto "Você já tem uma conta no Amigo Secreto" e os botões` | pass |
@@ -108,6 +110,7 @@
 | C40 | `run api / ✓ perfil > PATCH grava o nome sem os espaços das pontas` | pass |
 | C40 | `run e2e / ✓ perfil › salvar o nome muda o menu do avatar` | pass |
 | C41 | `run api / ✓ perfil > PATCH recusa com 400 nome vazio ou com 81 caracteres e mantém o anterior` | pass |
+| C41 | `run api / ✓ perfil > PATCH recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres, e mantém o ` | pass |
 | C41 | `run e2e / ✓ perfil › recusa nome vazio mantendo o anterior` | pass |
 | C42 | `run api / ✓ perfil > PATCH grava o opt-in com a data da mudança` | pass |
 | C42 | `run e2e / ✓ perfil › desligar o marketing grava o estado` | pass |
@@ -146,6 +149,8 @@
 | C52 | `run api / ✓ cadastro > responde 429 no 21º cadastro do mesmo IP em 1 hora` | pass |
 | C52 | `run api / ✓ recuperação de senha > responde 429 no 6º pedido do mesmo e-mail em 1 hora sem enfileirar e-mail` | pass |
 | C52 | `run api / ✓ confirmação de e-mail > responde 429 no 6º reenvio em 1 hora` | pass |
+| C52 | `run api / ✓ recuperação de senha > responde 429 no 21º pedido do mesmo IP em 1 hora` | pass |
+| C52 | `run api / ✓ confirmação de e-mail > responde 429 no 21º pedido do mesmo IP em 1 hora` | pass |
 | C53 | `run api / ✓ RateLimitService > soma as tentativas de duas conexões ao mesmo tempo sem perder nenhuma` | pass |
 | C53 | `run api / ✓ RateLimitService > permite até o limite e recusa a tentativa seguinte na mesma janela` | pass |
 | C53 | `run api / ✓ RateLimitService > reinicia a contagem quando a janela vence` | pass |
@@ -155,6 +160,7 @@
 | C54 | `run api / ✓ sigilo da conta > não escreve senha, token de sessão, token de link nem cookie no log` | pass |
 | C54 | `run api / ✓ sigilo da conta > não manda senha, token nem cookie ao Sentry num erro 500` | pass |
 | C54 | `run api / ✓ sigilo da conta > não devolve senha nem token nas respostas de erro 400` | pass |
+| C54 | `run api / ✓ sigilo da conta > responde 400 "Corpo da requisição inválido." a JSON malformado, sem trecho do co` | pass |
 | C54 | `run api / ✓ validateEnvironment > lança erro que nomeia AUTH_SECRET quando ela falta em production` | pass |
 | C55 | `run api / ✓ sigilo da conta > não devolve hash de senha nem de token nas respostas da conta` | pass |
 | C55 | `run api / ✓ GET /auth/session > devolve o usuário da sessão sem hash de senha nem de token` | pass |
@@ -230,6 +236,7 @@
 | C85 | `run api / ✓ AuthTokensService > invalida o token não usado do mesmo tipo ao emitir outro` | pass |
 | C85 | `run api / ✓ AuthTokensService > recusa o token vencido` | pass |
 | C86 | `run e2e / ✓ provedores falsos › o e-mail enfileirado pela API chega à caixa falsa` | pass |
+| C87 | `run api / ✓ troca de e-mail > invalida os links de recuperação e de confirmação pendentes ao confirmar a troca` | pass |
 | Build | `pnpm build` | pass |
 | Build | `pnpm typecheck` | pass |
 | Build | `pnpm lint` | pass |
@@ -239,59 +246,59 @@
 `Run api` - exit 0
 
 ```
-@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1343ms
-@amigo-secreto/api:test: (node:43901) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1339ms
+@amigo-secreto/api:test: (node:55161) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
 @amigo-secreto/api:test: (Use `node --trace-deprecation ...` to show where the warning was created)
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1163ms
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1150ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1270ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1174ms
 @amigo-secreto/api:test: 
 @amigo-secreto/api:test:  Test Files  45 passed (45)
-@amigo-secreto/api:test:       Tests  268 passed (268)
-@amigo-secreto/api:test:    Start at  13:28:21
-@amigo-secreto/api:test:    Duration  37.73s (tests 73%, import 25%, transform 1%)
+@amigo-secreto/api:test:       Tests  275 passed (275)
+@amigo-secreto/api:test:    Start at  13:55:15
+@amigo-secreto/api:test:    Duration  40.39s (tests 74%, import 25%, transform 1%)
 @amigo-secreto/api:test: 
 
  Tasks:    3 successful, 3 total
 Cached:    0 cached, 3 total
-  Time:    40.571s
+  Time:    43.059s
 ```
 
 `Run e2e` - exit 0
 
 ```
-@amigo-secreto/web:test:e2e:   ✓  55 [chromium] › e2e/theme.spec.ts:238:3 › tema › aplica os tokens do design system no tema claro (156ms)
-@amigo-secreto/web:test:e2e:   ✓  53 [chromium] › e2e/profile.spec.ts:277:3 › perfil › "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar (389ms)
-@amigo-secreto/web:test:e2e:   ✓  56 [chromium] › e2e/theme.spec.ts:245:3 › tema › aplica os tokens do design system no tema escuro (145ms)
-@amigo-secreto/web:test:e2e:   ✓  29 [chromium] › e2e/password-reset.spec.ts:64:5 › recuperação de senha › o link troca a senha e entra (8.6s)
-@amigo-secreto/web:test:e2e:   ✓  18 [chromium] › e2e/email-confirmation.spec.ts:56:3 › confirmação de e-mail › o link aberto de novo mostra "Este link expirou ou já foi usado." (10.0s)
+@amigo-secreto/web:test:e2e:   ✓  54 [chromium] › e2e/profile.spec.ts:209:3 › perfil › conta Google cria a senha sem pedir a atual (671ms)
+@amigo-secreto/web:test:e2e:   ✓  55 [chromium] › e2e/profile.spec.ts:236:3 › perfil › pedir a troca de e-mail mostra "Enviamos um link para X." (330ms)
+@amigo-secreto/web:test:e2e:   ✓  56 [chromium] › e2e/profile.spec.ts:261:3 › perfil › conta sem senha vê o pedido para criar uma senha antes de trocar o e-mail (445ms)
+@amigo-secreto/web:test:e2e:   ✓  57 [chromium] › e2e/profile.spec.ts:277:3 › perfil › "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar (389ms)
+@amigo-secreto/web:test:e2e:   ✓  34 [chromium] › e2e/email-confirmation.spec.ts:56:3 › confirmação de e-mail › o link aberto de novo mostra "Este link expirou ou já foi usado." (9.5s)
+@amigo-secreto/web:test:e2e:   ✓  36 [chromium] › e2e/password-reset.spec.ts:80:5 › recuperação de senha › o link usado mostra "Este link expirou ou já foi usado." com o caminho para /esqueci-a-senha (9.6s)
 @amigo-secreto/web:test:e2e:   ✓  58 [chromium] › e2e/email-confirmation.spec.ts:76:3 › confirmação de e-mail › o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  57 [chromium] › e2e/password-reset.spec.ts:80:5 › recuperação de senha › o link usado mostra "Este link expirou ou já foi usado." com o caminho para /esqueci-a-senha (10.3s)
-@amigo-secreto/web:test:e2e:   ✓  59 [chromium] › e2e/email-confirmation.spec.ts:99:3 › confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil (10.0s)
+@amigo-secreto/web:test:e2e:   ✓  59 [chromium] › e2e/email-confirmation.spec.ts:99:3 › confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil (10.1s)
 @amigo-secreto/web:test:e2e:   ✓  60 [chromium] › e2e/email-confirmation.spec.ts:121:3 › confirmação de e-mail › o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta." (10.0s)
 @amigo-secreto/web:test:e2e: 
-@amigo-secreto/web:test:e2e:   60 passed (47.3s)
+@amigo-secreto/web:test:e2e:   60 passed (54.1s)
 
  Tasks:    4 successful, 4 total
 Cached:    0 cached, 4 total
-  Time:    1m0.44s
+  Time:    1m3.677s
 ```
 
 `Run web` - exit 0
 
 ```
-@amigo-secreto/web:test:  ✓ src/lib/api-status.test.ts > getApiStatus > devolve unavailable quando a API responde 200 sem status ok 6ms
+@amigo-secreto/web:test:  ✓ src/lib/api-status.test.ts > getApiStatus > devolve unavailable quando a API responde 200 sem status ok 10ms
 @amigo-secreto/web:test:  ✓ src/lib/api-status.test.ts > getApiStatus > lança erro que nomeia API_INTERNAL_URL quando ela falta 1ms
 @amigo-secreto/web:test: 
 @amigo-secreto/web:test:  Test Files  12 passed (12)
 @amigo-secreto/web:test:       Tests  39 passed (39)
-@amigo-secreto/web:test:    Start at  13:30:01
-@amigo-secreto/web:test:    Duration  5.62s (tests 45%, environment 31%, setup 15%, import 7%, transform 2%, worker 1%)
+@amigo-secreto/web:test:    Start at  13:57:01
+@amigo-secreto/web:test:    Duration  5.47s (tests 47%, environment 29%, setup 14%, import 8%, transform 2%, worker 1%)
 @amigo-secreto/web:test: 
-@amigo-secreto/web:test:     Isolate  12 workers spawned · ~426ms startup each (spawn + environment, per file)
-@amigo-secreto/web:test:              at least ~304ms faster with isolate: false — reuses workers across files instead of one per file
+@amigo-secreto/web:test:     Isolate  12 workers spawned · ~384ms startup each (spawn + environment, per file)
+@amigo-secreto/web:test:              at least ~274ms faster with isolate: false — reuses workers across files instead of one per file
 @amigo-secreto/web:test: 
 
  Tasks:    2 successful, 2 total
 Cached:    0 cached, 2 total
-  Time:    6.349s
+  Time:    6.285s
 ```
