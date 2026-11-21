@@ -20,6 +20,9 @@ type ConfirmDialogProps = {
   onCancel: () => void;
   // "primary" para ações que não destroem nada, como encerrar o grupo.
   tone?: 'destructive' | 'primary';
+  // Com texto, o botão de confirmar fica desabilitado e mostra esse texto
+  // enquanto a ação espera a resposta.
+  pendingLabel?: string;
 };
 
 // Confirmação antes de uma ação: o foco começa no botão de desistir; Esc e
@@ -33,6 +36,7 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
   tone = 'destructive',
+  pendingLabel,
 }: ConfirmDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
 
@@ -52,9 +56,10 @@ export function ConfirmDialog({
           <Button
             className="w-full"
             variant={tone === 'primary' ? 'default' : 'destructive'}
+            disabled={pendingLabel !== undefined}
             onClick={onConfirm}
           >
-            {confirmLabel}
+            {pendingLabel ?? confirmLabel}
           </Button>
           <Button
             ref={cancelRef}
