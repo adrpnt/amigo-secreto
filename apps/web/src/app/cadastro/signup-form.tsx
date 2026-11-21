@@ -2,7 +2,7 @@
 
 import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, type ReactNode, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -61,7 +61,14 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-export function SignUpForm({ next }: { next?: string }) {
+export function SignUpForm({
+  next,
+  google,
+}: {
+  next?: string;
+  // Entrada pelo Google, mostrada entre o título e o formulário.
+  google?: ReactNode;
+}) {
   const [values, setValues] = useState<SignUpValues>({
     name: '',
     email: '',
@@ -131,6 +138,7 @@ export function SignUpForm({ next }: { next?: string }) {
   return (
     <section className="flex flex-col gap-6">
       <h1 className="text-h1">Criar conta</h1>
+      {google}
       <form
         noValidate
         onSubmit={(event) => void handleSubmit(event)}
