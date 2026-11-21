@@ -180,9 +180,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/job-queue.int-spec.ts`: `JobQueue > enqueueMany grava um job por item em lotes de 1000`, `> enqueueMany com lista vazia não grava nada`, `> enqueueMany desfaz com a transação de origem`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 294 tests pass na API
+- [x] Testes em `test/job-queue.int-spec.ts`: `JobQueue > enqueueMany grava um job por item em lotes de 1000`, `> enqueueMany com lista vazia não grava nada`, `> enqueueMany desfaz com a transação de origem`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 294 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
