@@ -419,10 +419,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa o cookie da requisição à URL interna da API`, `> lança erro sem API_INTERNAL_URL`
-- [ ] `src/lib/session.test.ts` passa sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 41 tests pass no web
+- [x] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa o cookie da requisição à URL interna da API`, `> lança erro sem API_INTERNAL_URL`
+- [x] `src/lib/session.test.ts` passa sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 41 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
