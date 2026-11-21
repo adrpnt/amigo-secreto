@@ -398,7 +398,7 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 - [x] Teste em `test/swagger.int-spec.ts`: `Swagger > documenta as rotas de grupo`
 - [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
 - [x] Test count: 362 tests pass na API
-- [ ] Gate Build da fase verde; push e PR da fase 2
+- [x] Gate Build da fase verde; push e PR da fase 2
 
 **Tests**: integration
 **Gate**: Full
