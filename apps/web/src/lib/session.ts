@@ -7,12 +7,14 @@ const SESSION_TIMEOUT_MS = 5_000;
 // Lê a sessão da requisição atual na API. Falha da API lança erro: tratar
 // como "sem sessão" mandaria quem está logado para /entrar.
 export async function getSession(): Promise<SessionResponse> {
+  // Ler os cookies primeiro deixa a página dinâmica: no build não há
+  // API_INTERNAL_URL.
+  const cookieHeader = (await cookies()).toString();
   const apiUrl = process.env.API_INTERNAL_URL;
   if (!apiUrl) {
     throw new Error('API_INTERNAL_URL não está definida.');
   }
 
-  const cookieHeader = (await cookies()).toString();
   const response = await fetch(`${apiUrl}/auth/session`, {
     headers: { cookie: cookieHeader },
     cache: 'no-store',
