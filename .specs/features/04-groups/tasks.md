@@ -201,9 +201,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/email-service.int-spec.ts`: `EmailService > enqueueMany grava um job email.send por mensagem`, `> enqueueMany recusa a lista inteira quando um destinatário é inválido`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 296 tests pass na API
+- [x] Testes em `test/email-service.int-spec.ts`: `EmailService > enqueueMany grava um job email.send por mensagem`, `> enqueueMany recusa a lista inteira quando um destinatário é inválido`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 296 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
