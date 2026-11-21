@@ -127,6 +127,8 @@ export class EmailChangeService {
           email: token.newEmail,
           emailVerifiedAt: new Date(),
         });
+        // Links mandados ao e-mail antigo deixam de valer.
+        await this.tokens.revokePending(token.userId, manager);
         return { email: token.newEmail };
       });
     } catch (error) {

@@ -64,4 +64,9 @@ export class AuthTokensService {
     await tokens.update(token.id, { usedAt: token.usedAt });
     return token;
   }
+
+  // Apaga os links ainda não usados da conta, de qualquer tipo.
+  async revokePending(userId: string, manager: EntityManager): Promise<void> {
+    await manager.getRepository(AuthToken).delete({ userId, usedAt: IsNull() });
+  }
 }

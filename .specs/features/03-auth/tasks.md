@@ -1344,6 +1344,9 @@ Proof: run api | ✓ AuthTokensService > recusa o token vencido
 **C86** - O e2e roda contra os provedores falsos (infraestrutura de teste)
 Proof: run e2e | ✓ provedores falsos › o e-mail enfileirado pela API chega à caixa falsa
 
+**C87** - Confirmar a troca de e-mail invalida os links de recuperação e de confirmação pendentes da conta (AUTH-12, AC 8)
+Proof: run api | ✓ troca de e-mail > invalida os links de recuperação e de confirmação pendentes ao confirmar a troca
+
 ---
 
 ## Handoff
