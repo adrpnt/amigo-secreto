@@ -16,6 +16,17 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
+function assertSendable(message: EmailMessage): void {
+  if (!isEmail(message.to)) {
+    throw new Error('Destinatário de e-mail inválido.');
+  }
+  for (const block of message.blocks) {
+    if (block.type === 'button' && !isHttpUrl(block.url)) {
+      throw new Error('URL de botão inválida.');
+    }
+  }
+}
+
 @Injectable()
 export class EmailService {
   constructor(private readonly queue: JobQueue) {}
@@ -25,14 +36,17 @@ export class EmailService {
     message: EmailMessage,
     options: { runAt?: Date; manager?: EntityManager } = {},
   ): Promise<Job> {
-    if (!isEmail(message.to)) {
-      throw new Error('Destinatário de e-mail inválido.');
-    }
-    for (const block of message.blocks) {
-      if (block.type === 'button' && !isHttpUrl(block.url)) {
-        throw new Error('URL de botão inválida.');
-      }
-    }
+    assertSendable(message);
     return this.queue.enqueue(EMAIL_SEND_JOB, message, options);
+  }
+
+  // Confere todas as mensagens antes de gravar qualquer uma: uma inválida
+  // recusa a lista inteira.
+  async enqueueMany(
+    messages: EmailMessage[],
+    options: { manager?: EntityManager } = {},
+  ): Promise<void> {
+    messages.forEach(assertSendable);
+    await this.queue.enqueueMany(EMAIL_SEND_JOB, messages, options);
   }
 }

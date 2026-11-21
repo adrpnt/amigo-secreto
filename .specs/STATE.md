@@ -14,8 +14,8 @@
   | 1 | `foundation` | FND | Monorepo pnpm + Turborepo; `apps/api` (NestJS + TypeORM + PostgreSQL); `apps/web` (Next.js + Tailwind + shadcn/ui com os tokens do design system); `packages/shared`; testes, lint, CI, logs, monitoramento de erros (Sentry, decidido em 2026-11-12), Swagger, health check |
   | 2 | `email-jobs` | JOB | Tabela `Job` + `@Cron` + `FOR UPDATE SKIP LOCKED` + retry; envio de e-mail pelo Resend |
   | 3 | `auth` | AUTH | Cadastro, login, Google, confirmação de e-mail, recuperação de senha, sessão em cookie, CSRF, termos + opt-in, perfil, rate limit |
-  | 4 | `groups` | GRP | Criar, meus grupos, editar, arquivar/excluir, transferir organização, encerrar |
-  | 5 | `invites` | INV | Link + WhatsApp + Open Graph, regenerar, convite por e-mail, aprovação, lista paginada, remover/sair |
+  | 4 | `groups` | GRP | Criar, meus grupos, editar, excluir, encerrar |
+  | 5 | `invites` | INV | Link + WhatsApp + Open Graph, regenerar, convite por e-mail, aprovação, lista paginada, remover/sair, transferir organização |
   | 6 | `draw` | DRAW | Restrições, sorteio, resultado (site + e-mail), cancelar, re-sortear, lembrete |
   | 7 | `wishlist` | WISH | Lista de desejos por grupo |
   | 8 | `wall` | WALL | Mural, comentários, anônimo, moderação |
@@ -25,6 +25,7 @@
   | 12 | `public-pages` | PUB | Landing, como funciona, FAQ, termos, privacidade e cookies |
 
 - **Date**: 2026-11-12
+- **Revised**: 2026-11-21 - transferir a organização sai da `groups` e entra na `invites`, onde nasce a lista de participantes de onde se escolhe a pessoa; "arquivar" deixa de existir, porque o status ENCERRADO cobre. Perguntas ao usuário no Specify da `04-groups`: "Onde a transferência entra?", resposta "Mover para a 05-invites (Recomendado)", entre essa e "Manter na 04-groups"; "O que é 'arquivar'?", resposta "Não existe; ENCERRADO cobre (Recomendado)", entre essa, "Cada pessoa esconde da própria lista" e "Organizador arquiva para todos".
 - **Status**: active
 
 ### AD-002
@@ -147,14 +148,32 @@
 - **Date**: 2026-11-19
 - **Status**: active
 
+### AD-015
+
+- **Decision**: As regras de negócio dos campos de um formulário e as mensagens em português delas ficam numa função pura do `packages/shared` (ex.: `validateGroupInput(input, { now, saved })`), que devolve `{ campo: mensagem }`. O site chama a função antes de enviar; a API chama no serviço e, se houver erro, responde 400 com `{ statusCode, message: 'Dados inválidos.', error, fields }`, e o site mostra cada mensagem no campo dela. O DTO com `class-validator` confere só o formato (tipos, campos extras).
+- **Reason**: Regra e texto num lugar só, testados uma vez, iguais no site e na API. Pergunta ao usuário em 2026-11-21, no Design da `04-groups`: "As regras dos campos do grupo e as mensagens em português da spec: onde ficam?", resposta "Uma função no packages/shared (Recomendado)", entre essa, "Como na 03-auth" e "Só na API, com mensagens PT". Estendida às features seguintes: "As features 05 a 09 podem seguir o mesmo padrão."
+- **Trade-off**: O `packages/shared` precisa ser compilado antes do site e da API; a `03-auth` continua no padrão antigo (mensagens do site e class-validator na API) até ser mexida.
+- **Scope**: `04-groups` e as features `05-invites` a `09-secret-messages`, em todo formulário com regra de negócio.
+- **Date**: 2026-11-21
+- **Status**: active
+
+### AD-016
+
+- **Decision**: Toda rota da API que age dentro de um grupo confere o acesso pelo `GroupAccess` (`requireMember` / `requireOrganizer`) no serviço, dentro da transação da operação, com `SELECT ... FOR UPDATE` na linha do grupo quando a operação muda o grupo ou depende do status dele. Id que não é UUID, grupo inexistente ou pessoa sem participação aprovada recebem 404 "Grupo não encontrado."; participante que não organiza recebe 403 "Só quem organiza pode alterar o grupo."; a ordem das recusas é 404, 403, 409, 400, 429.
+- **Reason**: A mesma leitura decide o acesso e trava a linha contra corrida, e quem está de fora nunca descobre que um grupo existe. Pergunta ao usuário em 2026-11-21, no Design da `04-groups`: "Como a API confere se a pessoa participa ou organiza o grupo?", resposta "No serviço, com trava da linha (Recomendado)", entre essa e "Guards com decorator". Estendida às features seguintes: "As features 05 a 09 podem seguir o mesmo padrão."
+- **Trade-off**: Cada serviço chama o `GroupAccess` explicitamente; esquecer a chamada não é pego por um guard global, só pelos testes de acesso de cada rota.
+- **Scope**: `04-groups` e as features `05-invites` a `09-secret-messages`.
+- **Date**: 2026-11-21
+- **Status**: active
+
 ## Handoff
 
-- **Feature**: 03-auth (`.specs/features/03-auth/`), concluída
-- **Phase / Task**: fase 6 (T33 a T39) e fechamento da feature na branch `pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil`
-- **Completed**: fases 1 a 6; walk das 14 histórias; Verifier com 6 achados, todos fechados por commit (`c5b5eb6`, `9ec98a6`, `287a271`, `a9fc76e`, `24066cf`, `42be894`), com o critério novo AUTH-12 AC 8 e a check C87; `check_proofs.py` com 233 pass e 0 fail; `validate_verification.py 03-auth` com saída 0; lições L-015 a L-020 (candidatas)
+- **Feature**: 04-groups (`.specs/features/04-groups/`), em execução
+- **Phase / Task**: fase 1 (T1 a T7) concluída na branch da PER-107; gate Build verde (shared 19, web 39, API 305, e2e 60)
+- **Completed**: T1 a T7; respostas do usuário sobre o campo das mensagens de faixa e de ordem das datas, e a contagem inicial da API (285), em `**Settled mid-build:**`
 - **In-progress** (file:line): none
-- **Next step**: push e PR da PER-98; depois do merge, abrir a feature `04-groups` (Specify), carregando as lições confirmadas
-- **Linear**: milestone `03 · Auth`; fases 1 a 6 = PER-93, PER-94, PER-95, PER-96, PER-97, PER-98
+- **Next step**: revisão e merge do PR da fase 1; depois, fase 2 (T8 a T15) na branch da PER-108 a partir da `main` atualizada
+- **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (PR aberto), PER-108, PER-109, PER-110
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-98-fase-6-recuperacao-google-cabecalho-e-perfil
+- **Branch**: pntadr/per-107-fase-1-regras-compartilhadas-e-tabelas

@@ -141,4 +141,60 @@ describe('EmailService', () => {
       expect(await jobsWithSubject(message.subject)).toHaveLength(0);
     }
   });
+
+  it('enqueueMany grava um job email.send por mensagem', async () => {
+    const messages = [
+      messageWith({ to: 'ana@example.com' }),
+      messageWith({ to: 'bia@example.com' }),
+      messageWith({ to: 'caio@example.com' }),
+    ];
+
+    const before = new Date();
+    await dataSource.transaction(async (manager) => {
+      await emails.enqueueMany(messages, { manager });
+    });
+    const after = new Date();
+
+    for (const message of messages) {
+      const jobs = await jobsWithSubject(message.subject);
+      expect(jobs).toHaveLength(1);
+      expect(jobs[0]).toMatchObject({
+        type: 'email.send',
+        payload: message,
+        status: 'PENDING',
+        attempts: 0,
+      });
+      expect(jobs[0]?.runAt.getTime()).toBeGreaterThanOrEqual(before.getTime());
+      expect(jobs[0]?.runAt.getTime()).toBeLessThanOrEqual(after.getTime());
+    }
+  });
+
+  it('enqueueMany recusa a lista inteira quando um destinatário é inválido', async () => {
+    const withBadRecipient = [
+      messageWith({ to: 'ana@example.com' }),
+      messageWith({ to: 'ana example.com' }),
+      messageWith({ to: 'bia@example.com' }),
+    ];
+
+    await expect(emails.enqueueMany(withBadRecipient)).rejects.toThrow(
+      'Destinatário de e-mail inválido.',
+    );
+    for (const message of withBadRecipient) {
+      expect(await jobsWithSubject(message.subject)).toHaveLength(0);
+    }
+
+    const withBadUrl = [
+      messageWith(),
+      messageWith({
+        blocks: [{ type: 'button', label: 'Abrir', url: '/grupos/1' }],
+      }),
+    ];
+
+    await expect(emails.enqueueMany(withBadUrl)).rejects.toThrow(
+      'URL de botão inválida.',
+    );
+    for (const message of withBadUrl) {
+      expect(await jobsWithSubject(message.subject)).toHaveLength(0);
+    }
+  });
 });
