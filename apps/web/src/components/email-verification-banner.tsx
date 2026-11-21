@@ -1,5 +1,7 @@
 import type { SessionUser } from '@amigo-secreto/shared';
 import { MailWarning } from 'lucide-react';
+import { unstable_rethrow } from 'next/navigation';
+import { connection } from 'next/server';
 import { getCurrentUser } from '@/lib/session';
 import { EmailVerificationBannerFrame } from './email-verification-banner-frame';
 import { ResendVerification } from './resend-verification';
@@ -7,10 +9,15 @@ import { ResendVerification } from './resend-verification';
 // Faixa abaixo do cabeçalho para quem entrou sem confirmar o e-mail. Sem
 // sessão legível (API fora do ar), a faixa não aparece e a página segue.
 export async function EmailVerificationBanner() {
+  // A faixa depende da sessão da requisição: nenhuma página sai pronta do build.
+  await connection();
   let user: SessionUser | null;
   try {
     user = await getCurrentUser();
-  } catch {
+  } catch (error) {
+    // Os sinais do Next (como o de rota dinâmica) seguem para o framework;
+    // só falha da API esconde a faixa.
+    unstable_rethrow(error);
     return null;
   }
   if (!user || user.emailVerified) return null;

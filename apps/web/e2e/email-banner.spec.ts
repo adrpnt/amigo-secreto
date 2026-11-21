@@ -28,6 +28,12 @@ test.describe('faixa de confirmação', () => {
     await expect(
       page.getByRole('button', { name: 'Reenviar e-mail' }),
     ).toBeVisible();
+
+    // Também nas páginas sem dado próprio da sessão, como /termos.
+    await page.goto('/termos');
+    await expect(
+      page.getByText(bannerText(email), { exact: true }),
+    ).toBeVisible();
   });
 
   test('"Reenviar e-mail" mostra "Enviamos um novo link para X."', async ({
