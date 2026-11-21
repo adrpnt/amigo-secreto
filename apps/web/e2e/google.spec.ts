@@ -47,6 +47,12 @@ test.describe('login com Google', () => {
     await expect(
       page.getByRole('checkbox', { name: /Quero receber novidades/ }),
     ).not.toBeChecked();
+    const terms = page.getByRole('link', { name: 'Termos de uso' });
+    const privacy = page.getByRole('link', { name: 'Política de privacidade' });
+    await expect(terms).toHaveAttribute('href', '/termos');
+    await expect(terms).toHaveAttribute('target', '_blank');
+    await expect(privacy).toHaveAttribute('href', '/privacidade');
+    await expect(privacy).toHaveAttribute('target', '_blank');
 
     await name.fill('Bia Souza');
     await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
