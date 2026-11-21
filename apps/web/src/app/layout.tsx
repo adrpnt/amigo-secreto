@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
-import type { ReactNode } from 'react';
+import { type ReactNode, Suspense } from 'react';
 import { AppHeader } from '@/components/app-header';
+import { EmailVerificationBanner } from '@/components/email-verification-banner';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
@@ -29,6 +30,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           disableTransitionOnChange
         >
           <AppHeader />
+          <Suspense fallback={null}>
+            <EmailVerificationBanner />
+          </Suspense>
           {children}
         </ThemeProvider>
       </body>

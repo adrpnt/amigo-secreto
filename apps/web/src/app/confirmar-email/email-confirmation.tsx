@@ -1,11 +1,10 @@
 'use client';
 
-import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { ResendVerification } from '@/components/resend-verification';
+import { buttonVariants } from '@/components/ui/button';
 import { apiFetch } from '@/lib/api-fetch';
 import { safeNext } from '@/lib/safe-next';
 
@@ -19,59 +18,11 @@ const STATUS_TEXT: Record<Status, string> = {
   in_use: 'Este e-mail já está em uso por outra conta.',
   failed: 'Algo deu errado. Tente de novo.',
 };
-const GENERIC_ERROR = 'Algo deu errado. Tente de novo.';
 
 const CONFIRM_PATH: Record<LinkKind, string> = {
   verification: '/auth/email/verify',
   email_change: '/auth/email/change/confirm',
 };
-
-function ResendVerification() {
-  const [sending, setSending] = useState(false);
-  const [sentTo, setSentTo] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  async function resend() {
-    setSending(true);
-    setError(null);
-    try {
-      const response = await apiFetch('/auth/email/verification-link', {
-        method: 'POST',
-      });
-      if (response.status === 202) {
-        setSentTo(((await response.json()) as { email: string }).email);
-      } else if (response.status === 409 || response.status === 429) {
-        setError(((await response.json()) as { message: string }).message);
-      } else {
-        setError(GENERIC_ERROR);
-      }
-    } catch {
-      setError(GENERIC_ERROR);
-    }
-    setSending(false);
-  }
-
-  if (sentTo) {
-    return (
-      <p role="status" className="text-body text-muted-foreground">
-        Enviamos um novo link para {sentTo}.
-      </p>
-    );
-  }
-  return (
-    <div className="flex flex-col gap-3">
-      {error && (
-        <Alert variant="destructive">
-          <CircleAlert aria-hidden />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-      <Button disabled={sending} onClick={() => void resend()}>
-        Reenviar e-mail
-      </Button>
-    </div>
-  );
-}
 
 // Caminho seguinte quando o link não confirma nada.
 function NextStep({
