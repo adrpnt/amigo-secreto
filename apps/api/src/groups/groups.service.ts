@@ -8,7 +8,7 @@ import {
   type SessionUser,
   validateGroupInput,
 } from '@amigo-secreto/shared';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import {
@@ -45,6 +45,8 @@ type MyGroupRow = {
   participantCount: number;
 };
 
+export const CLOSED_GROUP_EDIT = 'Grupo encerrado não pode ser editado.';
+
 const CREATE_LIMIT = 20;
 const CREATE_WINDOW_MS = 60 * 60 * 1000;
 
@@ -64,6 +66,51 @@ function toGroupInput(body: GroupInputDto): GroupInput {
 
 function toIso(date: Date | null): string | null {
   return date === null ? null : date.toISOString();
+}
+
+function toDate(iso: string | null): Date | null {
+  return iso === null ? null : new Date(iso);
+}
+
+type GroupFields = Pick<
+  Group,
+  | 'name'
+  | 'description'
+  | 'giftMinValue'
+  | 'giftMaxValue'
+  | 'drawScheduledAt'
+  | 'eventAt'
+  | 'eventLocation'
+  | 'isOnlineEvent'
+  | 'requiresApproval'
+>;
+
+function toGroupFields(input: GroupInput): GroupFields {
+  return {
+    name: input.name,
+    description: input.description,
+    giftMinValue: input.giftMinValue,
+    giftMaxValue: input.giftMaxValue,
+    drawScheduledAt: toDate(input.drawScheduledAt),
+    eventAt: toDate(input.eventAt),
+    eventLocation: input.eventLocation,
+    isOnlineEvent: input.isOnlineEvent,
+    requiresApproval: input.requiresApproval,
+  };
+}
+
+// Nomes dos campos cujo valor muda; datas comparadas pelo instante.
+function changedFields(group: Group, next: GroupFields): string[] {
+  return (Object.keys(next) as (keyof GroupFields)[]).filter((field) => {
+    const before = group[field];
+    const after = next[field];
+    if (before instanceof Date || after instanceof Date) {
+      return (
+        (before as Date | null)?.getTime() !== (after as Date | null)?.getTime()
+      );
+    }
+    return before !== after;
+  });
 }
 
 export function toGroupDetail(
@@ -120,18 +167,8 @@ export class GroupsService {
       const groups = manager.getRepository(Group);
       const created = await groups.save(
         groups.create({
-          name: input.name,
-          description: input.description,
+          ...toGroupFields(input),
           ownerId: user.id,
-          giftMinValue: input.giftMinValue,
-          giftMaxValue: input.giftMaxValue,
-          drawScheduledAt: input.drawScheduledAt
-            ? new Date(input.drawScheduledAt)
-            : null,
-          eventAt: input.eventAt ? new Date(input.eventAt) : null,
-          eventLocation: input.eventLocation,
-          isOnlineEvent: input.isOnlineEvent,
-          requiresApproval: input.requiresApproval,
           status: 'OPEN',
           closedAt: null,
         }),
@@ -174,5 +211,51 @@ export class GroupsService {
       .getRepository(User)
       .findOneByOrFail({ id: group.ownerId });
     return toGroupDetail(group, { id: owner.id, name: owner.name }, userId);
+  }
+
+  async update(
+    user: SessionUser,
+    groupId: string,
+    body: GroupInputDto,
+  ): Promise<GroupDetail> {
+    const input = normalizeGroupInput(toGroupInput(body));
+
+    const { group, changed } = await this.dataSource.transaction(
+      async (manager) => {
+        const { group } = await this.access.requireOrganizer(user.id, groupId, {
+          manager,
+          lock: true,
+        });
+        if (group.status === 'CLOSED') {
+          throw new ConflictException(CLOSED_GROUP_EDIT);
+        }
+        const fields = validateGroupInput(input, {
+          now: new Date(),
+          saved: {
+            drawScheduledAt: toIso(group.drawScheduledAt),
+            eventAt: toIso(group.eventAt),
+          },
+        });
+        if (Object.keys(fields).length > 0) {
+          throw new GroupValidationException(fields);
+        }
+
+        const next = toGroupFields(input);
+        const changed = changedFields(group, next);
+        if (changed.length > 0) {
+          Object.assign(group, next);
+          await manager.getRepository(Group).save(group);
+        }
+        return { group, changed };
+      },
+    );
+
+    if (changed.length > 0) {
+      this.events.record('group.updated', {
+        groupId: group.id,
+        fields: changed.join(','),
+      });
+    }
+    return toGroupDetail(group, { id: user.id, name: user.name }, user.id);
   }
 }

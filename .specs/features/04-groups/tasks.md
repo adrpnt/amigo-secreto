@@ -332,9 +332,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `test/groups-update.int-spec.ts`: `editar grupo > grava os campos enviados em grupo ABERTO`, `> grava os campos enviados em grupo SORTEADO`, `> apaga o campo opcional enviado como null`, `> recusa com 400 a mesma regra da criação e não altera o grupo`, `> aceita uma data gravada que ficou no passado quando ela não muda`, `> recusa com 400 uma data alterada para o passado`, `> responde 403 ao participante que não organiza e não altera o grupo`, `> responde 409 em grupo ENCERRADO e não altera o grupo`, `> responde 409 à edição que espera o encerramento terminar`, `> responde 404 à edição de grupo excluído`, `> emite group.updated com os nomes dos campos que mudaram e sem dados pessoais`, `> não emite group.updated quando nada muda nem quando a edição é recusada`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 345 tests pass na API
+- [x] Testes em `test/groups-update.int-spec.ts`: `editar grupo > grava os campos enviados em grupo ABERTO`, `> grava os campos enviados em grupo SORTEADO`, `> apaga o campo opcional enviado como null`, `> recusa com 400 a mesma regra da criação e não altera o grupo`, `> aceita uma data gravada que ficou no passado quando ela não muda`, `> recusa com 400 uma data alterada para o passado`, `> responde 403 ao participante que não organiza e não altera o grupo`, `> responde 409 em grupo ENCERRADO e não altera o grupo`, `> responde 409 à edição que espera o encerramento terminar`, `> responde 404 à edição de grupo excluído`, `> emite group.updated com os nomes dos campos que mudaram e sem dados pessoais`, `> não emite group.updated quando nada muda nem quando a edição é recusada`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 345 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
