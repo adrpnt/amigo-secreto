@@ -1190,6 +1190,8 @@ Proof: run api | ✓ cadastro > responde 429 no 6º cadastro do mesmo e-mail em 
 Proof: run api | ✓ cadastro > responde 429 no 21º cadastro do mesmo IP em 1 hora
 Proof: run api | ✓ recuperação de senha > responde 429 no 6º pedido do mesmo e-mail em 1 hora sem enfileirar e-mail
 Proof: run api | ✓ confirmação de e-mail > responde 429 no 6º reenvio em 1 hora
+Proof: run api | ✓ recuperação de senha > responde 429 no 21º pedido do mesmo IP em 1 hora
+Proof: run api | ✓ confirmação de e-mail > responde 429 no 21º pedido do mesmo IP em 1 hora
 
 **C53** - Os limites valem somados entre instâncias (AUTH-08, AC 6)
 Proof: run api | ✓ RateLimitService > soma as tentativas de duas conexões ao mesmo tempo sem perder nenhuma

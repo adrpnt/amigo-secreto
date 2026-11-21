@@ -366,6 +366,24 @@ describe('recuperação de senha', () => {
     expect(await resetLinks(email)).toHaveLength(5);
   });
 
+  it('responde 429 no 21º pedido do mesmo IP em 1 hora', async () => {
+    const ip = newIp();
+    const statuses = [];
+    for (let attempt = 1; attempt <= 20; attempt++) {
+      const { email } = await createAccount();
+      statuses.push(
+        (await post('/auth/password/forgot', { email }, undefined, ip)).status,
+      );
+    }
+    const { email } = await createAccount();
+
+    const last = await post('/auth/password/forgot', { email }, undefined, ip);
+
+    expect(statuses).toEqual(Array.from({ length: 20 }, () => 202));
+    expect(last.status).toBe(429);
+    expect(await resetLinks(email)).toHaveLength(0);
+  });
+
   it('recusa com 400 senha nova com menos de 8 ou mais de 128 caracteres', async () => {
     const { id, email } = await createAccount();
     const { token } = await requestReset(email);
