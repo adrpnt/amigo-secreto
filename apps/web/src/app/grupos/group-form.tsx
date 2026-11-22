@@ -50,7 +50,12 @@ function initialValues(group?: GroupDetail): FormValues {
     name: group?.name ?? '',
     description: group?.description ?? '',
     giftMinValue: group?.giftMinValue?.toString() ?? '',
-    giftMaxValue: group?.giftMaxValue?.toString() ?? '',
+    // Valor único (mínimo = máximo) abre só no primeiro campo: o "Até" é só
+    // para faixa.
+    giftMaxValue:
+      group?.giftMaxValue != null && group.giftMaxValue !== group.giftMinValue
+        ? group.giftMaxValue.toString()
+        : '',
     drawScheduledAt: group?.drawScheduledAt
       ? isoToBrasiliaInput(group.drawScheduledAt)
       : '',

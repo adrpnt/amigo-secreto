@@ -276,6 +276,20 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 ---
 
+### P1: Valores no formulário
+
+**User Story**: Como organizador, quero editar o valor do presente como ele foi combinado, para trocar um valor único sem mexer numa faixa que não existe.
+
+**Why P1**: Achado da verificação de 2026-11-22: o formulário abria o "Até (R$)" preenchido num valor único e barrava a troca só do valor.
+
+**Acceptance Criteria**:
+
+1. WHEN o organizador abre a edição de um grupo com mínimo igual ao máximo THEN o site SHALL mostrar o valor em "Valor do presente (R$)", deixar "Até (R$)" vazio e salvar a troca só do "Valor do presente (R$)" sem mensagem de faixa.
+
+**Independent Test**: Um grupo com R$ 50 abre a edição com "Até (R$)" vazio; trocar o valor para 80 salva R$ 80.
+
+---
+
 ## Edge Cases
 
 - IF dois pedidos de exclusão do mesmo grupo chegam ao mesmo tempo THEN o sistema SHALL excluir o grupo uma vez, responder 404 ao segundo e enfileirar os avisos uma vez só (GRP-05 AC 5, AC 8).
@@ -302,6 +316,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | GRP-07 | P1: Eventos de grupo | Design | Pending |
 | GRP-08 | P1: Telas acessíveis | Design | Pending |
 | GRP-09 | P2: Encerrar grupo | Design | Pending |
+| GRP-10 | P1: Valores no formulário | Execute | Verified |
 
 **ID format:** `GRP-NN`; cada check cita o ID e o número do critério (ex.: GRP-01, AC 5).
 

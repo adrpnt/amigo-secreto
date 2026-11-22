@@ -302,4 +302,25 @@ describe('GroupForm', () => {
       screen.getByRole('button', { name: 'Salvar alterações' }),
     ).toBeInTheDocument();
   });
+
+  it('abre o valor único sem o Até e salva só o valor trocado', async () => {
+    const user = userEvent.setup();
+    vi.mocked(apiFetch).mockResolvedValue(
+      jsonResponse(200, { ...GROUP, giftMinValue: 80, giftMaxValue: 80 }),
+    );
+    render(
+      <GroupForm group={{ ...GROUP, giftMinValue: 50, giftMaxValue: 50 }} />,
+    );
+
+    expect(field('Valor do presente (R$)')).toHaveValue('50');
+    expect(field('Até (R$)')).toHaveValue('');
+    await user.clear(field('Valor do presente (R$)'));
+    await user.type(field('Valor do presente (R$)'), '80');
+    await user.click(screen.getByRole('button', { name: 'Salvar alterações' }));
+
+    expect(field('Valor do presente (R$)')).not.toHaveAccessibleDescription();
+    expect(apiFetch).toHaveBeenCalledTimes(1);
+    expect(sentBody()).toMatchObject({ giftMinValue: 80, giftMaxValue: 80 });
+    expect(push).toHaveBeenCalledWith(`/grupos/${GROUP_ID}`);
+  });
 });
