@@ -1141,6 +1141,21 @@ Proof: run web | ✓ GroupForm > abre o valor único sem o Até e salva só o va
 **C94** - O valor aceita ponto de milhar e recusa decimal, vírgula e letras com a mensagem do valor, sem enviar (GRP-10, AC 2)
 Proof: run web | ✓ GroupForm > lê o ponto como milhar e recusa decimal, vírgula e letras no valor
 
+**C95** - Salvar o formulário com 403 ou 409 mostra a mensagem da API num aviso (GRP-11, AC 1)
+Proof: run web | ✓ GroupForm > mostra a mensagem da API num 403 e num 409
+
+**C96** - Encerramento com 409 fecha a confirmação e mostra a mensagem da API (GRP-11, AC 2)
+Proof: run web | ✓ GroupActions > mostra a mensagem da API quando o encerramento recebe 409
+
+**C97** - Exclusão com 404 leva a `/grupos` sem erro (GRP-11, AC 3)
+Proof: run web | ✓ GroupActions > leva a /grupos quando o grupo já foi excluído
+
+**C98** - Exclusão ou encerramento com 5xx ou sem rede mostram "Não foi possível concluir. Tente de novo." e ficam na página (GRP-11, AC 4)
+Proof: run web | ✓ GroupActions > mostra Não foi possível concluir. Tente de novo. num erro inesperado
+
+**C99** - Durante a exclusão ou o encerramento, o botão de confirmar fica desabilitado com "Excluindo…" ou "Encerrando…" (GRP-11, AC 5)
+Proof: run web | ✓ GroupActions > desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido
+
 ---
 
 ## Handoff

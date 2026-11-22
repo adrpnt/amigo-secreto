@@ -291,6 +291,24 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 ---
 
+### P1: Erros e espera nas ações
+
+**User Story**: Como organizador, quero saber o que houve quando salvar, excluir ou encerrar não dá certo, e ver que o pedido está em andamento.
+
+**Why P1**: Achado da verificação de 2026-11-22: estas regras de tela vieram das decisões do usuário na construção do formulário e das ações e tinham teste, mas nenhum critério na spec.
+
+**Acceptance Criteria**:
+
+1. IF salvar o formulário recebe 403 ou 409 THEN o site SHALL mostrar num aviso a mensagem que a API devolveu.
+2. IF o encerramento recebe 409 THEN o site SHALL fechar a confirmação e mostrar num aviso a mensagem que a API devolveu.
+3. IF a exclusão recebe 404 (grupo já excluído) THEN o site SHALL levar a `/grupos` sem mostrar erro.
+4. IF a exclusão ou o encerramento falha com erro do servidor (5xx) ou sem rede THEN o site SHALL mostrar "Não foi possível concluir. Tente de novo." e continuar na página do grupo.
+5. WHILE a exclusão ou o encerramento espera a resposta o site SHALL desabilitar o botão de confirmar e mostrar "Excluindo…" ou "Encerrando…".
+
+**Independent Test**: Com a API respondendo 409 ao encerrar, a confirmação fecha e o aviso mostra "Só um grupo sorteado pode ser encerrado."; com 500 ao excluir, aparece "Não foi possível concluir. Tente de novo.".
+
+---
+
 ## Edge Cases
 
 - IF dois pedidos de exclusão do mesmo grupo chegam ao mesmo tempo THEN o sistema SHALL excluir o grupo uma vez, responder 404 ao segundo e enfileirar os avisos uma vez só (GRP-05 AC 5, AC 8).
@@ -318,6 +336,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | GRP-08 | P1: Telas acessíveis | Design | Pending |
 | GRP-09 | P2: Encerrar grupo | Design | Pending |
 | GRP-10 | P1: Valores no formulário | Execute | Verified |
+| GRP-11 | P1: Erros e espera nas ações | Execute | Verified |
 
 **ID format:** `GRP-NN`; cada check cita o ID e o número do critério (ex.: GRP-01, AC 5).
 
