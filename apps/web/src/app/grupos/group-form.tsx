@@ -66,9 +66,19 @@ function initialValues(group?: GroupDetail): FormValues {
   };
 }
 
+// Só dígitos, ou dígitos com ponto a cada três casas ("1.000"). Outra entrada
+// ("50.5", "1,5") vira NaN, que a regra do valor recusa com a mensagem dela.
+const PLAIN_INTEGER = /^\d+$/;
+const THOUSANDS_INTEGER = /^\d{1,3}(\.\d{3})+$/;
+
 function toNumber(value: string): number | null {
   const trimmed = value.trim();
-  return trimmed === '' ? null : Number(trimmed);
+  if (trimmed === '') return null;
+  if (PLAIN_INTEGER.test(trimmed)) return Number(trimmed);
+  if (THOUSANDS_INTEGER.test(trimmed)) {
+    return Number(trimmed.replaceAll('.', ''));
+  }
+  return Number.NaN;
 }
 
 // Datas digitadas no horário de Brasília viram instantes com fuso.

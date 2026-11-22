@@ -1133,6 +1133,9 @@ Proof: run api | ✓ criar grupo > recusa com 429 a 21ª criação da hora e ace
 **C93** - Na edição, valor único abre com "Até (R$)" vazio e a troca só do valor é salva (GRP-10, AC 1)
 Proof: run web | ✓ GroupForm > abre o valor único sem o Até e salva só o valor trocado
 
+**C94** - O valor aceita ponto de milhar e recusa decimal, vírgula e letras com a mensagem do valor, sem enviar (GRP-10, AC 2)
+Proof: run web | ✓ GroupForm > lê o ponto como milhar e recusa decimal, vírgula e letras no valor
+
 ---
 
 ## Handoff
