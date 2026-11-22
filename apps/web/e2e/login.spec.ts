@@ -23,14 +23,14 @@ async function sessionEmail(page: Page): Promise<string | null> {
 }
 
 test.describe('login', () => {
-  test('entra com a senha certa e cai em /perfil', async ({ page }) => {
+  test('entra com a senha certa e cai em /grupos', async ({ page }) => {
     const email = newEmail();
     await registerAccount(page.request, email);
     await page.goto('/entrar');
 
     await submitSignIn(page, email, PASSWORD);
 
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
     expect(await sessionEmail(page)).toBe(email);
   });
 
@@ -94,7 +94,7 @@ test.describe('login', () => {
     await expect(page).toHaveURL('/convite/abc');
 
     await page.goto('/entrar');
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
   });
 });
 
@@ -123,7 +123,7 @@ test.describe('login', () => {
 
     await submitSignIn(page, email, PASSWORD);
 
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
     expect(await sessionEmail(page)).toBe(email);
   });
 });

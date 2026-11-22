@@ -112,6 +112,6 @@ test.describe('cadastro', () => {
     await expect(page).toHaveURL('/convite/abc');
 
     await page.goto('/cadastro');
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
   });
 });

@@ -7,27 +7,27 @@ describe('safeNext', () => {
     );
   });
 
-  it('troca por /perfil um caminho que começa com //', () => {
-    expect(safeNext('//evil.example/roubo')).toBe('/perfil');
+  it('troca por /grupos um caminho que começa com //', () => {
+    expect(safeNext('//evil.example/roubo')).toBe('/grupos');
   });
 
-  it('troca por /perfil um caminho que começa com /\\', () => {
-    expect(safeNext('/\\evil.example/roubo')).toBe('/perfil');
+  it('troca por /grupos um caminho que começa com /\\', () => {
+    expect(safeNext('/\\evil.example/roubo')).toBe('/grupos');
   });
 
-  it('troca por /perfil um endereço com esquema', () => {
-    expect(safeNext('https://evil.example/perfil')).toBe('/perfil');
-    expect(safeNext('javascript:alert(1)')).toBe('/perfil');
+  it('troca por /grupos um endereço com esquema', () => {
+    expect(safeNext('https://evil.example/perfil')).toBe('/grupos');
+    expect(safeNext('javascript:alert(1)')).toBe('/grupos');
   });
 
-  it('troca por /perfil os caminhos /entrar e /cadastro', () => {
-    expect(safeNext('/entrar')).toBe('/perfil');
-    expect(safeNext('/cadastro?next=/grupos')).toBe('/perfil');
+  it('troca por /grupos os caminhos /entrar e /cadastro', () => {
+    expect(safeNext('/entrar')).toBe('/grupos');
+    expect(safeNext('/cadastro?next=/convite/abc')).toBe('/grupos');
   });
 
-  it('troca por /perfil um valor ausente', () => {
-    expect(safeNext(null)).toBe('/perfil');
-    expect(safeNext(undefined)).toBe('/perfil');
-    expect(safeNext('')).toBe('/perfil');
+  it('troca por /grupos um valor ausente', () => {
+    expect(safeNext(null)).toBe('/grupos');
+    expect(safeNext(undefined)).toBe('/grupos');
+    expect(safeNext('')).toBe('/grupos');
   });
 });

@@ -76,7 +76,7 @@ test.describe('cabeçalho', () => {
     await page.getByRole('link', { name: 'Verificada nova' }).click();
     await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
     await page.getByRole('button', { name: 'Criar conta' }).click();
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
     await page.goto('/');
 
     const trigger = page

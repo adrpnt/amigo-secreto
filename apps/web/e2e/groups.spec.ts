@@ -313,3 +313,20 @@ test.describe('grupos', () => {
     });
   });
 });
+
+test.describe('navegação', () => {
+  test('entrar sem origem leva a /grupos', async ({ page, request }) => {
+    const email = newEmail();
+    await registerAccount(request, email);
+
+    await page.goto('/entrar');
+    await page.getByLabel('E-mail', { exact: true }).fill(email);
+    await page.getByLabel('Senha', { exact: true }).fill(PASSWORD);
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+
+    await expect(page).toHaveURL('/grupos');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Meus grupos' }),
+    ).toBeVisible();
+  });
+});
