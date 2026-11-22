@@ -1067,6 +1067,8 @@ Proof: run api | ✓ excluir grupo > emite group.deleted com o groupId, o status
 **C74** - Operação recusada não emite evento (GRP-07, AC 6)
 Proof: run api | ✓ criar grupo > não emite group.created quando a criação é recusada
 Proof: run api | ✓ editar grupo > não emite group.updated quando nada muda nem quando a edição é recusada
+Proof: run api | ✓ excluir grupo > não emite group.deleted quando a exclusão é recusada com 403 ou 404
+Proof: run api | ✓ encerrar grupo > não emite group.closed quando o encerramento é recusado com 403 ou 409
 
 **C75** - As quatro telas de grupo têm zero violações WCAG 2.1 A/AA nos dois temas (GRP-08, AC 1)
 Proof: run e2e | ✓ acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema claro

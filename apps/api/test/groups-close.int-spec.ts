@@ -243,4 +243,20 @@ describe('encerrar grupo', () => {
       expect(line).not.toContain(personal);
     }
   });
+
+  it('não emite group.closed quando o encerramento é recusado com 403 ou 409', async () => {
+    const { groupId, members } = await drawnGroupWithMembers();
+    const memberCookies = await openSession(api.sessions, members[0].id);
+    const open = await drawnGroupWithMembers({ status: 'OPEN' });
+
+    const forbidden = await captureEvents(() =>
+      closeGroup(memberCookies, groupId).expect(403),
+    );
+    const conflict = await captureEvents(() =>
+      closeGroup(open.cookies, open.groupId).expect(409),
+    );
+
+    expect(forbidden.map((record) => record.event)).toEqual([]);
+    expect(conflict.map((record) => record.event)).toEqual([]);
+  });
 });
