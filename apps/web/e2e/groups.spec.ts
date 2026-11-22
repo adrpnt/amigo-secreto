@@ -353,4 +353,28 @@ test.describe('navegação', () => {
       page.getByRole('heading', { level: 1, name: 'Meus grupos' }),
     ).toBeVisible();
   });
+
+  test('logado em / vai para /grupos', async ({ page }) => {
+    await signedInAs(page);
+
+    await page.goto('/');
+
+    await expect(page).toHaveURL('/grupos');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Meus grupos' }),
+    ).toBeVisible();
+  });
+
+  test('sem sessão / continua mostrando a página atual', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(page).toHaveURL('/');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Amigo Secreto' }),
+    ).toBeVisible();
+    await expect(page.getByText('API online', { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('banner').getByRole('link', { name: 'Entrar' }),
+    ).toBeVisible();
+  });
 });

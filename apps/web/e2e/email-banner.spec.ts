@@ -80,7 +80,9 @@ test.describe('faixa de confirmação', () => {
       page.getByText(bannerText(email), { exact: true }),
     ).toHaveCount(0);
     await page.goto('/');
-    await expect(page.getByText('API online', { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Meus grupos' }),
+    ).toBeVisible();
     await expect(
       page.getByText(bannerText(email), { exact: true }),
     ).toHaveCount(0);
