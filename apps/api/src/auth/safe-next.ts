@@ -1,4 +1,4 @@
-export const DEFAULT_NEXT = '/perfil';
+export const DEFAULT_NEXT = '/grupos';
 
 const AUTH_PAGES = ['/entrar', '/cadastro'];
 
@@ -6,7 +6,7 @@ const AUTH_PAGES = ['/entrar', '/cadastro'];
 const BASE = 'http://amigo-secreto.invalid';
 
 // Mesmas regras do safeNext do site: só caminho do próprio site, fora das
-// páginas de entrada; o resto vira /perfil.
+// páginas de entrada; o resto vira /grupos.
 export function safeNext(value: string | null | undefined): string {
   if (!value?.startsWith('/')) return DEFAULT_NEXT;
   let url: URL;

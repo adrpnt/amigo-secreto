@@ -354,7 +354,7 @@ describe('login com Google', () => {
       '/entrar?erro=google_nao_verificado&next=%2Fconvite%2Fabc',
     );
     expect(withoutAccount.headers.location).toBe(
-      '/entrar?erro=google_nao_verificado&next=%2Fperfil',
+      '/entrar?erro=google_nao_verificado&next=%2Fgrupos',
     );
     for (const response of [withAccount, withoutAccount]) {
       expect(cookieValue(response, 'sid')).toBeUndefined();
@@ -449,7 +449,7 @@ describe('login com Google', () => {
     );
   });
 
-  it('troca por /perfil um destino de outro site', async () => {
+  it('troca por /grupos um destino de outro site', async () => {
     const googleId = `sub-${randomUUID()}`;
     const account = await createAccount({ googleId, verified: true });
 
@@ -459,7 +459,7 @@ describe('login com Google', () => {
     );
 
     expect(response.status).toBe(302);
-    expect(response.headers.location).toBe('/perfil');
+    expect(response.headers.location).toBe('/grupos');
     expect(await sessionUserId(cookieValue(response, 'sid'))).toBe(account.id);
   });
 

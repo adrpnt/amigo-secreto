@@ -678,9 +678,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes renomeados e ajustados: `test/email-verification.int-spec.ts` `confirmação de e-mail > devolve /grupos como destino quando o cadastro não tinha origem`, `test/google-login.int-spec.ts` `login com Google > troca por /grupos um destino de outro site`, `test/register.int-spec.ts` `cadastro > troca por /grupos um destino de outro site`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 362 tests pass na API
+- [x] Testes renomeados e ajustados: `test/email-verification.int-spec.ts` `confirmação de e-mail > devolve /grupos como destino quando o cadastro não tinha origem`, `test/google-login.int-spec.ts` `login com Google > troca por /grupos um destino de outro site`, `test/register.int-spec.ts` `cadastro > troca por /grupos um destino de outro site`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 362 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
