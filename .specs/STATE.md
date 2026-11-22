@@ -168,13 +168,12 @@
 
 ## Handoff
 
-- **Feature**: 04-groups (`.specs/features/04-groups/`), em execução
-- **Phase / Task**: fase 3 (T16 a T23) concluída na branch da PER-109; gate Build verde (shared 19, API 365, web 79, e2e 60)
-- **Completed**: T1 a T23; respostas do usuário da fase 3 (milhar no valor, cópia do `dialog` e do `textarea` do registro do shadcn, decisões do `GroupForm` e do `GroupActions`) em `**Settled mid-build:**`
+- **Feature**: 04-groups (`.specs/features/04-groups/`), em fechamento
+- **Phase / Task**: fase 4 (T24 a T32) commitada na branch da PER-110; gate Build da fase verde (shared 19, API 365, web 92, e2e 78)
+- **Completed**: T1 a T32; respostas do usuário da fase 4 (layouts das telas, títulos, renomes de e2e, correções do axe) em `**Settled mid-build:**`
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 3; depois, fase 4 (T24 a T32) na branch da PER-110 a partir da `main` atualizada, e o fechamento da feature antes do PR
-- **Note for phase 4**: as metas de contagem do web da fase 4 ficam 5 acima do escrito (79 no fim da T23, não 74); o `GroupForm` recebe o `GroupDetail` e converte as datas sozinho, então a T26 só passa o grupo; o `GroupActions` recebe `{ id, name, status }`
-- **Linear**: milestone `04 · Groups`; fases 1 a 4 = PER-107 (mergeada), PER-108 (mergeada), PER-109 (PR aberto), PER-110
+- **Next step**: fechamento da feature na branch da PER-110: `check_proofs.py 04-groups`, walk das histórias, Verifier (sem captura, sem screens sub-agent), correções, `validate_verification.py` e lições; só então push e PR
+- **Linear**: milestone `04 · Groups`; PER-107, PER-108 e PER-109 mergeadas; PER-110 em In Progress, T24 a T32 marcadas
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-109-fase-3-componentes-do-site
+- **Branch**: pntadr/per-110-fase-4-telas-e-navegacao
