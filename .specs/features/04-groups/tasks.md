@@ -1045,6 +1045,7 @@ Proof: run e2e | ✓ navegação › sem sessão / continua mostrando a página 
 **C68** - Sem sessão, as telas de grupo levam a `/entrar` com a origem e voltam depois do login (GRP-06, AC 7)
 Proof: run e2e | ✓ grupos › leva a /entrar e volta a /grupos/novo depois do login
 Proof: run api | ✓ criar grupo > responde 401 sem sessão
+Proof: run e2e | ✓ grupos › sem sessão as quatro telas levam a /entrar com o caminho como origem
 
 **C69** - Criar emite `group.created` com o `groupId` (GRP-07, AC 1)
 Proof: run api | ✓ criar grupo > emite group.created com o groupId e sem dados pessoais

@@ -262,6 +262,23 @@ test.describe('grupos', () => {
     expect(await response.json()).toEqual({ active: [], closed: [] });
   });
 
+  test('sem sessão as quatro telas levam a /entrar com o caminho como origem', async ({
+    page,
+  }) => {
+    const id = randomUUID();
+
+    for (const path of [
+      '/grupos',
+      '/grupos/novo',
+      `/grupos/${id}`,
+      `/grupos/${id}/editar`,
+    ]) {
+      await page.goto(path);
+
+      await expect(page).toHaveURL(`/entrar?next=${encodeURIComponent(path)}`);
+    }
+  });
+
   test('leva a /entrar e volta a /grupos/novo depois do login', async ({
     page,
     request,
