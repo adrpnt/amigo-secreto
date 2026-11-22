@@ -441,7 +441,7 @@ describe('cadastro', () => {
     expect(await countUsers(blocked.email as string)).toBe(0);
   });
 
-  it('troca por /perfil um destino de outro site', async () => {
+  it('troca por /grupos um destino de outro site', async () => {
     const destinations = [
       'https://outro-site.com/x',
       '//outro-site.com/x',
@@ -460,6 +460,6 @@ describe('cadastro', () => {
       stored.push(row.next);
     }
 
-    expect(stored).toEqual(['/perfil', '/perfil', '/perfil']);
+    expect(stored).toEqual(['/grupos', '/grupos', '/grupos']);
   });
 });

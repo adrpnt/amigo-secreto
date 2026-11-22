@@ -194,13 +194,13 @@ describe('confirmação de e-mail', () => {
     });
   });
 
-  it('devolve /perfil como destino quando o cadastro não tinha origem', async () => {
+  it('devolve /grupos como destino quando o cadastro não tinha origem', async () => {
     const { token } = await registerAccount();
 
     const response = await verify(token);
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ next: '/perfil' });
+    expect(response.body).toEqual({ next: '/grupos' });
   });
 
   it('emite user.email_verified', async () => {

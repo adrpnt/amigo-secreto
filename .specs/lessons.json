@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 21,
+  "next_id": 26,
   "lessons": [
     {
       "id": "L-001",
@@ -353,17 +353,109 @@
       "text": "Provar um elemento comum a várias telas em cada tela que o critério cita.",
       "signal": "weak_test",
       "scope": "e2e",
+      "status": "confirmed",
+      "features": [
+        "03-auth",
+        "04-groups"
+      ],
+      "recurrence": 2,
+      "harmful": 0,
+      "evidence": [
+        "C62 (e2e)",
+        "C68 (achado 6) (e2e)"
+      ],
+      "created": "2026-11-21T16:59:41Z",
+      "last_seen": "2026-11-22T13:27:53Z"
+    },
+    {
+      "id": "L-021",
+      "key": "ac_gap::abrir o formulario de edicao com cada campo no formato em que a pessoa o preencheu na criacao e testar a troca de um campo so",
+      "text": "Abrir o formulário de edição com cada campo no formato em que a pessoa o preencheu na criação e testar a troca de um campo só.",
+      "signal": "ac_gap",
+      "scope": "forms",
       "status": "candidate",
       "features": [
-        "03-auth"
+        "04-groups"
       ],
       "recurrence": 1,
       "harmful": 0,
       "evidence": [
-        "C62 (e2e)"
+        "apps/web/src/app/grupos/group-form.tsx:52 (achado 1, C93) (forms)"
       ],
-      "created": "2026-11-21T16:59:41Z",
-      "last_seen": "2026-11-21T16:59:41Z"
+      "created": "2026-11-22T13:27:53Z",
+      "last_seen": "2026-11-22T13:27:53Z"
+    },
+    {
+      "id": "L-022",
+      "key": "ac_gap::ler numeros digitados no mesmo formato que a tela mostra como o ponto de milhar e recusar com a mensagem do campo o que nao for inteiro",
+      "text": "Ler números digitados no mesmo formato que a tela mostra, como o ponto de milhar, e recusar com a mensagem do campo o que não for inteiro.",
+      "signal": "ac_gap",
+      "scope": "forms",
+      "status": "candidate",
+      "features": [
+        "04-groups"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/web/src/app/grupos/group-form.tsx:64 (achado 2, C94) (forms)"
+      ],
+      "created": "2026-11-22T13:27:53Z",
+      "last_seen": "2026-11-22T13:27:53Z"
+    },
+    {
+      "id": "L-023",
+      "key": "weak_test::provar uma regra comum a varias operacoes em cada operacao inclusive nas recusas de cada uma",
+      "text": "Provar uma regra comum a várias operações em cada operação, inclusive nas recusas de cada uma.",
+      "signal": "weak_test",
+      "scope": "events",
+      "status": "candidate",
+      "features": [
+        "04-groups"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C74 (achado 3) (events)"
+      ],
+      "created": "2026-11-22T13:27:53Z",
+      "last_seen": "2026-11-22T13:27:53Z"
+    },
+    {
+      "id": "L-024",
+      "key": "weak_test::quando o criterio fixa o tom de um botao conferir a variante renderizada e nao so o texto",
+      "text": "Quando o critério fixa o tom de um botão, conferir a variante renderizada e não só o texto.",
+      "signal": "weak_test",
+      "scope": "ui",
+      "status": "candidate",
+      "features": [
+        "04-groups"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C78 (achado 4) (ui)"
+      ],
+      "created": "2026-11-22T13:27:53Z",
+      "last_seen": "2026-11-22T13:27:53Z"
+    },
+    {
+      "id": "L-025",
+      "key": "weak_test::provar que duas gravacoes estao na mesma transacao forcando falha na segunda e conferindo que a primeira foi desfeita",
+      "text": "Provar que duas gravações estão na mesma transação forçando falha na segunda e conferindo que a primeira foi desfeita.",
+      "signal": "weak_test",
+      "scope": "transactions",
+      "status": "candidate",
+      "features": [
+        "04-groups"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C83 (achado 5) (transactions)"
+      ],
+      "created": "2026-11-22T13:27:53Z",
+      "last_seen": "2026-11-22T13:27:53Z"
     }
   ]
 }

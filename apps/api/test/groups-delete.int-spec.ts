@@ -269,4 +269,20 @@ describe('excluir grupo', () => {
       expect(line).not.toContain(personal);
     }
   });
+
+  it('não emite group.deleted quando a exclusão é recusada com 403 ou 404', async () => {
+    const { groupId, cookies, members } = await groupWithMembers();
+    const memberCookies = await openSession(api.sessions, members[0].id);
+
+    const forbidden = await captureEvents(() =>
+      deleteGroup(memberCookies, groupId).expect(403),
+    );
+    await api.dataSource.query('DELETE FROM "group" WHERE id = $1', [groupId]);
+    const missing = await captureEvents(() =>
+      deleteGroup(cookies, groupId).expect(404),
+    );
+
+    expect(forbidden.map((record) => record.event)).toEqual([]);
+    expect(missing.map((record) => record.event)).toEqual([]);
+  });
 });

@@ -85,7 +85,7 @@ test.describe('recuperação de senha', () => {
       await requestReset(page, email);
       const link = await resetLinkTo(email);
       await submitNewPassword(page, link);
-      await expect(page).toHaveURL('/perfil');
+      await expect(page).toHaveURL('/grupos');
 
       await submitNewPassword(page, link);
 

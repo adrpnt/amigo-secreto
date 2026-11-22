@@ -265,4 +265,31 @@ describe('GroupActions', () => {
     expect(push).not.toHaveBeenCalled();
     expect(refresh).not.toHaveBeenCalled();
   });
+
+  it('confirma o encerramento em tom primário e a exclusão em tom destrutivo', async () => {
+    renderActions('DRAWN');
+
+    const closeDialog = await openDialog(
+      'Encerrar grupo',
+      'Encerrar o grupo Família Souza?',
+    );
+    const confirmClose = within(closeDialog).getByRole('button', {
+      name: 'Encerrar grupo',
+    });
+    expect(confirmClose).toHaveClass('bg-primary');
+    expect(confirmClose).not.toHaveClass('bg-destructive');
+    await userEvent.click(
+      within(closeDialog).getByRole('button', { name: 'Manter grupo' }),
+    );
+
+    const deleteDialog = await openDialog(
+      'Excluir grupo',
+      'Excluir o grupo Família Souza?',
+    );
+    const confirmDelete = within(deleteDialog).getByRole('button', {
+      name: 'Excluir grupo',
+    });
+    expect(confirmDelete).toHaveClass('bg-destructive');
+    expect(confirmDelete).not.toHaveClass('bg-primary');
+  });
 });

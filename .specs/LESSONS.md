@@ -8,7 +8,11 @@
 
 Corroborated across multiple features. Safe to apply as guidance.
 
-_none_
+### L-020 - Provar um elemento comum a várias telas em cada tela que o critério cita.
+- signal: `weak_test` · recurrence: 2 feature(s) · scope: `e2e` · harmful: 0
+- features: 03-auth, 04-groups
+- evidence: C62 (e2e) (+1 more)
+- last seen: 2026-11-22T13:27:53Z
 
 ## Candidates (under observation - do NOT load as guidance yet)
 
@@ -128,11 +132,35 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: C52 (rate-limit)
 - last seen: 2026-11-21T16:59:41Z
 
-### L-020 - Provar um elemento comum a várias telas em cada tela que o critério cita.
-- signal: `weak_test` · recurrence: 1 feature(s) · scope: `e2e` · harmful: 0
-- features: 03-auth
-- evidence: C62 (e2e)
-- last seen: 2026-11-21T16:59:41Z
+### L-021 - Abrir o formulário de edição com cada campo no formato em que a pessoa o preencheu na criação e testar a troca de um campo só.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `forms` · harmful: 0
+- features: 04-groups
+- evidence: apps/web/src/app/grupos/group-form.tsx:52 (achado 1, C93) (forms)
+- last seen: 2026-11-22T13:27:53Z
+
+### L-022 - Ler números digitados no mesmo formato que a tela mostra, como o ponto de milhar, e recusar com a mensagem do campo o que não for inteiro.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `forms` · harmful: 0
+- features: 04-groups
+- evidence: apps/web/src/app/grupos/group-form.tsx:64 (achado 2, C94) (forms)
+- last seen: 2026-11-22T13:27:53Z
+
+### L-023 - Provar uma regra comum a várias operações em cada operação, inclusive nas recusas de cada uma.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `events` · harmful: 0
+- features: 04-groups
+- evidence: C74 (achado 3) (events)
+- last seen: 2026-11-22T13:27:53Z
+
+### L-024 - Quando o critério fixa o tom de um botão, conferir a variante renderizada e não só o texto.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `ui` · harmful: 0
+- features: 04-groups
+- evidence: C78 (achado 4) (ui)
+- last seen: 2026-11-22T13:27:53Z
+
+### L-025 - Provar que duas gravações estão na mesma transação forçando falha na segunda e conferindo que a primeira foi desfeita.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `transactions` · harmful: 0
+- features: 04-groups
+- evidence: C83 (achado 5) (transactions)
+- last seen: 2026-11-22T13:27:53Z
 
 ## Quarantined (failed when applied - ignore)
 

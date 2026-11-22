@@ -37,7 +37,7 @@ test.describe('confirmação de e-mail', () => {
   // Cada teste espera ao menos um e-mail passar pela fila da API.
   test.describe.configure({ timeout: 60_000 });
 
-  test('o link do e-mail confirma, abre a sessão e leva ao perfil', async ({
+  test('o link do e-mail confirma, abre a sessão e leva a Meus grupos', async ({
     page,
   }) => {
     const email = newEmail();
@@ -46,7 +46,7 @@ test.describe('confirmação de e-mail', () => {
 
     await page.goto(link);
 
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
     expect(await sessionUser(page)).toMatchObject({
       email,
       emailVerified: true,
@@ -60,7 +60,7 @@ test.describe('confirmação de e-mail', () => {
     await registerAccount(page.request, email);
     const link = await confirmationLinkTo(email);
     await page.goto(link);
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
 
     await page.goto(link);
 

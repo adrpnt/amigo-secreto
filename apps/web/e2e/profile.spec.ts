@@ -57,7 +57,8 @@ async function signedInWithGoogle(page: Page): Promise<string> {
   await page.getByRole('link', { name: 'Verificada nova' }).click();
   await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
   await page.getByRole('button', { name: 'Criar conta' }).click();
-  await expect(page).toHaveURL('/perfil');
+  await expect(page).toHaveURL('/grupos');
+  await page.goto('/perfil');
   return (await me(page)).email;
 }
 
@@ -215,7 +216,8 @@ test.describe('perfil', () => {
     await page.getByRole('link', { name: 'Verificada nova' }).click();
     await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
     await page.getByRole('button', { name: 'Criar conta' }).click();
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
+    await page.goto('/perfil');
     const { email } = await me(page);
 
     await expect(page.getByLabel('Senha atual', { exact: true })).toHaveCount(

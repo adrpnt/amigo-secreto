@@ -591,10 +591,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/app/grupos/my-groups-view.test.tsx`: `MyGroupsView > lista Ativos e Encerrados na ordem recebida`, `> mostra o estado vazio com Criar grupo`, `> omite Encerrados sem grupo encerrado`, `> mostra Nenhum grupo ativo. só com encerrados`, `> mostra o erro com Tentar de novo, que recarrega`
-- [ ] Testes em `e2e/groups.spec.ts`: `grupos › lista o grupo criado em Ativos com Você organiza`, `› mostra o estado vazio para quem não participa de nenhum grupo`, `› o card leva à página do grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 79 tests pass no web e 63 no e2e
+- [x] Testes em `src/app/grupos/my-groups-view.test.tsx`: `MyGroupsView > lista Ativos e Encerrados na ordem recebida`, `> mostra o estado vazio com Criar grupo`, `> omite Encerrados sem grupo encerrado`, `> mostra Nenhum grupo ativo. só com encerrados`, `> mostra o erro com Tentar de novo, que recarrega`
+- [x] Testes em `e2e/groups.spec.ts`: `grupos › lista o grupo criado em Ativos com Você organiza`, `› mostra o estado vazio para quem não participa de nenhum grupo`, `› o card leva à página do grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 79 tests pass no web e 63 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -613,10 +613,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `src/app/grupos/[id]/group-detail-view.test.tsx`: `GroupDetailView > mostra os campos preenchidos e Organizado por`, `> omite os campos vazios`, `> mostra Evento online junto do local`, `> mostra Entrada com aprovação só para quem organiza`, `> não mostra ações a quem não organiza`, `> mostra o recado com quebras de linha e marcação HTML como texto`
-- [ ] Testes em `e2e/groups.spec.ts`: `grupos › mostra Grupo não encontrado. para quem não participa e para id inexistente`, `› exclui o grupo depois de confirmar e ele some de Meus grupos`, `› Manter grupo fecha a confirmação sem excluir`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 85 tests pass no web e 66 no e2e
+- [x] Testes em `src/app/grupos/[id]/group-detail-view.test.tsx`: `GroupDetailView > mostra os campos preenchidos e Organizado por`, `> omite os campos vazios`, `> mostra Evento online junto do local`, `> mostra Entrada com aprovação só para quem organiza`, `> não mostra ações a quem não organiza`, `> mostra o recado com quebras de linha e marcação HTML como texto`
+- [x] Testes em `e2e/groups.spec.ts`: `grupos › mostra Grupo não encontrado. para quem não participa e para id inexistente`, `› exclui o grupo depois de confirmar e ele some de Meus grupos`, `› Manter grupo fecha a confirmação sem excluir`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 85 tests pass no web e 66 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -635,9 +635,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `e2e/groups.spec.ts`: `grupos › cria um grupo só com o nome a partir de Meus grupos e abre a página dele`, `› cria um grupo com todos os campos e mostra cada um na página`, `› mostra o erro do campo ao enviar sorteio depois da confraternização`, `› leva a /entrar e volta a /grupos/novo depois do login`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 85 tests pass no web e 70 no e2e
+- [x] Testes em `e2e/groups.spec.ts`: `grupos › cria um grupo só com o nome a partir de Meus grupos e abre a página dele`, `› cria um grupo com todos os campos e mostra cada um na página`, `› mostra o erro do campo ao enviar sorteio depois da confraternização`, `› leva a /entrar e volta a /grupos/novo depois do login`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 85 tests pass no web e 70 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -656,10 +656,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Teste em `src/app/grupos/[id]/editar/edit-redirect.test.ts`: `editRedirect > leva à página do grupo quem não organiza e o grupo ENCERRADO`
-- [ ] Teste em `e2e/groups.spec.ts`: `grupos › edita o valor para uma faixa e apaga o local`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 86 tests pass no web e 71 no e2e
+- [x] Teste em `src/app/grupos/[id]/editar/edit-redirect.test.ts`: `editRedirect > leva à página do grupo quem não organiza e o grupo ENCERRADO`
+- [x] Teste em `e2e/groups.spec.ts`: `grupos › edita o valor para uma faixa e apaga o local`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 86 tests pass no web e 71 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -678,9 +678,9 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes renomeados e ajustados: `test/email-verification.int-spec.ts` `confirmação de e-mail > devolve /grupos como destino quando o cadastro não tinha origem`, `test/google-login.int-spec.ts` `login com Google > troca por /grupos um destino de outro site`, `test/register.int-spec.ts` `cadastro > troca por /grupos um destino de outro site`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
-- [ ] Test count: 362 tests pass na API
+- [x] Testes renomeados e ajustados: `test/email-verification.int-spec.ts` `confirmação de e-mail > devolve /grupos como destino quando o cadastro não tinha origem`, `test/google-login.int-spec.ts` `login com Google > troca por /grupos um destino de outro site`, `test/register.int-spec.ts` `cadastro > troca por /grupos um destino de outro site`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm test`
+- [x] Test count: 362 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -699,11 +699,11 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes de `src/lib/safe-next.test.ts` renomeados de `/perfil` para `/grupos`: `safeNext > troca por /grupos um caminho que começa com //`, `> troca por /grupos um caminho que começa com /\`, `> troca por /grupos um endereço com esquema`, `> troca por /grupos os caminhos /entrar e /cadastro`, `> troca por /grupos um valor ausente`
-- [ ] Teste em `e2e/groups.spec.ts`: `navegação › entrar sem origem leva a /grupos`
-- [ ] E2e da conta (`login`, `signup`, `google`, `email-confirmation`, `password-reset`, `profile`) atualizados só onde o destino padrão aparecia; os que abrem `/perfil` de propósito ficam
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 86 tests pass no web e 72 no e2e
+- [x] Testes de `src/lib/safe-next.test.ts` renomeados de `/perfil` para `/grupos`: `safeNext > troca por /grupos um caminho que começa com //`, `> troca por /grupos um caminho que começa com /\`, `> troca por /grupos um endereço com esquema`, `> troca por /grupos os caminhos /entrar e /cadastro`, `> troca por /grupos um valor ausente`
+- [x] Teste em `e2e/groups.spec.ts`: `navegação › entrar sem origem leva a /grupos`
+- [x] E2e da conta (`login`, `signup`, `google`, `email-confirmation`, `password-reset`, `profile`) atualizados só onde o destino padrão aparecia; os que abrem `/perfil` de propósito ficam
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 86 tests pass no web e 72 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -722,11 +722,11 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Teste em `src/components/user-menu-dropdown.test.tsx`: `UserMenuDropdown > mostra Meus grupos, Perfil e Sair nesta ordem`
-- [ ] Teste em `e2e/groups.spec.ts`: `navegação › menu do avatar mostra Meus grupos, Perfil e Sair e leva a /grupos`
-- [ ] `e2e/header.spec.ts` atualizado se conferia os itens do menu
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 87 tests pass no web e 73 no e2e
+- [x] Teste em `src/components/user-menu-dropdown.test.tsx`: `UserMenuDropdown > mostra Meus grupos, Perfil e Sair nesta ordem`
+- [x] Teste em `e2e/groups.spec.ts`: `navegação › menu do avatar mostra Meus grupos, Perfil e Sair e leva a /grupos`
+- [x] `e2e/header.spec.ts` atualizado se conferia os itens do menu
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 87 tests pass no web e 73 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -745,10 +745,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `e2e/groups.spec.ts`: `navegação › logado em / vai para /grupos`, `› sem sessão / continua mostrando a página atual`
-- [ ] Os e2e existentes da `/` com a API fora (`web-api-down`) passam sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 87 tests pass no web e 75 no e2e
+- [x] Testes em `e2e/groups.spec.ts`: `navegação › logado em / vai para /grupos`, `› sem sessão / continua mostrando a página atual`
+- [x] Os e2e existentes da `/` com a API fora (`web-api-down`) passam sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 87 tests pass no web e 75 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -767,10 +767,10 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Testes em `e2e/accessibility.spec.ts`: `acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema claro`, `› telas de grupo sem violações WCAG 2.1 A/AA no tema escuro`, `layout › telas de grupo não rolam na horizontal em 360 px e 1440 px`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 87 tests pass no web e 78 no e2e
-- [ ] Gate Build da fase verde; fechamento da feature; push e PR da fase 4
+- [x] Testes em `e2e/accessibility.spec.ts`: `acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema claro`, `› telas de grupo sem violações WCAG 2.1 A/AA no tema escuro`, `layout › telas de grupo não rolam na horizontal em 360 px e 1440 px`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 87 tests pass no web e 78 no e2e
+- [x] Gate Build da fase verde; fechamento da feature; push e PR da fase 4
 
 **Tests**: e2e
 **Gate**: E2E
@@ -1045,6 +1045,7 @@ Proof: run e2e | ✓ navegação › sem sessão / continua mostrando a página 
 **C68** - Sem sessão, as telas de grupo levam a `/entrar` com a origem e voltam depois do login (GRP-06, AC 7)
 Proof: run e2e | ✓ grupos › leva a /entrar e volta a /grupos/novo depois do login
 Proof: run api | ✓ criar grupo > responde 401 sem sessão
+Proof: run e2e | ✓ grupos › sem sessão as quatro telas levam a /entrar com o caminho como origem
 
 **C69** - Criar emite `group.created` com o `groupId` (GRP-07, AC 1)
 Proof: run api | ✓ criar grupo > emite group.created com o groupId e sem dados pessoais
@@ -1067,6 +1068,8 @@ Proof: run api | ✓ excluir grupo > emite group.deleted com o groupId, o status
 **C74** - Operação recusada não emite evento (GRP-07, AC 6)
 Proof: run api | ✓ criar grupo > não emite group.created quando a criação é recusada
 Proof: run api | ✓ editar grupo > não emite group.updated quando nada muda nem quando a edição é recusada
+Proof: run api | ✓ excluir grupo > não emite group.deleted quando a exclusão é recusada com 403 ou 404
+Proof: run api | ✓ encerrar grupo > não emite group.closed quando o encerramento é recusado com 403 ou 409
 
 **C75** - As quatro telas de grupo têm zero violações WCAG 2.1 A/AA nos dois temas (GRP-08, AC 1)
 Proof: run e2e | ✓ acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema claro
@@ -1080,6 +1083,7 @@ Proof: run web | ✓ ConfirmDialog > põe o foco em Manter grupo e prende o Tab
 
 **C78** - "Encerrar grupo" num grupo SORTEADO abre a confirmação "Encerrar o grupo {nome}?" em tom primário, com o texto e os botões "Encerrar grupo" e "Manter grupo" (GRP-09, AC 1)
 Proof: run web | ✓ GroupActions > abre a confirmação de encerramento com o texto da spec
+Proof: run web | ✓ GroupActions > confirma o encerramento em tom primário e a exclusão em tom destrutivo
 
 **C79** - "Manter grupo", Esc ou toque fora fecham a confirmação de encerramento sem mudar o grupo (GRP-09, AC 2)
 Proof: run web | ✓ GroupActions > Manter grupo fecha a confirmação de encerramento sem chamar a API
@@ -1099,6 +1103,7 @@ Proof: run api | ✓ encerrar grupo > responde 403 ao participante que não orga
 **C83** - O encerramento enfileira, na transação, um aviso por participante aprovado com o assunto, o texto e o botão "Ver grupo" (GRP-09, AC 6)
 Proof: run api | ✓ encerrar grupo > enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec
 Proof: run api | ✓ e-mails de grupo > aviso de encerramento tem o assunto, o texto e o botão Ver grupo
+Proof: run api | ✓ encerrar grupo > desfaz o encerramento quando a gravação dos avisos falha
 
 **C84** - Quem organiza não recebe o aviso de encerramento (GRP-09, AC 7)
 Proof: run api | ✓ encerrar grupo > não enfileira aviso para quem organiza nem para participação pendente ou recusada
@@ -1130,15 +1135,36 @@ Proof: run shared | ✓ validateGroupInput > aceita valores 1 e 100000 e recusa 
 **C92** - A 20ª criação da hora é aceita e a 21ª recebe 429 (Edge Cases, GRP-01 AC 13)
 Proof: run api | ✓ criar grupo > recusa com 429 a 21ª criação da hora e aceita a 20ª
 
+**C93** - Na edição, valor único abre com "Até (R$)" vazio e a troca só do valor é salva (GRP-10, AC 1)
+Proof: run web | ✓ GroupForm > abre o valor único sem o Até e salva só o valor trocado
+
+**C94** - O valor aceita ponto de milhar e recusa decimal, vírgula e letras com a mensagem do valor, sem enviar (GRP-10, AC 2)
+Proof: run web | ✓ GroupForm > lê o ponto como milhar e recusa decimal, vírgula e letras no valor
+
+**C95** - Salvar o formulário com 403 ou 409 mostra a mensagem da API num aviso (GRP-11, AC 1)
+Proof: run web | ✓ GroupForm > mostra a mensagem da API num 403 e num 409
+
+**C96** - Encerramento com 409 fecha a confirmação e mostra a mensagem da API (GRP-11, AC 2)
+Proof: run web | ✓ GroupActions > mostra a mensagem da API quando o encerramento recebe 409
+
+**C97** - Exclusão com 404 leva a `/grupos` sem erro (GRP-11, AC 3)
+Proof: run web | ✓ GroupActions > leva a /grupos quando o grupo já foi excluído
+
+**C98** - Exclusão ou encerramento com 5xx ou sem rede mostram "Não foi possível concluir. Tente de novo." e ficam na página (GRP-11, AC 4)
+Proof: run web | ✓ GroupActions > mostra Não foi possível concluir. Tente de novo. num erro inesperado
+
+**C99** - Durante a exclusão ou o encerramento, o botão de confirmar fica desabilitado com "Excluindo…" ou "Encerrando…" (GRP-11, AC 5)
+Proof: run web | ✓ GroupActions > desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido
+
 ---
 
 ## Handoff
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15". 2026-11-21, na T18, valor do presente a partir de mil reais leva ponto de milhar (`R$ 1.500`, `R$ 1.000 a R$ 2.500`), como na mensagem "R$ 100.000"; GRP-03 AC 3 e a C33 ganham o caso, com o teste `formatGiftValue > mostra R$ 1.500 com ponto de milhar` - user: "Com ponto (Recomendado)", entre essa, "Sem separador" e "Com ponto, sem teste novo". As metas de contagem do web da T18 em diante ficam 1 acima do escrito. 2026-11-21, na T19, o CLI do shadcn não gera o `dialog` (o item `base-vega/dialog` do registro declara a dependência npm `cn` e o CLI roda `pnpm add cn`): o `components/ui/dialog.tsx` é copiado do registro com as trocas que o CLI faz (`cn` de `@/lib/utils`, `Button` de `@/components/ui/button`, ícone do `lucide-react`), sem pacote novo e sem tocar no `button.tsx`; o mesmo vale para o `textarea` na T22 - user: "Copiar do registro (Recomendado)", entre essa, "Escrever sobre o Base UI direto" e "Parar e esperar". 2026-11-21, na T22, decisões do `GroupForm`: com o "Até (R$)" vazio, a mensagem do máximo que o shared copia do mínimo não aparece, nem na validação do site nem num 400 da API; com o "Até" preenchido, cada campo mostra a sua - user: "Só no Valor do presente (Recomendado)", entre essa e "Nos dois campos"; o botão mostra "Salvando…" com o caractere de reticências, como o perfil e o cadastro, e a GRP-01 AC 16 e a GRP-04 AC 10 passam a escrever "Salvando…" (os nomes dos testes ficam) - user: "Salvando… (Recomendado)", entre essa e "Salvando... (três pontos)"; 403 e 409 mostram a mensagem da API no `Alert`, e 404, 400 sem `fields`, 5xx e rede mostram "Não foi possível salvar. Tente de novo." - user: "Mensagem da API no 403 e 409 (Recomendado)", entre essa e "Tudo genérico"; padrões: valor e "Até" lado a lado e as duas datas lado a lado a partir de 640 px, empilhados no celular; valores com `inputMode` numérico; erros por campo só depois do primeiro envio, sumindo ao corrigir; botão principal "Criar grupo" ou "Salvar alterações" e, na edição, "Voltar" como link outline para `/grupos/{id}`; ao salvar, `router.push('/grupos/{id}')`; o form recebe o `GroupDetail` na edição e converte as datas com `isoToBrasiliaInput` - user: "Confirmo todos (Recomendado)", entre essa e "Quero ajustar". A T22 ganha o teste `GroupForm > mostra a mensagem da API num 403 e num 409`, da decisão acima; as metas de contagem do web da T22 em diante ficam 2 acima do escrito. 2026-11-21, na T23, decisões do `GroupActions`: a confirmação fecha e um `Alert` abaixo dos botões mostra a mensagem da API no 403 e no 409; 404 na exclusão (grupo já excluído) leva a `/grupos`; 404 no encerramento, 5xx e rede mostram "Não foi possível concluir. Tente de novo." - user: "Igual ao formulário (Recomendado)", entre essa e "Tudo genérico exceto o 409"; durante o pedido o botão de confirmar fica desabilitado e mostra "Excluindo…" ou "Encerrando…", pelo `ConfirmDialog` (prop `pendingLabel`) - user: "Desabilita e mostra …ndo (Recomendado)", entre essa e "Só desabilita"; "Editar grupo" é link outline para `/grupos/{id}/editar`, "Encerrar grupo" outline e "Excluir grupo" destructive, nessa ordem, quebrando linha no celular - user: "Editar outline, Encerrar outline, Excluir destrutivo (Recomendado)", entre essa e "Editar primário". A T23 ganha os testes `GroupActions > desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido`, `> leva a /grupos quando o grupo já foi excluído` e `> mostra Não foi possível concluir. Tente de novo. num erro inesperado`; a meta de contagem da T23 passa a 79.
-**Dispatched:** none
-**Walked:** none
+**Settled mid-build:** 2026-11-21, na T1, onde fica cada mensagem que envolve dois campos: "Informe o valor inicial da faixa." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O valor inicial não pode passar do valor final." no `giftMinValue` - user: "Valor do presente (Recomendado)", entre essa e "Até (R$)"; "O sorteio previsto precisa ser antes da confraternização." no `drawScheduledAt` - user: "Sorteio previsto (Recomendado)", entre essa e "Confraternização"; quando um campo viola duas regras, vale a do próprio campo, e as regras entre dois campos só rodam quando os dois valores são válidos sozinhos - user: "A regra do próprio campo (Recomendado)", entre essa e "A regra entre os campos". Contagem inicial: a API da `main` (`29ff5a5`) tem 285 testes, não 282 (a T3 fechou com 290); as metas de contagem da API nas tasks seguintes ficam 3 acima do escrito. 2026-11-21, na T9, formato do corpo de `POST`/`PUT /groups`: valor não inteiro (50.5) passa pelo DTO (`@IsNumber`) e volta 400 com a mensagem do campo, em vez do "inteiros" do design - user: "DTO aceita número (Recomendado)", entre essa e "DTO exige inteiro"; campo opcional ausente vale `null` e booleano ausente vale `false`, no `POST` e no `PUT` - user: "Ausente vale null/false (Recomendado)", entre essa e "Todos os campos obrigatórios"; data sem fuso (Z ou ±hh:mm) é 400 genérico do `ValidationPipe` - user: "Exige fuso (Recomendado)", entre essa e "Aceita sem fuso". 2026-11-21, na T15, as rotas da conta não têm decorators do Swagger e o build com SWC não roda o plugin, então não há "padrão das rotas da conta" a seguir: as rotas de grupo levam decorators manuais (`@ApiTags`, respostas com descrição em português, `@ApiProperty` no `GroupInputDto`) - user: "Decorators manuais (Recomendado)", entre essa, "Plugin do Swagger no SWC" e "Pular o T15". 2026-11-21, na T18, valor do presente a partir de mil reais leva ponto de milhar (`R$ 1.500`, `R$ 1.000 a R$ 2.500`), como na mensagem "R$ 100.000"; GRP-03 AC 3 e a C33 ganham o caso, com o teste `formatGiftValue > mostra R$ 1.500 com ponto de milhar` - user: "Com ponto (Recomendado)", entre essa, "Sem separador" e "Com ponto, sem teste novo". As metas de contagem do web da T18 em diante ficam 1 acima do escrito. 2026-11-21, na T19, o CLI do shadcn não gera o `dialog` (o item `base-vega/dialog` do registro declara a dependência npm `cn` e o CLI roda `pnpm add cn`): o `components/ui/dialog.tsx` é copiado do registro com as trocas que o CLI faz (`cn` de `@/lib/utils`, `Button` de `@/components/ui/button`, ícone do `lucide-react`), sem pacote novo e sem tocar no `button.tsx`; o mesmo vale para o `textarea` na T22 - user: "Copiar do registro (Recomendado)", entre essa, "Escrever sobre o Base UI direto" e "Parar e esperar". 2026-11-21, na T22, decisões do `GroupForm`: com o "Até (R$)" vazio, a mensagem do máximo que o shared copia do mínimo não aparece, nem na validação do site nem num 400 da API; com o "Até" preenchido, cada campo mostra a sua - user: "Só no Valor do presente (Recomendado)", entre essa e "Nos dois campos"; o botão mostra "Salvando…" com o caractere de reticências, como o perfil e o cadastro, e a GRP-01 AC 16 e a GRP-04 AC 10 passam a escrever "Salvando…" (os nomes dos testes ficam) - user: "Salvando… (Recomendado)", entre essa e "Salvando... (três pontos)"; 403 e 409 mostram a mensagem da API no `Alert`, e 404, 400 sem `fields`, 5xx e rede mostram "Não foi possível salvar. Tente de novo." - user: "Mensagem da API no 403 e 409 (Recomendado)", entre essa e "Tudo genérico"; padrões: valor e "Até" lado a lado e as duas datas lado a lado a partir de 640 px, empilhados no celular; valores com `inputMode` numérico; erros por campo só depois do primeiro envio, sumindo ao corrigir; botão principal "Criar grupo" ou "Salvar alterações" e, na edição, "Voltar" como link outline para `/grupos/{id}`; ao salvar, `router.push('/grupos/{id}')`; o form recebe o `GroupDetail` na edição e converte as datas com `isoToBrasiliaInput` - user: "Confirmo todos (Recomendado)", entre essa e "Quero ajustar". A T22 ganha o teste `GroupForm > mostra a mensagem da API num 403 e num 409`, da decisão acima; as metas de contagem do web da T22 em diante ficam 2 acima do escrito. 2026-11-21, na T23, decisões do `GroupActions`: a confirmação fecha e um `Alert` abaixo dos botões mostra a mensagem da API no 403 e no 409; 404 na exclusão (grupo já excluído) leva a `/grupos`; 404 no encerramento, 5xx e rede mostram "Não foi possível concluir. Tente de novo." - user: "Igual ao formulário (Recomendado)", entre essa e "Tudo genérico exceto o 409"; durante o pedido o botão de confirmar fica desabilitado e mostra "Excluindo…" ou "Encerrando…", pelo `ConfirmDialog` (prop `pendingLabel`) - user: "Desabilita e mostra …ndo (Recomendado)", entre essa e "Só desabilita"; "Editar grupo" é link outline para `/grupos/{id}/editar`, "Encerrar grupo" outline e "Excluir grupo" destructive, nessa ordem, quebrando linha no celular - user: "Editar outline, Encerrar outline, Excluir destrutivo (Recomendado)", entre essa e "Editar primário". A T23 ganha os testes `GroupActions > desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido`, `> leva a /grupos quando o grupo já foi excluído` e `> mostra Não foi possível concluir. Tente de novo. num erro inesperado`; a meta de contagem da T23 passa a 79. 2026-11-22, na T24, decisões de Meus grupos: "Criar grupo" no topo, ao lado do título a partir de 640 px e com largura toda abaixo dele no celular; no estado vazio o do topo some e fica só o do vazio - user: "Topo; no vazio só o do vazio (Recomendado)", entre essa, "Topo sempre" e "Fim da lista"; cards em 1 coluna e 2 a partir de 640 px, conteúdo em max-w-3xl - user: "1 coluna, 2 a partir de 640 px (Recomendado)", entre essa, "Sempre 1 coluna" e "Até 3 colunas"; na falha da API, Alert destructive com ícone e "Não foi possível carregar seus grupos.", o botão outline "Tentar de novo" abaixo e o "Criar grupo" do topo visível - user: "Alert com Tentar de novo (Recomendado)", entre essa e "Alert, sem Criar grupo"; padrões: h1 "Meus grupos" e aba "Meus grupos · Amigo Secreto", seções com h2 "Ativos" e "Encerrados", "Nenhum grupo ativo." e o texto do vazio em texto comum na cor muted, `MyGroupsView` recebe o `MyGroupsResponse` ou `null` (erro) e "Tentar de novo" chama `router.refresh()` - user: "Confirmo todos (Recomendado)", entre essa e "Quero ajustar". 2026-11-22, na T25, decisões da página do grupo: h1 com o nome e o StatusTag ao lado, "Organizado por {nome}" em muted, o recado num parágrafo com as quebras de linha e uma lista de rótulo e valor com ícone (Valor do presente, Sorteio previsto, Confraternização, Local), conteúdo em max-w-2xl - user: "Cabeçalho + recado + lista (Recomendado)", entre essa e "Tudo num card"; "Evento online" como tag neutra no item Local, e com o evento online e sem local o item Local aparece só com a tag; "Entrada com aprovação" como tag neutra ao lado do StatusTag, só para quem organiza - user: "Tags neutras (Recomendado)", entre essa e "Texto comum"; o `GroupActions` fica abaixo dos dados - user: "Abaixo dos dados (Recomendado)", entre essa e "Abaixo do cabeçalho"; padrões: aba "{nome do grupo} · Amigo Secreto" com `generateMetadata` e o `getGroup` no `cache` do React; a not-found com h1 "Grupo não encontrado.", aba "Grupo não encontrado · Amigo Secreto" e o link "Meus grupos" como botão outline para `/grupos`; datas como "20/12/2026 às 19:00"; a view recebe o `GroupDetail` e só mostra o `GroupActions` quando `isOrganizer` - user: "Confirmo todos (Recomendado)", entre essa, "Aba fixa Grupo" e "Quero ajustar". 2026-11-22, na T26, a página de criação tem h1 "Novo grupo" e aba "Novo grupo · Amigo Secreto" - user: "Novo grupo (Recomendado)", entre essa e "Criar grupo"; conteúdo em max-w-lg e sem "Voltar" na criação - user: "max-w-lg, sem Voltar (Recomendado)", entre essa, "max-w-lg, com Voltar" e "max-w-2xl, sem Voltar". Na T25 a página do grupo usa o tipo global `PageProps<'/grupos/[id]'>`, como as outras páginas. 2026-11-22, na T27, a edição tem h1 "Editar grupo", aba "Editar {nome do grupo} · Amigo Secreto" com o `getGroup` no `cache` do React, e conteúdo em max-w-lg - user: "Editar grupo, aba com o nome (Recomendado)", entre essa, "Editar grupo, aba fixa" e "Nome do grupo no h1". 2026-11-22, na T29, os e2e `login › entra com a senha certa e cai em /perfil` e `confirmação de e-mail › o link do e-mail confirma, abre a sessão e leva ao perfil` passam a `› entra com a senha certa e cai em /grupos` e `› o link do e-mail confirma, abre a sessão e leva a Meus grupos`; os arquivos da `03-auth` ficam como registro histórico - user: "Renomear para /grupos (Recomendado)", entre essa, "Renomear e atualizar a 03-auth" e "Manter os nomes"; o link "Ir para o perfil" de `/confirmar-email` fica como está e vai para as ideias adiadas do context.md - user: "Deixar como está (Recomendado)", entre essa e "Trocar para Meus grupos"; o teste `safeNext > troca por /grupos os caminhos /entrar e /cadastro` passa a usar a entrada `/cadastro?next=/convite/abc`, porque com o padrão `/grupos` a entrada antiga `/cadastro?next=/grupos` não distinguia ignorar a página de seguir o `next` de dentro - user: "Trocar para /convite/abc (Recomendado)", entre essa e "Manter a entrada". 2026-11-22, na T31, o e2e `faixa de confirmação › some depois da confirmação` abria `/` logado e esperava "API online"; com `/` levando a `/grupos`, passa a esperar o h1 "Meus grupos" antes de conferir que a faixa sumiu, com o mesmo nome - user: "Esperar Meus grupos (Recomendado)", entre essa, "Abrir /perfil" e "Parar aqui". 2026-11-22, na T32, o axe reprovou nas telas logadas o botão do avatar (label-content-name-mismatch: nome "Menu da conta", texto visível com as iniciais); a primeira escolha, o avatar com `aria-hidden` como decoração - user: "Iniciais como decoração (Recomendado)", entre essa, "Iniciais no nome" e "Parar aqui" - não passou no axe, que compara o texto visível na tela e ignora `aria-hidden` (conferido no código do axe 4.14); o nome do botão passa a "{iniciais}, menu da conta" ("AS, menu da conta") e o teste de unidade do menu busca esse nome; os e2e seguem achando o botão por "Menu da conta", que o Playwright casa como trecho - user: "Iniciais no aria-label (Recomendado)", entre essa, "Nome pelo conteúdo" e "Parar aqui". Na mesma task, a lista de dados da página do grupo passa a ter `dt` e `dd` direto no `div` de cada item, com o ícone dentro do `dt` (o axe reprovou o `div` aninhado: definition-list e dlitem). 2026-11-22, achados do Verifier: na edição, valor único (mínimo = máximo) abre só no "Valor do presente (R$)", com o "Até (R$)" vazio, e a faixa abre com os dois, como critério novo GRP-10 - user: "Abrir vazio se mín = máx (Recomendado)", entre essa e "Manter preenchido"; os campos de valor aceitam só dígitos ou dígitos com ponto a cada três casas ("1.000" vale 1000), e qualquer outra entrada ("50.5", "1,5", letras) mostra "Informe um valor inteiro de R$ 1 a R$ 100.000." sem enviar, também na GRP-10 - user: "Ponto como milhar (Recomendado)", entre essa e "Só dígitos"; os testes de C74, C78, C83 e C68 ganham os casos que faltavam, um commit por achado - user: "Fazer os quatro (Recomendado)", entre essa e "Quero escolher"; as regras de erro e espera do formulário e das ações viram o requisito novo GRP-11, com uma check por critério apontando os testes existentes - user: "Requisito novo na spec (Recomendado)", entre essa e "Quero ajustar".
+**Dispatched:** 2026-11-22, Verifier (sub-agente independente) sobre `4411223`, diff `29ff5a5..69653d1` (HEAD `69653d1`); sem screens sub-agent (nenhuma captura binding). Verifier returned 2026-11-22: FAIL, 7 achados em `verification.md`.
+**Walked:** 2026-11-22, branch da fase 4 em `288c973`, Chromium dirigido por um spec descartável do Playwright (fora do repositório, config que herda a do site) pela pilha do `node scripts/e2e.ts` (Postgres descartável, API em production com o log ligado, site na 3200, e-mail falso na 3300), contas criadas pela API e participações e status postos direto no banco, um print por estado no scratchpad da sessão - user: "Eu dirijo o Chromium (Recomendado)". GRP-01: `/grupos` vazio → "Criar grupo" → `/grupos/novo` só com o nome leva a `/grupos/{id}` com ABERTO e "Organizado por Ana Souza"; sorteio depois da confraternização mostra "O sorteio previsto precisa ser antes da confraternização." no campo, a API responde 400 com a mesma mensagem e nada é gravado. GRP-02: Ana organiza "Família Souza" (ABERTO) e participa de "Firma da Bia" (ENCERRADO no banco); `/grupos` mostra a primeira em Ativos com "2 participantes", "Sorteio em 10/12/2027" e "Você organiza", a segunda em Encerrados com "Confraternização em 15/12/2027" e sem a tag; "Faculdade do Caio", de que ela não participa, não aparece; em 360 px os cards empilham. GRP-03: o organizador vê nome, ABERTO, "Entrada com aprovação", "Organizado por", o recado em duas linhas, "R$ 50", as duas datas "às", "Casa da vó" com "Evento online", "Editar grupo" e "Excluir grupo"; a participante Bia vê o mesmo sem a tag de aprovação e sem botões; o grupo de fora e um UUID aleatório mostram igual "Grupo não encontrado." com "Meus grupos". GRP-04: "Editar grupo" abre o formulário preenchido; "Até (R$)" 100 e o local apagado levam à página com "R$ 50 a R$ 100" e o item Local só com "Evento online"; o PUT da Bia recebe 403 "Só quem organiza pode alterar o grupo."; `/editar` aberto pela Bia e pelo organizador de grupo ENCERRADO leva a `/grupos/{id}`. GRP-05 e GRP-08: "Excluir grupo" num grupo com Bia e Caio no banco abre "Excluir o grupo Amigos <b>do</b> Bairro?" com o texto da spec e o nome como texto, foco em "Manter grupo", Tab e Shift+Tab presos nos dois botões (o mesmo na confirmação de encerrar); "Manter grupo" e Esc fecham sem excluir; confirmar leva a `/grupos` vazio, o banco fica sem o grupo e sem participações, Bia e Caio recebem "O grupo Amigos <b>do</b> Bairro foi excluído" com o texto e "Ver meus grupos", e o último e-mail da Ana continua o de confirmação. GRP-06: `/` sem sessão mostra "Amigo Secreto" e "API online"; `/grupos/novo` sem sessão vai a `/entrar?next=%2Fgrupos%2Fnovo` e volta a `/grupos/novo` depois do login; logado, `/` vai a `/grupos`; o menu do avatar mostra "Meus grupos", "Perfil" e "Sair"; `/entrar?next=//evil.com` cai em `/grupos`. GRP-07: o log da API mostra `group.created`, `group.updated` (`fields` "eventLocation") e `group.deleted` (`status` OPEN) do mesmo `groupId`, nessa ordem, sem nome de grupo nem de pessoa. GRP-09: "Natal" posto em DRAWN no banco com Bia e Caio: "Encerrar grupo" abre "Encerrar o grupo Natal?" com o texto da spec; "Manter grupo" deixa DRAWN; confirmar mostra ENCERRADO e só "Excluir grupo", grava `closedAt`, o grupo vai para Encerrados, Bia e Caio recebem "O grupo Natal foi encerrado" com "Ver grupo" para `/grupos/{id}`; encerrar um grupo ABERTO pela API devolve 409 "Só um grupo sorteado pode ser encerrado.". Sem captura binding: nenhum print vira `.running.png`.
 
 ---
 

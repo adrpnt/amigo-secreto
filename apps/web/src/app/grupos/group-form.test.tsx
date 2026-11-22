@@ -302,4 +302,56 @@ describe('GroupForm', () => {
       screen.getByRole('button', { name: 'Salvar alterações' }),
     ).toBeInTheDocument();
   });
+
+  it('abre o valor único sem o Até e salva só o valor trocado', async () => {
+    const user = userEvent.setup();
+    vi.mocked(apiFetch).mockResolvedValue(
+      jsonResponse(200, { ...GROUP, giftMinValue: 80, giftMaxValue: 80 }),
+    );
+    render(
+      <GroupForm group={{ ...GROUP, giftMinValue: 50, giftMaxValue: 50 }} />,
+    );
+
+    expect(field('Valor do presente (R$)')).toHaveValue('50');
+    expect(field('Até (R$)')).toHaveValue('');
+    await user.clear(field('Valor do presente (R$)'));
+    await user.type(field('Valor do presente (R$)'), '80');
+    await user.click(screen.getByRole('button', { name: 'Salvar alterações' }));
+
+    expect(field('Valor do presente (R$)')).not.toHaveAccessibleDescription();
+    expect(apiFetch).toHaveBeenCalledTimes(1);
+    expect(sentBody()).toMatchObject({ giftMinValue: 80, giftMaxValue: 80 });
+    expect(push).toHaveBeenCalledWith(`/grupos/${GROUP_ID}`);
+  });
+
+  it('lê o ponto como milhar e recusa decimal, vírgula e letras no valor', async () => {
+    const user = userEvent.setup();
+    vi.mocked(apiFetch).mockResolvedValue(jsonResponse(201, GROUP));
+    const { unmount } = render(<GroupForm />);
+    await user.type(field('Nome do grupo'), 'Família Souza');
+    await user.type(field('Valor do presente (R$)'), '1.000');
+    await user.type(field('Até (R$)'), '100.000');
+    await user.click(screen.getByRole('button', { name: 'Criar grupo' }));
+
+    expect(apiFetch).toHaveBeenCalledTimes(1);
+    expect(sentBody()).toMatchObject({
+      giftMinValue: 1000,
+      giftMaxValue: 100000,
+    });
+    unmount();
+
+    for (const typed of ['50.5', '1,5', '1.50', 'dez']) {
+      vi.mocked(apiFetch).mockClear();
+      const { unmount: unmountCase } = render(<GroupForm />);
+      await user.type(field('Nome do grupo'), 'Família Souza');
+      await user.type(field('Valor do presente (R$)'), typed);
+      await user.click(screen.getByRole('button', { name: 'Criar grupo' }));
+
+      expect(field('Valor do presente (R$)')).toHaveAccessibleDescription(
+        GROUP_MESSAGES.giftValue,
+      );
+      expect(apiFetch).not.toHaveBeenCalled();
+      unmountCase();
+    }
+  });
 });

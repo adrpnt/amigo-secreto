@@ -97,3 +97,4 @@ Nenhuma área recusada.
 ## Deferred Ideas
 
 - Transferir a organização: `05-invites`.
+- O link "Ir para o perfil" de `/confirmar-email` (link já usado) continua levando a `/perfil`; trocar para "Meus grupos" fica para depois (decisão de 2026-11-22, na troca do destino padrão).

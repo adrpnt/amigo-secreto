@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { apiFetch } from '@/lib/api-fetch';
-import { UserAvatar } from './user-avatar';
+import { UserAvatar, initialsOf } from './user-avatar';
 
 export function UserMenuDropdown({
   name,
@@ -39,7 +39,8 @@ export function UserMenuDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Menu da conta"
+        // O nome repete as iniciais que aparecem no botão (WCAG 2.5.3).
+        aria-label={`${initialsOf(name)}, menu da conta`}
         className="inline-flex size-touch-target items-center justify-center rounded-full transition-colors duration-150 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
         <UserAvatar name={name} avatarUrl={avatarUrl} />
@@ -54,6 +55,9 @@ export function UserMenuDropdown({
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuItem render={<Link href="/grupos" />}>
+          Meus grupos
+        </DropdownMenuItem>
         <DropdownMenuItem render={<Link href="/perfil" />}>
           Perfil
         </DropdownMenuItem>

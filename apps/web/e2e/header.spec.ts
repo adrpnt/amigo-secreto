@@ -50,7 +50,11 @@ test.describe('cabeçalho', () => {
     const menu = page.getByRole('menu');
     await expect(menu.getByText('Ana Souza', { exact: true })).toBeVisible();
     await expect(menu.getByText(email, { exact: true })).toBeVisible();
-    await expect(menu.getByRole('menuitem')).toHaveText(['Perfil', 'Sair']);
+    await expect(menu.getByRole('menuitem')).toHaveText([
+      'Meus grupos',
+      'Perfil',
+      'Sair',
+    ]);
     await menu.getByRole('menuitem', { name: 'Perfil' }).click();
     await expect(page).toHaveURL('/perfil');
   });
@@ -76,7 +80,7 @@ test.describe('cabeçalho', () => {
     await page.getByRole('link', { name: 'Verificada nova' }).click();
     await page.getByRole('checkbox', { name: /Li e aceito/ }).check();
     await page.getByRole('button', { name: 'Criar conta' }).click();
-    await expect(page).toHaveURL('/perfil');
+    await expect(page).toHaveURL('/grupos');
     await page.goto('/');
 
     const trigger = page

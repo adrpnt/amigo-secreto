@@ -276,6 +276,39 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 
 ---
 
+### P1: Valores no formulário
+
+**User Story**: Como organizador, quero editar o valor do presente como ele foi combinado, para trocar um valor único sem mexer numa faixa que não existe.
+
+**Why P1**: Achados da verificação de 2026-11-22: o formulário abria o "Até (R$)" preenchido num valor único e barrava a troca só do valor, e lia "1.000" como R$ 1.
+
+**Acceptance Criteria**:
+
+1. WHEN o organizador abre a edição de um grupo com mínimo igual ao máximo THEN o site SHALL mostrar o valor em "Valor do presente (R$)", deixar "Até (R$)" vazio e salvar a troca só do "Valor do presente (R$)" sem mensagem de faixa.
+2. WHEN a pessoa digita um valor do presente THEN o site SHALL aceitar só dígitos ou dígitos com ponto a cada três casas, lendo "1.000" como 1000, e para qualquer outra entrada ("50.5", "1,5", letras) SHALL mostrar "Informe um valor inteiro de R$ 1 a R$ 100.000." sem enviar.
+
+**Independent Test**: Um grupo com R$ 50 abre a edição com "Até (R$)" vazio; trocar o valor para 80 salva R$ 80; "1.000" vira R$ 1.000 e "50.5" mostra a mensagem do valor.
+
+---
+
+### P1: Erros e espera nas ações
+
+**User Story**: Como organizador, quero saber o que houve quando salvar, excluir ou encerrar não dá certo, e ver que o pedido está em andamento.
+
+**Why P1**: Achado da verificação de 2026-11-22: estas regras de tela vieram das decisões do usuário na construção do formulário e das ações e tinham teste, mas nenhum critério na spec.
+
+**Acceptance Criteria**:
+
+1. IF salvar o formulário recebe 403 ou 409 THEN o site SHALL mostrar num aviso a mensagem que a API devolveu.
+2. IF o encerramento recebe 409 THEN o site SHALL fechar a confirmação e mostrar num aviso a mensagem que a API devolveu.
+3. IF a exclusão recebe 404 (grupo já excluído) THEN o site SHALL levar a `/grupos` sem mostrar erro.
+4. IF a exclusão ou o encerramento falha com erro do servidor (5xx) ou sem rede THEN o site SHALL mostrar "Não foi possível concluir. Tente de novo." e continuar na página do grupo.
+5. WHILE a exclusão ou o encerramento espera a resposta o site SHALL desabilitar o botão de confirmar e mostrar "Excluindo…" ou "Encerrando…".
+
+**Independent Test**: Com a API respondendo 409 ao encerrar, a confirmação fecha e o aviso mostra "Só um grupo sorteado pode ser encerrado."; com 500 ao excluir, aparece "Não foi possível concluir. Tente de novo.".
+
+---
+
 ## Edge Cases
 
 - IF dois pedidos de exclusão do mesmo grupo chegam ao mesmo tempo THEN o sistema SHALL excluir o grupo uma vez, responder 404 ao segundo e enfileirar os avisos uma vez só (GRP-05 AC 5, AC 8).
@@ -302,6 +335,8 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 | GRP-07 | P1: Eventos de grupo | Design | Pending |
 | GRP-08 | P1: Telas acessíveis | Design | Pending |
 | GRP-09 | P2: Encerrar grupo | Design | Pending |
+| GRP-10 | P1: Valores no formulário | Execute | Verified |
+| GRP-11 | P1: Erros e espera nas ações | Execute | Verified |
 
 **ID format:** `GRP-NN`; cada check cita o ID e o número do critério (ex.: GRP-01, AC 5).
 
