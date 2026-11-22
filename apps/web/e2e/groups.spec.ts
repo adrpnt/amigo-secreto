@@ -1,8 +1,18 @@
 import { randomUUID } from 'node:crypto';
 import type { GroupDetail, GroupInput } from '@amigo-secreto/shared';
 import type { APIRequestContext, Page } from '@playwright/test';
-import { csrfToken, registerAccount, signIn } from './support/account';
+import {
+  PASSWORD,
+  csrfToken,
+  registerAccount,
+  signIn,
+} from './support/account';
 import { expect, test } from './support/fixtures';
+
+// Datas no ano que vem, no formato do campo datetime-local.
+const NEXT_YEAR = new Date().getFullYear() + 1;
+const DRAW_INPUT = `${NEXT_YEAR}-12-10T20:00`;
+const EVENT_INPUT = `${NEXT_YEAR}-12-20T19:00`;
 
 function newEmail(): string {
   return `grupos-${randomUUID()}@example.com`;
@@ -28,6 +38,18 @@ async function createGroup(
   expect(response.status()).toBe(201);
   return (await response.json()) as GroupDetail;
 }
+
+async function fetchGroup(page: Page, id: string): Promise<GroupDetail> {
+  const response = await page.request.get(`/api/groups/${id}`);
+  expect(response.status()).toBe(200);
+  return (await response.json()) as GroupDetail;
+}
+
+function groupIdFrom(page: Page): string {
+  return new URL(page.url()).pathname.split('/')[2] ?? '';
+}
+
+const GROUP_URL = /\/grupos\/[0-9a-f-]{36}$/;
 
 test.describe('grupos', () => {
   test('lista o grupo criado em Ativos com Você organiza', async ({ page }) => {
@@ -141,5 +163,121 @@ test.describe('grupos', () => {
     await expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
     const response = await page.request.get(`/api/groups/${group.id}`);
     expect(response.status()).toBe(200);
+  });
+
+  test('cria um grupo só com o nome a partir de Meus grupos e abre a página dele', async ({
+    page,
+  }) => {
+    await signedInAs(page);
+    const name = `Família ${randomUUID().slice(0, 8)}`;
+
+    await page.goto('/grupos');
+    await page.getByRole('link', { name: 'Criar grupo' }).click();
+    await expect(page).toHaveURL('/grupos/novo');
+    await page.getByLabel('Nome do grupo').fill(name);
+    await page.getByRole('button', { name: 'Criar grupo' }).click();
+
+    await expect(page).toHaveURL(GROUP_URL);
+    await expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
+    await expect(page.getByText('ABERTO')).toBeVisible();
+    await expect(page.getByText('Organizado por Ana Souza')).toBeVisible();
+    await expect(page.getByText('Entrada com aprovação')).toHaveCount(0);
+    await expect(page.getByText('Evento online')).toHaveCount(0);
+    const group = await fetchGroup(page, groupIdFrom(page));
+    expect(group).toMatchObject({
+      name,
+      status: 'OPEN',
+      isOrganizer: true,
+      isOnlineEvent: false,
+      requiresApproval: false,
+    });
+  });
+
+  test('cria um grupo com todos os campos e mostra cada um na página', async ({
+    page,
+  }) => {
+    await signedInAs(page);
+    const name = `Família ${randomUUID().slice(0, 8)}`;
+
+    await page.goto('/grupos/novo');
+    await page.getByLabel('Nome do grupo').fill(name);
+    await page
+      .getByLabel('Recado para os participantes')
+      .fill('Tragam algo feito à mão!\nNada de vale-presente.');
+    await page.getByLabel('Valor do presente (R$)').fill('50');
+    await page.getByLabel('Até (R$)').fill('100');
+    await page.getByLabel('Sorteio previsto').fill(DRAW_INPUT);
+    await page.getByLabel('Confraternização').fill(EVENT_INPUT);
+    await page.getByLabel('Local').fill('Casa da vó');
+    await page.getByRole('checkbox', { name: 'Evento online' }).check();
+    await page
+      .getByRole('checkbox', { name: 'Exigir aprovação para entrar' })
+      .check();
+    await page.getByRole('button', { name: 'Criar grupo' }).click();
+
+    await expect(page).toHaveURL(GROUP_URL);
+    await expect(page.getByRole('heading', { level: 1, name })).toBeVisible();
+    await expect(page.getByText('Organizado por Ana Souza')).toBeVisible();
+    await expect(
+      page.getByText('Tragam algo feito à mão! Nada de vale-presente.'),
+    ).toBeVisible();
+    await expect(page.getByText('R$ 50 a R$ 100')).toBeVisible();
+    await expect(page.getByText(`10/12/${NEXT_YEAR} às 20:00`)).toBeVisible();
+    await expect(page.getByText(`20/12/${NEXT_YEAR} às 19:00`)).toBeVisible();
+    await expect(page.getByText('Casa da vó')).toBeVisible();
+    await expect(page.getByText('Evento online')).toBeVisible();
+    await expect(page.getByText('Entrada com aprovação')).toBeVisible();
+    const group = await fetchGroup(page, groupIdFrom(page));
+    expect(group).toMatchObject({
+      name,
+      description: 'Tragam algo feito à mão!\nNada de vale-presente.',
+      giftMinValue: 50,
+      giftMaxValue: 100,
+      drawScheduledAt: `${NEXT_YEAR}-12-10T23:00:00.000Z`,
+      eventAt: `${NEXT_YEAR}-12-20T22:00:00.000Z`,
+      eventLocation: 'Casa da vó',
+      isOnlineEvent: true,
+      requiresApproval: true,
+    });
+  });
+
+  test('mostra o erro do campo ao enviar sorteio depois da confraternização', async ({
+    page,
+  }) => {
+    await signedInAs(page);
+
+    await page.goto('/grupos/novo');
+    await page.getByLabel('Nome do grupo').fill('Família Souza');
+    await page.getByLabel('Sorteio previsto').fill(EVENT_INPUT);
+    await page.getByLabel('Confraternização').fill(DRAW_INPUT);
+    await page.getByRole('button', { name: 'Criar grupo' }).click();
+
+    await expect(
+      page.getByText(
+        'O sorteio previsto precisa ser antes da confraternização.',
+      ),
+    ).toBeVisible();
+    await expect(page).toHaveURL('/grupos/novo');
+    const response = await page.request.get('/api/groups');
+    expect(await response.json()).toEqual({ active: [], closed: [] });
+  });
+
+  test('leva a /entrar e volta a /grupos/novo depois do login', async ({
+    page,
+    request,
+  }) => {
+    const email = newEmail();
+    await registerAccount(request, email);
+
+    await page.goto('/grupos/novo');
+    await expect(page).toHaveURL('/entrar?next=%2Fgrupos%2Fnovo');
+    await page.getByLabel('E-mail', { exact: true }).fill(email);
+    await page.getByLabel('Senha', { exact: true }).fill(PASSWORD);
+    await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+
+    await expect(page).toHaveURL('/grupos/novo');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Novo grupo' }),
+    ).toBeVisible();
   });
 });
