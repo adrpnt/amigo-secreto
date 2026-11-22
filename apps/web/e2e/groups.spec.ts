@@ -280,4 +280,36 @@ test.describe('grupos', () => {
       page.getByRole('heading', { level: 1, name: 'Novo grupo' }),
     ).toBeVisible();
   });
+
+  test('edita o valor para uma faixa e apaga o local', async ({ page }) => {
+    await signedInAs(page);
+    const name = `Família ${randomUUID().slice(0, 8)}`;
+    const created = await createGroup(page.request, {
+      name,
+      giftMinValue: 50,
+      eventLocation: 'Casa da vó',
+    });
+
+    await page.goto(`/grupos/${created.id}`);
+    await page.getByRole('link', { name: 'Editar grupo' }).click();
+    await expect(page).toHaveURL(`/grupos/${created.id}/editar`);
+    await expect(page.getByLabel('Nome do grupo')).toHaveValue(name);
+    await expect(page.getByLabel('Valor do presente (R$)')).toHaveValue('50');
+    await expect(page.getByLabel('Local')).toHaveValue('Casa da vó');
+    await page.getByLabel('Até (R$)').fill('100');
+    await page.getByLabel('Local').fill('');
+    await page.getByRole('button', { name: 'Salvar alterações' }).click();
+
+    await expect(page).toHaveURL(`/grupos/${created.id}`);
+    await expect(page.getByText('R$ 50 a R$ 100')).toBeVisible();
+    await expect(page.getByText('Casa da vó')).toHaveCount(0);
+    await expect(page.getByText('Local', { exact: true })).toHaveCount(0);
+    const group = await fetchGroup(page, created.id);
+    expect(group).toMatchObject({
+      name,
+      giftMinValue: 50,
+      giftMaxValue: 100,
+      eventLocation: null,
+    });
+  });
 });
