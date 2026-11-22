@@ -24,15 +24,12 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <div className="flex gap-3">
-      <Icon
-        aria-hidden="true"
-        className="mt-0.5 size-5 text-muted-foreground"
-      />
-      <div className="flex min-w-0 flex-col gap-0.5">
-        <dt className="text-body-sm text-muted-foreground">{label}</dt>
-        <dd className="text-body break-words">{children}</dd>
-      </div>
+    <div className="flex flex-col gap-0.5">
+      <dt className="flex items-center gap-2 text-body-sm text-muted-foreground">
+        <Icon aria-hidden="true" className="size-5" />
+        {label}
+      </dt>
+      <dd className="pl-7 text-body break-words">{children}</dd>
     </div>
   );
 }

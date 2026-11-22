@@ -17,7 +17,7 @@ describe('UserMenuDropdown', () => {
     );
 
     await userEvent.click(
-      screen.getByRole('button', { name: 'Menu da conta' }),
+      screen.getByRole('button', { name: 'AS, menu da conta' }),
     );
     const menu = await screen.findByRole('menu');
     const items = within(menu).getAllByRole('menuitem');
