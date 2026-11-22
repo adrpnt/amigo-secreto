@@ -770,7 +770,7 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 - [x] Testes em `e2e/accessibility.spec.ts`: `acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema claro`, `› telas de grupo sem violações WCAG 2.1 A/AA no tema escuro`, `layout › telas de grupo não rolam na horizontal em 360 px e 1440 px`
 - [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
 - [x] Test count: 87 tests pass no web e 78 no e2e
-- [ ] Gate Build da fase verde; fechamento da feature; push e PR da fase 4
+- [x] Gate Build da fase verde; fechamento da feature; push e PR da fase 4
 
 **Tests**: e2e
 **Gate**: E2E

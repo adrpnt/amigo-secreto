@@ -168,12 +168,12 @@
 
 ## Handoff
 
-- **Feature**: 04-groups (`.specs/features/04-groups/`), em fechamento
-- **Phase / Task**: fase 4 (T24 a T32) commitada na branch da PER-110; gate Build da fase verde (shared 19, API 365, web 92, e2e 78)
-- **Completed**: T1 a T32; respostas do usuário da fase 4 (layouts das telas, títulos, renomes de e2e, correções do axe) em `**Settled mid-build:**`
+- **Feature**: 04-groups (`.specs/features/04-groups/`), concluída e verificada
+- **Phase / Task**: fase 4 (T24 a T32) e fechamento da feature na branch da PER-110; `validate_verification.py 04-groups` saiu com 0 em `329f049` (180 provas verdes; shared 19, API 368, web 95, e2e 79)
+- **Completed**: T1 a T32; walk das nove histórias; Verifier com 7 achados, todos fechados (GRP-10 e GRP-11 acrescentados à spec, testes reforçados em C68, C74, C78 e C83); lições L-021 a L-025 e L-020 promovida a confirmed
 - **In-progress** (file:line): none
-- **Next step**: fechamento da feature na branch da PER-110: `check_proofs.py 04-groups`, walk das histórias, Verifier (sem captura, sem screens sub-agent), correções, `validate_verification.py` e lições; só então push e PR
-- **Linear**: milestone `04 · Groups`; PER-107, PER-108 e PER-109 mergeadas; PER-110 em In Progress, T24 a T32 marcadas
+- **Next step**: revisão e merge do PR da fase 4; depois, a próxima feature do roadmap
+- **Linear**: milestone `04 · Groups`; PER-107, PER-108 e PER-109 mergeadas; PER-110 com T24 a T32 marcadas, PR aberto
 - **Blockers**: none
 - **Uncommitted files**: none
 - **Branch**: pntadr/per-110-fase-4-telas-e-navegacao

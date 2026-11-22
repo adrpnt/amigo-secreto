@@ -1,6 +1,6 @@
 # 04-groups proofs
 
-**HEAD**: 6273867
+**HEAD**: 329f049
 **Tree**: clean
 **Shell**: /bin/sh
 **Result**: 180 pass, 0 fail
@@ -193,41 +193,41 @@
 `Run api` - exit 0
 
 ```
-@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1390ms
-@amigo-secreto/api:test: (node:84654) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1309ms
+@amigo-secreto/api:test: (node:86965) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
 @amigo-secreto/api:test: (Use `node --trace-deprecation ...` to show where the warning was created)
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1168ms
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1144ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1175ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1102ms
 @amigo-secreto/api:test: 
 @amigo-secreto/api:test:  Test Files  56 passed (56)
 @amigo-secreto/api:test:       Tests  368 passed (368)
-@amigo-secreto/api:test:    Start at  10:23:33
-@amigo-secreto/api:test:    Duration  36.86s (tests 75%, import 24%, transform 1%)
+@amigo-secreto/api:test:    Start at  10:25:48
+@amigo-secreto/api:test:    Duration  36.41s (tests 77%, import 23%)
 @amigo-secreto/api:test: 
 
  Tasks:    3 successful, 3 total
 Cached:    0 cached, 3 total
-  Time:    39.629s
+  Time:    38.872s
 ```
 
 `Run e2e` - exit 0
 
 ```
-@amigo-secreto/web:test:e2e:   ✓  74 [chromium] › e2e/theme.spec.ts:238:3 › tema › aplica os tokens do design system no tema claro (165ms)
-@amigo-secreto/web:test:e2e:   ✓  75 [chromium] › e2e/theme.spec.ts:245:3 › tema › aplica os tokens do design system no tema escuro (246ms)
-@amigo-secreto/web:test:e2e:   ✓  73 [chromium] › e2e/profile.spec.ts:279:3 › perfil › "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar (461ms)
-@amigo-secreto/web:test:e2e:   ✓  17 [chromium] › e2e/email-confirmation.spec.ts:56:3 › confirmação de e-mail › o link aberto de novo mostra "Este link expirou ou já foi usado." (9.8s)
-@amigo-secreto/web:test:e2e:   ✓  38 [chromium] › e2e/password-reset.spec.ts:64:5 › recuperação de senha › o link troca a senha e entra (7.4s)
-@amigo-secreto/web:test:e2e:   ✓  77 [chromium] › e2e/password-reset.spec.ts:80:5 › recuperação de senha › o link usado mostra "Este link expirou ou já foi usado." com o caminho para /esqueci-a-senha (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  76 [chromium] › e2e/email-confirmation.spec.ts:76:3 › confirmação de e-mail › o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  78 [chromium] › e2e/email-confirmation.spec.ts:99:3 › confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil (9.9s)
-@amigo-secreto/web:test:e2e:   ✓  79 [chromium] › e2e/email-confirmation.spec.ts:121:3 › confirmação de e-mail › o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta." (9.9s)
+@amigo-secreto/web:test:e2e:   ✓  73 [chromium] › e2e/theme.spec.ts:245:3 › tema › aplica os tokens do design system no tema escuro (241ms)
+@amigo-secreto/web:test:e2e:   ✓  72 [chromium] › e2e/profile.spec.ts:210:3 › perfil › conta Google cria a senha sem pedir a atual (792ms)
+@amigo-secreto/web:test:e2e:   ✓  75 [chromium] › e2e/profile.spec.ts:238:3 › perfil › pedir a troca de e-mail mostra "Enviamos um link para X." (334ms)
+@amigo-secreto/web:test:e2e:   ✓  76 [chromium] › e2e/profile.spec.ts:263:3 › perfil › conta sem senha vê o pedido para criar uma senha antes de trocar o e-mail (524ms)
+@amigo-secreto/web:test:e2e:   ✓  77 [chromium] › e2e/profile.spec.ts:279:3 › perfil › "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar (365ms)
+@amigo-secreto/web:test:e2e:   ✓  70 [chromium] › e2e/email-confirmation.spec.ts:76:3 › confirmação de e-mail › o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar (10.1s)
+@amigo-secreto/web:test:e2e:   ✓  74 [chromium] › e2e/password-reset.spec.ts:80:5 › recuperação de senha › o link usado mostra "Este link expirou ou já foi usado." com o caminho para /esqueci-a-senha (9.8s)
+@amigo-secreto/web:test:e2e:   ✓  78 [chromium] › e2e/email-confirmation.spec.ts:99:3 › confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil (10.0s)
+@amigo-secreto/web:test:e2e:   ✓  79 [chromium] › e2e/email-confirmation.spec.ts:121:3 › confirmação de e-mail › o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta." (9.8s)
 @amigo-secreto/web:test:e2e: 
-@amigo-secreto/web:test:e2e:   79 passed (50.7s)
+@amigo-secreto/web:test:e2e:   79 passed (46.0s)
 
  Tasks:    4 successful, 4 total
 Cached:    0 cached, 4 total
-  Time:    59.277s
+  Time:    54.472s
 ```
 
 `Run shared` - exit 0
@@ -241,13 +241,13 @@ Cached:    0 cached, 4 total
 @amigo-secreto/shared:test: 
 @amigo-secreto/shared:test:  Test Files  2 passed (2)
 @amigo-secreto/shared:test:       Tests  19 passed (19)
-@amigo-secreto/shared:test:    Start at  10:25:11
-@amigo-secreto/shared:test:    Duration  115ms (import 57%, transform 18%, tests 13%, worker 11%)
+@amigo-secreto/shared:test:    Start at  10:27:21
+@amigo-secreto/shared:test:    Duration  119ms (import 57%, transform 18%, tests 13%, worker 12%)
 @amigo-secreto/shared:test: 
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    469ms
+  Time:    471ms
 ```
 
 `Run web` - exit 0
@@ -257,15 +257,15 @@ Cached:    0 cached, 1 total
 @amigo-secreto/web:test: 
 @amigo-secreto/web:test:  Test Files  24 passed (24)
 @amigo-secreto/web:test:       Tests  95 passed (95)
-@amigo-secreto/web:test:    Start at  10:25:12
-@amigo-secreto/web:test:    Duration  5.60s (tests 36%, environment 34%, import 14%, setup 13%, transform 3%, worker 1%)
+@amigo-secreto/web:test:    Start at  10:27:22
+@amigo-secreto/web:test:    Duration  5.69s (tests 37%, environment 34%, import 14%, setup 12%, transform 2%, worker 1%)
 @amigo-secreto/web:test: 
-@amigo-secreto/web:test: Environment  jsdom was created 24 times · 7.71s total, 34% of tracked time
+@amigo-secreto/web:test: Environment  jsdom was created 24 times · 7.49s total, 34% of tracked time
 @amigo-secreto/web:test:              create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
 @amigo-secreto/web:test:              learn more: https://vitest.dev/guide/improving-performance#test-environments
 @amigo-secreto/web:test: 
 
  Tasks:    2 successful, 2 total
 Cached:    0 cached, 2 total
-  Time:    6.411s
+  Time:    6.44s
 ```
