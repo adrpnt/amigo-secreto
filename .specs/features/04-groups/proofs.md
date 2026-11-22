@@ -1,9 +1,9 @@
 # 04-groups proofs
 
-**HEAD**: 288c973
+**HEAD**: 6273867
 **Tree**: clean
 **Shell**: /bin/sh
-**Result**: 168 pass, 0 fail
+**Result**: 180 pass, 0 fail
 
 | Check | Proof | Result |
 | --- | --- | --- |
@@ -136,6 +136,7 @@
 | C67 | `run e2e / ✓ navegação › sem sessão / continua mostrando a página atual` | pass |
 | C68 | `run e2e / ✓ grupos › leva a /entrar e volta a /grupos/novo depois do login` | pass |
 | C68 | `run api / ✓ criar grupo > responde 401 sem sessão` | pass |
+| C68 | `run e2e / ✓ grupos › sem sessão as quatro telas levam a /entrar com o caminho como origem` | pass |
 | C69 | `run api / ✓ criar grupo > emite group.created com o groupId e sem dados pessoais` | pass |
 | C70 | `run api / ✓ editar grupo > emite group.updated com os nomes dos campos que mudaram e sem dados pessoais` | pass |
 | C71 | `run api / ✓ encerrar grupo > emite group.closed com trigger manual e sem dados pessoais` | pass |
@@ -146,11 +147,14 @@
 | C73 | `run api / ✓ excluir grupo > emite group.deleted com o groupId, o status e sem dados pessoais` | pass |
 | C74 | `run api / ✓ criar grupo > não emite group.created quando a criação é recusada` | pass |
 | C74 | `run api / ✓ editar grupo > não emite group.updated quando nada muda nem quando a edição é recusada` | pass |
+| C74 | `run api / ✓ excluir grupo > não emite group.deleted quando a exclusão é recusada com 403 ou 404` | pass |
+| C74 | `run api / ✓ encerrar grupo > não emite group.closed quando o encerramento é recusado com 403 ou 409` | pass |
 | C75 | `run e2e / ✓ acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema claro` | pass |
 | C75 | `run e2e / ✓ acessibilidade › telas de grupo sem violações WCAG 2.1 A/AA no tema escuro` | pass |
 | C76 | `run e2e / ✓ layout › telas de grupo não rolam na horizontal em 360 px e 1440 px` | pass |
 | C77 | `run web / ✓ ConfirmDialog > põe o foco em Manter grupo e prende o Tab` | pass |
 | C78 | `run web / ✓ GroupActions > abre a confirmação de encerramento com o texto da spec` | pass |
+| C78 | `run web / ✓ GroupActions > confirma o encerramento em tom primário e a exclusão em tom destrutivo` | pass |
 | C79 | `run web / ✓ GroupActions > Manter grupo fecha a confirmação de encerramento sem chamar a API` | pass |
 | C79 | `run web / ✓ ConfirmDialog > fecha sem confirmar com Manter grupo, Esc e toque fora` | pass |
 | C80 | `run api / ✓ encerrar grupo > passa o grupo SORTEADO para ENCERRADO e grava a data do encerramento` | pass |
@@ -160,6 +164,7 @@
 | C82 | `run api / ✓ encerrar grupo > responde 403 ao participante que não organiza e não muda o grupo` | pass |
 | C83 | `run api / ✓ encerrar grupo > enfileira um aviso por participante aprovado com o assunto, o texto e o botão da ` | pass |
 | C83 | `run api / ✓ e-mails de grupo > aviso de encerramento tem o assunto, o texto e o botão Ver grupo` | pass |
+| C83 | `run api / ✓ encerrar grupo > desfaz o encerramento quando a gravação dos avisos falha` | pass |
 | C84 | `run api / ✓ encerrar grupo > não enfileira aviso para quem organiza nem para participação pendente ou recusada` | pass |
 | C85 | `run api / ✓ excluir grupo > exclui uma vez e responde 404 ao segundo pedido simultâneo, com os avisos enfileir` | pass |
 | C85 | `run api / ✓ acesso ao grupo > trava a linha do grupo até a transação terminar` | pass |
@@ -172,6 +177,13 @@
 | C90 | `run api / ✓ criar grupo > recusa com 400 nome com 80 "❤️", que o banco conta como 160 caracteres` | pass |
 | C91 | `run shared / ✓ validateGroupInput > aceita valores 1 e 100000 e recusa 0, 100001 e 50.5` | pass |
 | C92 | `run api / ✓ criar grupo > recusa com 429 a 21ª criação da hora e aceita a 20ª` | pass |
+| C93 | `run web / ✓ GroupForm > abre o valor único sem o Até e salva só o valor trocado` | pass |
+| C94 | `run web / ✓ GroupForm > lê o ponto como milhar e recusa decimal, vírgula e letras no valor` | pass |
+| C95 | `run web / ✓ GroupForm > mostra a mensagem da API num 403 e num 409` | pass |
+| C96 | `run web / ✓ GroupActions > mostra a mensagem da API quando o encerramento recebe 409` | pass |
+| C97 | `run web / ✓ GroupActions > leva a /grupos quando o grupo já foi excluído` | pass |
+| C98 | `run web / ✓ GroupActions > mostra Não foi possível concluir. Tente de novo. num erro inesperado` | pass |
+| C99 | `run web / ✓ GroupActions > desabilita o botão e mostra Excluindo… e Encerrando… durante o pedido` | pass |
 | Build | `pnpm build` | pass |
 | Build | `pnpm typecheck` | pass |
 | Build | `pnpm lint` | pass |
@@ -181,41 +193,41 @@
 `Run api` - exit 0
 
 ```
-@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1306ms
-@amigo-secreto/api:test: (node:72624) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+@amigo-secreto/api:test:  ✓  integration-dist  test/email-test-command.int-spec.ts > email:test > compila a API antes de enfileirar num clone sem dist 1390ms
+@amigo-secreto/api:test: (node:84654) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
 @amigo-secreto/api:test: (Use `node --trace-deprecation ...` to show where the warning was created)
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1250ms
-@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1178ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > cria a tabela de controle de migrations num banco vazio 1168ms
+@amigo-secreto/api:test:  ✓  integration-dist  test/migrations.int-spec.ts > migration:run > roda num clone sem build, sem a pasta dist 1144ms
 @amigo-secreto/api:test: 
 @amigo-secreto/api:test:  Test Files  56 passed (56)
-@amigo-secreto/api:test:       Tests  365 passed (365)
-@amigo-secreto/api:test:    Start at  09:58:11
-@amigo-secreto/api:test:    Duration  37.49s (tests 75%, import 24%, transform 1%)
+@amigo-secreto/api:test:       Tests  368 passed (368)
+@amigo-secreto/api:test:    Start at  10:23:33
+@amigo-secreto/api:test:    Duration  36.86s (tests 75%, import 24%, transform 1%)
 @amigo-secreto/api:test: 
 
  Tasks:    3 successful, 3 total
 Cached:    0 cached, 3 total
-  Time:    40.143s
+  Time:    39.629s
 ```
 
 `Run e2e` - exit 0
 
 ```
-@amigo-secreto/web:test:e2e:   ✓  72 [chromium] › e2e/profile.spec.ts:238:3 › perfil › pedir a troca de e-mail mostra "Enviamos um link para X." (382ms)
-@amigo-secreto/web:test:e2e:   ✓  73 [chromium] › e2e/profile.spec.ts:263:3 › perfil › conta sem senha vê o pedido para criar uma senha antes de trocar o e-mail (492ms)
-@amigo-secreto/web:test:e2e:   ✓  74 [chromium] › e2e/profile.spec.ts:279:3 › perfil › "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar (380ms)
-@amigo-secreto/web:test:e2e:   ✓  23 [chromium] › e2e/email-confirmation.spec.ts:56:3 › confirmação de e-mail › o link aberto de novo mostra "Este link expirou ou já foi usado." (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  41 [chromium] › e2e/password-reset.spec.ts:64:5 › recuperação de senha › o link troca a senha e entra (7.3s)
-@amigo-secreto/web:test:e2e:   ✓  76 [chromium] › e2e/password-reset.spec.ts:80:5 › recuperação de senha › o link usado mostra "Este link expirou ou já foi usado." com o caminho para /esqueci-a-senha (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  75 [chromium] › e2e/email-confirmation.spec.ts:76:3 › confirmação de e-mail › o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  77 [chromium] › e2e/email-confirmation.spec.ts:99:3 › confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil (10.0s)
-@amigo-secreto/web:test:e2e:   ✓  78 [chromium] › e2e/email-confirmation.spec.ts:121:3 › confirmação de e-mail › o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta." (9.7s)
+@amigo-secreto/web:test:e2e:   ✓  74 [chromium] › e2e/theme.spec.ts:238:3 › tema › aplica os tokens do design system no tema claro (165ms)
+@amigo-secreto/web:test:e2e:   ✓  75 [chromium] › e2e/theme.spec.ts:245:3 › tema › aplica os tokens do design system no tema escuro (246ms)
+@amigo-secreto/web:test:e2e:   ✓  73 [chromium] › e2e/profile.spec.ts:279:3 › perfil › "Sair de todos os dispositivos" encerra as duas sessões e leva a /entrar (461ms)
+@amigo-secreto/web:test:e2e:   ✓  17 [chromium] › e2e/email-confirmation.spec.ts:56:3 › confirmação de e-mail › o link aberto de novo mostra "Este link expirou ou já foi usado." (9.8s)
+@amigo-secreto/web:test:e2e:   ✓  38 [chromium] › e2e/password-reset.spec.ts:64:5 › recuperação de senha › o link troca a senha e entra (7.4s)
+@amigo-secreto/web:test:e2e:   ✓  77 [chromium] › e2e/password-reset.spec.ts:80:5 › recuperação de senha › o link usado mostra "Este link expirou ou já foi usado." com o caminho para /esqueci-a-senha (10.0s)
+@amigo-secreto/web:test:e2e:   ✓  76 [chromium] › e2e/email-confirmation.spec.ts:76:3 › confirmação de e-mail › o link usado mostra "Reenviar e-mail" para quem está logado sem confirmar (10.0s)
+@amigo-secreto/web:test:e2e:   ✓  78 [chromium] › e2e/email-confirmation.spec.ts:99:3 › confirmação de e-mail › o link de troca de e-mail troca o e-mail mostrado no perfil (9.9s)
+@amigo-secreto/web:test:e2e:   ✓  79 [chromium] › e2e/email-confirmation.spec.ts:121:3 › confirmação de e-mail › o link de troca para um e-mail em uso mostra "Este e-mail já está em uso por outra conta." (9.9s)
 @amigo-secreto/web:test:e2e: 
-@amigo-secreto/web:test:e2e:   78 passed (51.9s)
+@amigo-secreto/web:test:e2e:   79 passed (50.7s)
 
  Tasks:    4 successful, 4 total
 Cached:    0 cached, 4 total
-  Time:    1m0.771s
+  Time:    59.277s
 ```
 
 `Run shared` - exit 0
@@ -229,13 +241,13 @@ Cached:    0 cached, 4 total
 @amigo-secreto/shared:test: 
 @amigo-secreto/shared:test:  Test Files  2 passed (2)
 @amigo-secreto/shared:test:       Tests  19 passed (19)
-@amigo-secreto/shared:test:    Start at  09:59:50
-@amigo-secreto/shared:test:    Duration  115ms (import 56%, transform 19%, tests 13%, worker 11%)
+@amigo-secreto/shared:test:    Start at  10:25:11
+@amigo-secreto/shared:test:    Duration  115ms (import 57%, transform 18%, tests 13%, worker 11%)
 @amigo-secreto/shared:test: 
 
  Tasks:    1 successful, 1 total
 Cached:    0 cached, 1 total
-  Time:    489ms
+  Time:    469ms
 ```
 
 `Run web` - exit 0
@@ -244,16 +256,16 @@ Cached:    0 cached, 1 total
 @amigo-secreto/web:test:  ✓ src/lib/api-status.test.ts > getApiStatus > lança erro que nomeia API_INTERNAL_URL quando ela falta 1ms
 @amigo-secreto/web:test: 
 @amigo-secreto/web:test:  Test Files  24 passed (24)
-@amigo-secreto/web:test:       Tests  92 passed (92)
-@amigo-secreto/web:test:    Start at  09:59:52
-@amigo-secreto/web:test:    Duration  5.67s (environment 35%, tests 34%, setup 15%, import 14%, transform 2%, worker 1%)
+@amigo-secreto/web:test:       Tests  95 passed (95)
+@amigo-secreto/web:test:    Start at  10:25:12
+@amigo-secreto/web:test:    Duration  5.60s (tests 36%, environment 34%, import 14%, setup 13%, transform 3%, worker 1%)
 @amigo-secreto/web:test: 
-@amigo-secreto/web:test: Environment  jsdom was created 24 times · 7.99s total, 35% of tracked time
+@amigo-secreto/web:test: Environment  jsdom was created 24 times · 7.71s total, 34% of tracked time
 @amigo-secreto/web:test:              create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
 @amigo-secreto/web:test:              learn more: https://vitest.dev/guide/improving-performance#test-environments
 @amigo-secreto/web:test: 
 
  Tasks:    2 successful, 2 total
 Cached:    0 cached, 2 total
-  Time:    6.416s
+  Time:    6.411s
 ```
