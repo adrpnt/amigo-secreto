@@ -1082,6 +1082,7 @@ Proof: run web | ✓ ConfirmDialog > põe o foco em Manter grupo e prende o Tab
 
 **C78** - "Encerrar grupo" num grupo SORTEADO abre a confirmação "Encerrar o grupo {nome}?" em tom primário, com o texto e os botões "Encerrar grupo" e "Manter grupo" (GRP-09, AC 1)
 Proof: run web | ✓ GroupActions > abre a confirmação de encerramento com o texto da spec
+Proof: run web | ✓ GroupActions > confirma o encerramento em tom primário e a exclusão em tom destrutivo
 
 **C79** - "Manter grupo", Esc ou toque fora fecham a confirmação de encerramento sem mudar o grupo (GRP-09, AC 2)
 Proof: run web | ✓ GroupActions > Manter grupo fecha a confirmação de encerramento sem chamar a API
