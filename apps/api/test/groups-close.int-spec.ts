@@ -259,4 +259,36 @@ describe('encerrar grupo', () => {
     expect(forbidden.map((record) => record.event)).toEqual([]);
     expect(conflict.map((record) => record.event)).toEqual([]);
   });
+
+  it('desfaz o encerramento quando a gravação dos avisos falha', async () => {
+    const { groupId, cookies, members } = await drawnGroupWithMembers({
+      name: 'Falha forçada',
+    });
+    const before = await groupState(groupId);
+    await api.dataSource.query(`
+      CREATE FUNCTION fail_close_notice() RETURNS trigger AS $$
+      BEGIN
+        IF NEW.payload->>'subject' LIKE '%Falha forçada%' THEN
+          RAISE EXCEPTION 'falha forçada nos avisos';
+        END IF;
+        RETURN NEW;
+      END $$ LANGUAGE plpgsql`);
+    await api.dataSource.query(`
+      CREATE TRIGGER fail_close_notice BEFORE INSERT ON job
+      FOR EACH ROW EXECUTE FUNCTION fail_close_notice()`);
+    try {
+      const response = await closeGroup(cookies, groupId);
+
+      expect(response.status).toBe(500);
+      expect(await groupState(groupId)).toEqual(before);
+      expect(before.status).toBe('DRAWN');
+      expect(before.closedAt).toBeNull();
+      expect(
+        await emailJobsTo(...members.map((member) => member.email)),
+      ).toEqual([]);
+    } finally {
+      await api.dataSource.query('DROP TRIGGER fail_close_notice ON job');
+      await api.dataSource.query('DROP FUNCTION fail_close_notice()');
+    }
+  });
 });

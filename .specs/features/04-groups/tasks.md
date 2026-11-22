@@ -1102,6 +1102,7 @@ Proof: run api | ✓ encerrar grupo > responde 403 ao participante que não orga
 **C83** - O encerramento enfileira, na transação, um aviso por participante aprovado com o assunto, o texto e o botão "Ver grupo" (GRP-09, AC 6)
 Proof: run api | ✓ encerrar grupo > enfileira um aviso por participante aprovado com o assunto, o texto e o botão da spec
 Proof: run api | ✓ e-mails de grupo > aviso de encerramento tem o assunto, o texto e o botão Ver grupo
+Proof: run api | ✓ encerrar grupo > desfaz o encerramento quando a gravação dos avisos falha
 
 **C84** - Quem organiza não recebe o aviso de encerramento (GRP-09, AC 7)
 Proof: run api | ✓ encerrar grupo > não enfileira aviso para quem organiza nem para participação pendente ou recusada
