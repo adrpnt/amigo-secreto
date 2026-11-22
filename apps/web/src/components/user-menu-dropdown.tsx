@@ -54,6 +54,9 @@ export function UserMenuDropdown({
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuItem render={<Link href="/grupos" />}>
+          Meus grupos
+        </DropdownMenuItem>
         <DropdownMenuItem render={<Link href="/perfil" />}>
           Perfil
         </DropdownMenuItem>

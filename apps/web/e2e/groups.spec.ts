@@ -329,4 +329,28 @@ test.describe('navegação', () => {
       page.getByRole('heading', { level: 1, name: 'Meus grupos' }),
     ).toBeVisible();
   });
+
+  test('menu do avatar mostra Meus grupos, Perfil e Sair e leva a /grupos', async ({
+    page,
+  }) => {
+    await signedInAs(page);
+    await page.goto('/perfil');
+
+    await page
+      .getByRole('banner')
+      .getByRole('button', { name: 'Menu da conta' })
+      .click();
+    const menu = page.getByRole('menu');
+    await expect(menu.getByRole('menuitem')).toHaveText([
+      'Meus grupos',
+      'Perfil',
+      'Sair',
+    ]);
+    await menu.getByRole('menuitem', { name: 'Meus grupos' }).click();
+
+    await expect(page).toHaveURL('/grupos');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Meus grupos' }),
+    ).toBeVisible();
+  });
 });

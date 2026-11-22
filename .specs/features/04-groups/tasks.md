@@ -722,11 +722,11 @@ T24 → T25 → T26 → T27 → T28 → T29 → T30 → T31 → T32
 
 **Done when**:
 
-- [ ] Teste em `src/components/user-menu-dropdown.test.tsx`: `UserMenuDropdown > mostra Meus grupos, Perfil e Sair nesta ordem`
-- [ ] Teste em `e2e/groups.spec.ts`: `navegação › menu do avatar mostra Meus grupos, Perfil e Sair e leva a /grupos`
-- [ ] `e2e/header.spec.ts` atualizado se conferia os itens do menu
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 87 tests pass no web e 73 no e2e
+- [x] Teste em `src/components/user-menu-dropdown.test.tsx`: `UserMenuDropdown > mostra Meus grupos, Perfil e Sair nesta ordem`
+- [x] Teste em `e2e/groups.spec.ts`: `navegação › menu do avatar mostra Meus grupos, Perfil e Sair e leva a /grupos`
+- [x] `e2e/header.spec.ts` atualizado se conferia os itens do menu
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 87 tests pass no web e 73 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
