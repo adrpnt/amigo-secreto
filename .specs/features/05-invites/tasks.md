@@ -195,9 +195,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/unaccent.int-spec.ts`: `extensão unaccent > a migration habilita o unaccent e lower(unaccent('João Ávila')) vira joao avila`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 381 tests pass na API
+- [x] Testes em `test/unaccent.int-spec.ts`: `extensão unaccent > a migration habilita o unaccent e lower(unaccent('João Ávila')) vira joao avila`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 381 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
