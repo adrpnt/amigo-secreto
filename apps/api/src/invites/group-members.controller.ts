@@ -7,6 +7,7 @@ import type {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -17,6 +18,7 @@ import {
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiForbiddenResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
@@ -118,6 +120,27 @@ export class GroupMembersController {
     @Body() body: MemberDecisionDto,
   ): Promise<MemberItem> {
     return this.members.reject(user, id, membershipId, body.from);
+  }
+
+  @Delete(':id/members/:membershipId')
+  @HttpCode(204)
+  @ApiNoContentResponse({
+    description:
+      'Participação aprovada passa a recusada, com o aviso à pessoa: ela não volta pelo link sem a aprovação de quem organiza.',
+  })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse({
+    description: `${MEMBER_NOT_FOUND.description} Também para participação que não está aprovada.`,
+  })
+  @ApiConflictResponse({
+    description: `${NOT_OPEN.description} Ou: Quem organiza não pode ser removido.`,
+  })
+  remove(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+    @Param('membershipId') membershipId: string,
+  ): Promise<void> {
+    return this.members.remove(user, id, membershipId);
   }
 
   @Post(':id/invite/regenerate')

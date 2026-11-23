@@ -20,10 +20,11 @@ import type { Group } from '../groups/group.entity.js';
 import { Membership } from '../groups/membership.entity.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import { GROUP_NOT_OPEN } from './invites.service.js';
-import { approvedEmail, rejectedEmail } from './invite-emails.js';
+import { approvedEmail, rejectedEmail, removedEmail } from './invite-emails.js';
 
 export const INVALID_DATA = 'Dados inválidos.';
 export const MEMBER_NOT_FOUND = 'Participante não encontrado.';
+export const ORGANIZER_NOT_REMOVABLE = 'Quem organiza não pode ser removido.';
 
 const PAGE_SIZE = 20;
 
@@ -267,6 +268,49 @@ export class MembersService {
       }
     }
     return item;
+  }
+
+  // Remover vira recusa: a pessoa não volta pelo link, e quem organiza pode
+  // aprová-la depois. O aviso entra na transação; o evento sai depois dela.
+  async remove(
+    user: SessionUser,
+    groupId: string,
+    membershipId: string,
+  ): Promise<void> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+
+    await this.dataSource.transaction(async (manager) => {
+      const { group } = await this.access.requireOrganizer(user.id, groupId, {
+        manager,
+        lock: true,
+      });
+      if (group.status !== 'OPEN') {
+        throw new ConflictException(GROUP_NOT_OPEN);
+      }
+      const member = await this.findMember(manager, group, membershipId);
+      if (member.userId === group.ownerId) {
+        throw new ConflictException(ORGANIZER_NOT_REMOVABLE);
+      }
+      if (member.status !== 'APPROVED') {
+        throw new NotFoundException(MEMBER_NOT_FOUND);
+      }
+
+      await manager
+        .getRepository(Membership)
+        .update({ id: member.id }, { status: 'REJECTED' });
+      await this.email.enqueue(
+        removedEmail({
+          to: member.email,
+          name: member.name,
+          organizerName: user.name,
+          groupName: group.name,
+          webUrl,
+        }),
+        { manager },
+      );
+    });
+
+    this.events.record('membership.removed', { groupId });
   }
 
   // O Postgres recusaria com erro 500 o cast de um id que não é UUID.
