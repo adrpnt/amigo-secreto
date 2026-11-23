@@ -237,9 +237,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/invites/invite-emails.spec.ts`: `e-mails do convite > convite por e-mail tem o assunto, o texto e o botão Ver convite para /convite/{código}`, `> pedido de entrada tem o assunto, o texto e o botão Ver pedidos`, `> entrada sem aprovação tem o assunto, o texto e o botão Ver participantes`, `> entrada aprovada tem o assunto, o texto e o botão Ver grupo`, `> entrada recusada tem o assunto, o texto e o botão Ver meus grupos`, `> remoção tem o assunto, o texto e o botão Ver meus grupos`, `> saída tem o assunto, o texto e o botão Ver participantes`, `> nova organização tem o assunto, o texto e o botão Ver grupo`, `> mostram nomes de pessoa e de grupo com marcação HTML como texto`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 392 tests pass na API
+- [x] Testes em `src/invites/invite-emails.spec.ts`: `e-mails do convite > convite por e-mail tem o assunto, o texto e o botão Ver convite para /convite/{código}`, `> pedido de entrada tem o assunto, o texto e o botão Ver pedidos`, `> entrada sem aprovação tem o assunto, o texto e o botão Ver participantes`, `> entrada aprovada tem o assunto, o texto e o botão Ver grupo`, `> entrada recusada tem o assunto, o texto e o botão Ver meus grupos`, `> remoção tem o assunto, o texto e o botão Ver meus grupos`, `> saída tem o assunto, o texto e o botão Ver participantes`, `> nova organização tem o assunto, o texto e o botão Ver grupo`, `> mostram nomes de pessoa e de grupo com marcação HTML como texto`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 392 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick
