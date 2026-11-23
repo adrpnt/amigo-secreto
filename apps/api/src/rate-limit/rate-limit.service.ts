@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createHash } from 'node:crypto';
-import { DataSource } from 'typeorm';
+import { DataSource, type EntityManager } from 'typeorm';
 import { TooManyAttemptsException } from './too-many-attempts.exception.js';
 
 export type RateRule = { key: string; limit: number; windowMs: number };
@@ -43,12 +43,16 @@ const CONSUME_SQL = `
 export class RateLimitService {
   constructor(private readonly dataSource: DataSource) {}
 
+  // Com `manager`, a contagem entra na transação de quem chama e é desfeita
+  // junto com ela.
   async consume(
     key: string,
     limit: number,
     windowMs: number,
+    options: { manager?: EntityManager } = {},
   ): Promise<RateLimitResult> {
-    const [row] = await this.dataSource.query<
+    const manager = options.manager ?? this.dataSource.manager;
+    const [row] = await manager.query<
       { count: number; retryAfterMs: number }[]
     >(CONSUME_SQL, [key, windowMs]);
     return {
@@ -57,10 +61,13 @@ export class RateLimitService {
     };
   }
 
-  async assertWithinLimits(rules: RateRule[]): Promise<void> {
+  async assertWithinLimits(
+    rules: RateRule[],
+    options: { manager?: EntityManager } = {},
+  ): Promise<void> {
     const results = await Promise.all(
       rules.map(({ key, limit, windowMs }) =>
-        this.consume(key, limit, windowMs),
+        this.consume(key, limit, windowMs, options),
       ),
     );
     const blocked = results.filter((result) => !result.allowed);
