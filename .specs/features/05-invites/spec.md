@@ -319,7 +319,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 3. IF algum endereço é inválido THEN o sistema SHALL recusar com 400, mostrar "Confira estes e-mails: {lista dos inválidos}" e não enviar nenhum.
 4. IF o envio tem mais de 20 endereços distintos THEN o sistema SHALL recusar com 400, mostrar "Envie no máximo 20 e-mails por vez." e não enviar nenhum.
 5. IF o campo está vazio THEN o site SHALL mostrar "Informe pelo menos um e-mail." sem enviar.
-6. IF o envio faria o grupo passar de 100 convites por e-mail na janela de 24 horas em curso THEN a API SHALL responder 429 "Este grupo chegou ao limite de 100 convites por e-mail em 24 horas. Tente de novo em N horas." ("em 1 hora." quando N = 1; "em N minutos." abaixo de 1 hora) e não enviar nenhum.
+6. IF o envio faria o grupo passar de 100 convites por e-mail na janela de 24 horas em curso THEN a API SHALL responder 429 "Este grupo chegou ao limite de 100 convites por e-mail em 24 horas. Tente de novo em N horas." ("em 1 hora." quando N = 1; "em N minutos." abaixo de 1 hora, e "em 1 minuto." quando N = 1), com o tempo arredondado para cima, e não enviar nenhum.
 7. IF o grupo não está ABERTO THEN a API SHALL responder 409 "Com o sorteio feito, ninguém entra nem sai do grupo." e não enviar.
 8. IF quem envia não organiza o grupo THEN a API SHALL responder 403 "Só quem organiza pode alterar o grupo." e não enviar.
 9. WHILE o envio espera a resposta o site SHALL desabilitar o botão e mostrar "Enviando…".

@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import type { HttpAdapterHost } from '@nestjs/core';
 import * as Sentry from '@sentry/nestjs';
+import { EmailInviteLimitException } from '../invites/email-invite-limit.exception.js';
 import { TooManyAttemptsException } from '../rate-limit/too-many-attempts.exception.js';
 
 const INTERNAL_ERROR = {
@@ -61,7 +62,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
     const response: unknown = host.switchToHttp().getResponse();
     const { httpAdapter } = this.adapterHost;
-    if (exception instanceof TooManyAttemptsException) {
+    if (
+      exception instanceof TooManyAttemptsException ||
+      exception instanceof EmailInviteLimitException
+    ) {
       httpAdapter.setHeader(
         response,
         'Retry-After',

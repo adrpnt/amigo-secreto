@@ -258,9 +258,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/invites/email-invite-limit.exception.spec.ts`: `limite de convites por e-mail > diz em N horas acima de uma hora`, `> diz em 1 hora com exatamente uma hora`, `> diz em N minutos abaixo de uma hora`, `> grava o Retry-After em segundos`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 396 tests pass na API
+- [x] Testes em `src/invites/email-invite-limit.exception.spec.ts`: `limite de convites por e-mail > diz em N horas acima de uma hora`, `> diz em 1 hora com exatamente uma hora`, `> diz em N minutos abaixo de uma hora`, `> grava o Retry-After em segundos`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 396 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick
@@ -1458,7 +1458,7 @@ Proof: run web | ✓ inviteMetadata > mantém marcação HTML do nome como texto
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)").
+**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)"). T8 (2026-11-23): o tempo do 429 do limite de convites por e-mail arredonda para cima, e 60 minutos ou mais vira horas (user: "Para cima (Recomendado)"); com 1 minuto o texto diz "em 1 minuto." (user: '"em 1 minuto." (Recomendado)'), acrescentado ao INV-11 AC 6 na spec.
 **Dispatched:** none
 **Walked:** none
 
