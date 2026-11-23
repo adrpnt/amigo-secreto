@@ -496,9 +496,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/members-transfer.int-spec.ts`: `transferir organização > faz da pessoa escolhida quem organiza e mantém a antiga como participante aprovada`, `> transfere com o grupo SORTEADO`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO`, `> responde 404 Participante não encontrado. a pendente, recusado, de outro grupo ou a quem já organiza`, `> responde 403 a quem não organiza`, `> depois da transferência o antigo organizador recebe 403 ao editar`, `> a resposta da transferência não traz dado de sorteio`, `> enfileira o aviso de nova organização a quem recebe`, `> emite group.ownership_transferred sem dados pessoais`, `> não emite evento nem aviso quando a transferência é recusada`, `> duas transferências simultâneas aplicam uma e a outra recebe 403`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 516 tests pass na API
+- [x] Testes em `test/members-transfer.int-spec.ts`: `transferir organização > faz da pessoa escolhida quem organiza e mantém a antiga como participante aprovada`, `> transfere com o grupo SORTEADO`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO`, `> responde 404 Participante não encontrado. a pendente, recusado, de outro grupo ou a quem já organiza`, `> responde 403 a quem não organiza`, `> depois da transferência o antigo organizador recebe 403 ao editar`, `> a resposta da transferência não traz dado de sorteio`, `> enfileira o aviso de nova organização a quem recebe`, `> emite group.ownership_transferred sem dados pessoais`, `> não emite evento nem aviso quando a transferência é recusada`, `> duas transferências simultâneas aplicam uma e a outra recebe 403`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 516 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

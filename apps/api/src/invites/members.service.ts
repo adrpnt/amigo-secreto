@@ -1,4 +1,5 @@
 import type {
+  GroupDetail,
   MemberItem,
   MembersPage,
   MembershipStatus,
@@ -16,7 +17,8 @@ import { DataSource, type EntityManager } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { EmailService } from '../email/email.service.js';
 import { GroupAccess } from '../groups/group-access.service.js';
-import type { Group } from '../groups/group.entity.js';
+import { Group } from '../groups/group.entity.js';
+import { toGroupDetail } from '../groups/groups.service.js';
 import { Membership } from '../groups/membership.entity.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import { User } from '../users/user.entity.js';
@@ -24,6 +26,7 @@ import { GROUP_NOT_OPEN } from './invites.service.js';
 import {
   approvedEmail,
   memberLeftEmail,
+  ownershipEmail,
   rejectedEmail,
   removedEmail,
 } from './invite-emails.js';
@@ -31,6 +34,7 @@ import {
 export const INVALID_DATA = 'Dados inválidos.';
 export const MEMBER_NOT_FOUND = 'Participante não encontrado.';
 export const ORGANIZER_NOT_REMOVABLE = 'Quem organiza não pode ser removido.';
+export const CLOSED_GROUP_TRANSFER = 'Grupo encerrado não pode ser alterado.';
 export const ORGANIZER_MUST_TRANSFER =
   'Transfira a organização antes de sair do grupo.';
 
@@ -358,6 +362,60 @@ export class MembersService {
     });
 
     this.events.record('membership.left', { groupId });
+  }
+
+  // Quem organizava continua como participante aprovado. A trava põe em
+  // fila duas transferências simultâneas: a segunda encontra outra pessoa
+  // organizando e recebe 403.
+  async transfer(
+    user: SessionUser,
+    groupId: string,
+    membershipId: string,
+  ): Promise<GroupDetail> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+
+    const { group, recipient } = await this.dataSource.transaction(
+      async (manager) => {
+        const { group } = await this.access.requireOrganizer(user.id, groupId, {
+          manager,
+          lock: true,
+        });
+        if (group.status === 'CLOSED') {
+          throw new ConflictException(CLOSED_GROUP_TRANSFER);
+        }
+        const recipient = await this.findMember(manager, group, membershipId);
+        if (
+          recipient.status !== 'APPROVED' ||
+          recipient.userId === group.ownerId
+        ) {
+          throw new NotFoundException(MEMBER_NOT_FOUND);
+        }
+
+        group.ownerId = recipient.userId;
+        await manager
+          .getRepository(Group)
+          .update({ id: group.id }, { ownerId: recipient.userId });
+        await this.email.enqueue(
+          ownershipEmail({
+            to: recipient.email,
+            name: recipient.name,
+            previousOrganizerName: user.name,
+            groupName: group.name,
+            groupId: group.id,
+            webUrl,
+          }),
+          { manager },
+        );
+        return { group, recipient };
+      },
+    );
+
+    this.events.record('group.ownership_transferred', { groupId });
+    return toGroupDetail(
+      group,
+      { id: recipient.userId, name: recipient.name },
+      user.id,
+    );
   }
 
   // O Postgres recusaria com erro 500 o cast de um id que não é UUID.

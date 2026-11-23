@@ -1,4 +1,5 @@
 import type {
+  GroupDetail,
   InviteEmailsResult,
   MemberItem,
   MembersPage,
@@ -29,6 +30,7 @@ import {
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { InviteEmailsDto } from './dto/invite-emails.dto.js';
 import { MemberDecisionDto } from './dto/member-decision.dto.js';
+import { TransferDto } from './dto/transfer.dto.js';
 import { InvitesService } from './invites.service.js';
 import { MembersService } from './members.service.js';
 
@@ -158,6 +160,28 @@ export class GroupMembersController {
     @Param('id') id: string,
   ): Promise<void> {
     return this.members.leave(user, id);
+  }
+
+  @Post(':id/transfer')
+  @HttpCode(200)
+  @ApiOkResponse({
+    description:
+      'A pessoa escolhida passa a organizar o grupo, com o aviso a ela; quem organizava continua como participante. Devolve o grupo visto por quem transferiu.',
+  })
+  @ApiBadRequestResponse({ description: '`membershipId` ausente.' })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse({
+    description: `${MEMBER_NOT_FOUND.description} Também para participação que não está aprovada ou de quem já organiza.`,
+  })
+  @ApiConflictResponse({
+    description: 'Grupo encerrado não pode ser alterado.',
+  })
+  transfer(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+    @Body() body: TransferDto,
+  ): Promise<GroupDetail> {
+    return this.members.transfer(user, id, body.membershipId);
   }
 
   @Post(':id/invite/regenerate')
