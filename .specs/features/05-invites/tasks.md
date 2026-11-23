@@ -174,9 +174,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/email-invite-table.int-spec.ts`: `tabela email_invite > grava grupo, e-mail e data do envio`, `> apaga os envios junto com o grupo`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 380 tests pass na API
+- [x] Testes em `test/email-invite-table.int-spec.ts`: `tabela email_invite > grava grupo, e-mail e data do envio`, `> apaga os envios junto com o grupo`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 380 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

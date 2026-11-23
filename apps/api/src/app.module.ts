@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module.js';
 import { EmailModule } from './email/email.module.js';
 import { GroupsModule } from './groups/groups.module.js';
 import { HealthModule } from './health/health.module.js';
+import { InvitesModule } from './invites/invites.module.js';
 import { JobsSchedulerModule } from './jobs/jobs-scheduler.module.js';
 import { ObservabilityModule } from './observability/observability.module.js';
 import { UsersModule } from './users/users.module.js';
@@ -21,6 +22,7 @@ import { UsersModule } from './users/users.module.js';
     UsersModule,
     AuthModule,
     GroupsModule,
+    InvitesModule,
   ],
 })
 export class AppModule {}
