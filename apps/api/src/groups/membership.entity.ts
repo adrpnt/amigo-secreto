@@ -1,3 +1,4 @@
+import type { MembershipStatus } from '@amigo-secreto/shared';
 import {
   Check,
   Column,
@@ -10,9 +11,6 @@ import {
 } from 'typeorm';
 import { User } from '../users/user.entity.js';
 import { Group } from './group.entity.js';
-
-// Maiúsculas, como o status do grupo (exceção à regra de snake_case).
-export type MembershipStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
 // Uma participação por pessoa em cada grupo. Apagar o grupo apaga as
 // participações; apagar a pessoa fica bloqueado até a exclusão de conta

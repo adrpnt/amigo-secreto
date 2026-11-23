@@ -281,9 +281,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/invites-view.int-spec.ts`: `abrir convite > sem sessão devolve só nome do grupo, nome de quem organiza, status e exigência de aprovação`, `> pessoa logada sem participação vê viewer none e a exigência de aprovação`, `> participante aprovado recebe viewer member e o groupId`, `> pessoa pendente recebe viewer pending`, `> pessoa recusada recebe viewer rejected`, `> devolve o status SORTEADO e ENCERRADO do grupo`, `> responde 404 Convite não encontrado. a código inexistente, trocado ou com formato errado, com o mesmo corpo`, `> aceita o código em maiúsculas`, `> responde 429 ao 61º convite do minuto do mesmo IP e aceita o 60º`, `> responde 429 ao 601º convite do minuto de um robô de preview e aceita o 600º`, `> acima do limite responde 429 a código existente e inexistente`, `> separa o limite pelo IP do X-Forwarded-For`, `> emite invite.viewed com o groupId e sem código, nome ou id de pessoa`, `> não emite invite.viewed para robô de preview`, `> não emite invite.viewed para código inválido nem acima do limite`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 411 tests pass na API
+- [x] Testes em `test/invites-view.int-spec.ts`: `abrir convite > sem sessão devolve só nome do grupo, nome de quem organiza, status e exigência de aprovação`, `> pessoa logada sem participação vê viewer none e a exigência de aprovação`, `> participante aprovado recebe viewer member e o groupId`, `> pessoa pendente recebe viewer pending`, `> pessoa recusada recebe viewer rejected`, `> devolve o status SORTEADO e ENCERRADO do grupo`, `> responde 404 Convite não encontrado. a código inexistente, trocado ou com formato errado, com o mesmo corpo`, `> aceita o código em maiúsculas`, `> responde 429 ao 61º convite do minuto do mesmo IP e aceita o 60º`, `> responde 429 ao 601º convite do minuto de um robô de preview e aceita o 600º`, `> acima do limite responde 429 a código existente e inexistente`, `> separa o limite pelo IP do X-Forwarded-For`, `> emite invite.viewed com o groupId e sem código, nome ou id de pessoa`, `> não emite invite.viewed para robô de preview`, `> não emite invite.viewed para código inválido nem acima do limite`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 411 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -302,10 +302,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/invites-join.int-spec.ts`: `entrar pelo convite > em grupo sem aprovação cria participação aprovada e devolve o groupId`, `> em grupo com aprovação cria participação pendente sem groupId`, `> aceita conta com e-mail não confirmado`, `> devolve o estado atual a quem já é aprovado, pendente ou recusado, sem gravar nem avisar`, `> responde 409 em grupo SORTEADO e ENCERRADO sem criar participação`, `> responde 404 Convite não encontrado. a código inexistente ou trocado sem criar participação`, `> responde 429 à 31ª entrada da hora da mesma conta e aceita a 30ª`, `> não conta no limite da conta a entrada em que a pessoa já participava`, `> conta no limite por IP de abrir convite e responde 429 antes de procurar o código`, `> enfileira na mesma transação o aviso de pedido a quem organiza`, `> enfileira na mesma transação o aviso de entrada a quem organiza`, `> não enfileira aviso quando a entrada é recusada`, `> emite membership.requested e membership.joined sem dados pessoais`, `> não emite evento quando a entrada é recusada`, `> duas entradas simultâneas da mesma pessoa criam uma participação e um aviso`, `> entrada simultânea à mudança para SORTEADO cria antes ou responde 409`, `> responde 401 sem sessão`
-- [ ] Cada recusa confere logo depois que nenhuma participação nem job foi gravado (L-018)
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 428 tests pass na API
+- [x] Testes em `test/invites-join.int-spec.ts`: `entrar pelo convite > em grupo sem aprovação cria participação aprovada e devolve o groupId`, `> em grupo com aprovação cria participação pendente sem groupId`, `> aceita conta com e-mail não confirmado`, `> devolve o estado atual a quem já é aprovado, pendente ou recusado, sem gravar nem avisar`, `> responde 409 em grupo SORTEADO e ENCERRADO sem criar participação`, `> responde 404 Convite não encontrado. a código inexistente ou trocado sem criar participação`, `> responde 429 à 31ª entrada da hora da mesma conta e aceita a 30ª`, `> não conta no limite da conta a entrada em que a pessoa já participava`, `> conta no limite por IP de abrir convite e responde 429 antes de procurar o código`, `> enfileira na mesma transação o aviso de pedido a quem organiza`, `> enfileira na mesma transação o aviso de entrada a quem organiza`, `> não enfileira aviso quando a entrada é recusada`, `> emite membership.requested e membership.joined sem dados pessoais`, `> não emite evento quando a entrada é recusada`, `> duas entradas simultâneas da mesma pessoa criam uma participação e um aviso`, `> entrada simultânea à mudança para SORTEADO cria antes ou responde 409`, `> responde 401 sem sessão`
+- [x] Cada recusa confere logo depois que nenhuma participação nem job foi gravado (L-018)
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 428 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -324,9 +324,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/invites-regenerate.int-spec.ts`: `gerar novo link > troca o código do grupo e devolve o novo`, `> o código antigo passa a responder 404 ao abrir e ao entrar`, `> mantém todas as participações do grupo`, `> responde 409 com o grupo SORTEADO ou ENCERRADO e mantém o código`, `> responde 403 a participante que não organiza e mantém o código`, `> responde 404 a quem não participa`, `> responde 429 à 11ª troca da hora do grupo e aceita a 10ª`, `> emite invite.regenerated sem o código`, `> não emite invite.regenerated quando a troca é recusada`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 437 tests pass na API
+- [x] Testes em `test/invites-regenerate.int-spec.ts`: `gerar novo link > troca o código do grupo e devolve o novo`, `> o código antigo passa a responder 404 ao abrir e ao entrar`, `> mantém todas as participações do grupo`, `> responde 409 com o grupo SORTEADO ou ENCERRADO e mantém o código`, `> responde 403 a participante que não organiza e mantém o código`, `> responde 404 a quem não participa`, `> responde 429 à 11ª troca da hora do grupo e aceita a 10ª`, `> emite invite.regenerated sem o código`, `> não emite invite.regenerated quando a troca é recusada`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 437 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -345,9 +345,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/invites-emails.int-spec.ts`: `convidar por e-mail > enfileira um convite por endereço distinto com o link do grupo e grava cada envio`, `> devolve a quantidade de e-mails enviados`, `> recusa com 400 e a lista dos inválidos sem enviar nenhum`, `> recusa com 400 endereço que o isEmail da API recusa`, `> aceita 20 endereços distintos e recusa 21 sem enviar nenhum`, `> recusa com 400 o campo vazio`, `> aceita o envio que chega a 100 em 24 horas e recusa com 429 o que passaria, sem enviar nenhum`, `> volta a aceitar quando o envio mais antigo sai da janela de 24 horas`, `> responde 409 com o grupo SORTEADO ou ENCERRADO sem enviar`, `> responde 403 a participante que não organiza sem enviar`, `> envia também para quem já participa`, `> emite invite.emails_sent com count e sem e-mails`, `> não emite invite.emails_sent quando o envio é recusado`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 450 tests pass na API
+- [x] Testes em `test/invites-emails.int-spec.ts`: `convidar por e-mail > enfileira um convite por endereço distinto com o link do grupo e grava cada envio`, `> devolve a quantidade de e-mails enviados`, `> recusa com 400 e a lista dos inválidos sem enviar nenhum`, `> recusa com 400 endereço que o isEmail da API recusa`, `> aceita 20 endereços distintos e recusa 21 sem enviar nenhum`, `> recusa com 400 o campo vazio`, `> aceita o envio que chega a 100 em 24 horas e recusa com 429 o que passaria, sem enviar nenhum`, `> volta a aceitar quando o envio mais antigo sai da janela de 24 horas`, `> responde 409 com o grupo SORTEADO ou ENCERRADO sem enviar`, `> responde 403 a participante que não organiza sem enviar`, `> envia também para quem já participa`, `> emite invite.emails_sent com count e sem e-mails`, `> não emite invite.emails_sent quando o envio é recusado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 450 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -366,10 +366,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/groups-update-approval.int-spec.ts`: `desligar a aprovação > aprova na mesma transação os pendentes do grupo`, `> não muda recusados nem participações de outros grupos`, `> enfileira o aviso de entrada aprovada a cada pessoa aprovada`, `> emite membership.approved com trigger auto para cada participação`, `> não aprova nada quando a edição é recusada`
-- [ ] `test/groups-update.int-spec.ts` passa sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 455 tests pass na API
+- [x] Testes em `test/groups-update-approval.int-spec.ts`: `desligar a aprovação > aprova na mesma transação os pendentes do grupo`, `> não muda recusados nem participações de outros grupos`, `> enfileira o aviso de entrada aprovada a cada pessoa aprovada`, `> emite membership.approved com trigger auto para cada participação`, `> não aprova nada quando a edição é recusada`
+- [x] `test/groups-update.int-spec.ts` passa sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 455 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -388,10 +388,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/groups-list-pending.int-spec.ts`: `meus grupos com pedidos > mostra em Ativos o grupo com pedido pendente, com organizerName e membershipStatus PENDING`, `> não mostra grupos em que a pessoa foi recusada ou removida`, `> devolve a quem organiza a contagem de pendentes e null aos outros`, `> não conta pendentes na contagem de participantes`, `> pessoa pendente recebe 404 Grupo não encontrado. ao abrir o grupo`
-- [ ] `test/groups-list.int-spec.ts` passa sem mudança de asserção
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 460 tests pass na API e 95 no web
+- [x] Testes em `test/groups-list-pending.int-spec.ts`: `meus grupos com pedidos > mostra em Ativos o grupo com pedido pendente, com organizerName e membershipStatus PENDING`, `> não mostra grupos em que a pessoa foi recusada ou removida`, `> devolve a quem organiza a contagem de pendentes e null aos outros`, `> não conta pendentes na contagem de participantes`, `> pessoa pendente recebe 404 Grupo não encontrado. ao abrir o grupo`
+- [x] `test/groups-list.int-spec.ts` passa sem mudança de asserção (exceto os três campos novos no card comparado com `toEqual` e o pendente tirado do teste renomeado, aprovados em `**Settled mid-build:**`)
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 460 tests pass na API e 95 no web
 
 **Tests**: integration
 **Gate**: Full
@@ -1458,7 +1458,7 @@ Proof: run web | ✓ inviteMetadata > mantém marcação HTML do nome como texto
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)"). T8 (2026-11-23): o tempo do 429 do limite de convites por e-mail arredonda para cima, e 60 minutos ou mais vira horas (user: "Para cima (Recomendado)"); com 1 minuto o texto diz "em 1 minuto." (user: '"em 1 minuto." (Recomendado)'), acrescentado ao INV-11 AC 6 na spec. Fase 2 (2026-11-23): o `membership.entity.ts` deixa de definir o próprio `MembershipStatus` e importa o do `@amigo-secreto/shared`, na T10, a primeira task que cria participação com o tipo do shared (user: "Pode trocar o MembershipStatus na fase 2.").
+**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)"). T8 (2026-11-23): o tempo do 429 do limite de convites por e-mail arredonda para cima, e 60 minutos ou mais vira horas (user: "Para cima (Recomendado)"); com 1 minuto o texto diz "em 1 minuto." (user: '"em 1 minuto." (Recomendado)'), acrescentado ao INV-11 AC 6 na spec. Fase 2 (2026-11-23): o `membership.entity.ts` deixa de definir o próprio `MembershipStatus` e importa o do `@amigo-secreto/shared`, na T10, a primeira task que cria participação com o tipo do shared (user: "Pode trocar o MembershipStatus na fase 2."). T14 (2026-11-23): o teste `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo` da `04-groups` compara o card inteiro com `toEqual`; o objeto esperado recebe `membershipStatus`, `organizerName` e `pendingCount`, em vez de ficar sem mudança (user: "Acrescentar os campos (Recomendado)"). O teste `meus grupos > não lista grupo de que a pessoa não participa nem participação pendente ou recusada` contradiz o INV-06 AC 3: perde o grupo pendente e passa a se chamar `meus grupos > não lista grupo de que a pessoa não participa nem participação recusada`, e a linha Proof da C19 no `tasks.md` da `04-groups` recebe o nome novo (user: "Tirar o pendente e renomear (Recomendado)").
 **Dispatched:** none
 **Walked:** none
 

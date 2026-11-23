@@ -179,11 +179,11 @@
 ## Handoff
 
 - **Feature**: 05-invites (`.specs/features/05-invites/`), em execução
-- **Phase / Task**: fase 1 (T1 a T8) concluída na branch da PER-111; gate Build verde em `fc4fbb0` (shared 27, API 396, web 95, e2e 79)
-- **Completed**: T1 a T8; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (lista de e-mails, `inviteCode` em três asserções da `04-groups`, texto e arredondamento do 429 de convites por e-mail, com o INV-11 AC 6 emendado)
+- **Phase / Task**: fase 2 (T9 a T14) concluída na branch da PER-112; gate Build verde em `a39b4b8` (shared 27, API 460, web 95, e2e 79)
+- **Completed**: T1 a T14; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (na fase 2: os dois testes de "Meus grupos" da `04-groups` ajustados ao INV-06 AC 3)
 - **In-progress** (file:line): none
-- **Next step**: criar a branch da PER-112 a partir da `main` atualizada, mover a issue para In Progress e começar a T9; na T10, trocar o `MembershipStatus` da entidade pelo do shared
-- **Linear**: milestone `05 · Invites`; PER-111 com T1 a T8 marcadas e PR #23 mergeado; PER-112 a PER-116 em Backlog
+- **Next step**: depois do merge do PR da fase 2, criar a branch da PER-113 a partir da `main` atualizada, mover a issue para In Progress e começar a T15
+- **Linear**: milestone `05 · Invites`; PER-111 mergeada; PER-112 com T9 a T14 marcadas e PR aberto; PER-113 a PER-116 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: main
+- **Branch**: pntadr/per-112-fase-2-api-do-convite

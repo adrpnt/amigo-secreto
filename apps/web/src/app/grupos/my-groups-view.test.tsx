@@ -19,6 +19,9 @@ function summary(
     drawScheduledAt: null,
     eventAt: null,
     createdAt: '2026-11-21T12:00:00.000Z',
+    membershipStatus: 'APPROVED',
+    organizerName: 'Ana Souza',
+    pendingCount: null,
     ...overrides,
   };
 }

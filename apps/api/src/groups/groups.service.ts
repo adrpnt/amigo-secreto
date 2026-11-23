@@ -14,6 +14,7 @@ import { DataSource, type EntityManager, QueryFailedError } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { EmailService } from '../email/email.service.js';
 import { generateInviteCode } from '../invites/invite-code.js';
+import { approvedEmail } from '../invites/invite-emails.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import {
   RateLimitService,
@@ -27,16 +28,20 @@ import { groupClosedEmail, groupDeletedEmail } from './group-emails.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
 
-// Grupos em que a pessoa tem participação aprovada, com a contagem de
-// participantes aprovados, do mais novo para o mais antigo.
+// Grupos em que a pessoa tem participação aprovada ou pendente, com o nome de
+// quem organiza, a contagem de aprovados e a de pendentes, do mais novo para
+// o mais antigo. Recusados e removidos ficam de fora.
 const MY_GROUPS_SQL = `
   SELECT g.id, g.name, g.status, g."ownerId", g."drawScheduledAt", g."eventAt",
-    g."createdAt",
+    g."createdAt", m.status AS "membershipStatus", o.name AS "organizerName",
     (SELECT count(*)::int FROM membership p
-      WHERE p."groupId" = g.id AND p.status = 'APPROVED') AS "participantCount"
+      WHERE p."groupId" = g.id AND p.status = 'APPROVED') AS "participantCount",
+    (SELECT count(*)::int FROM membership p
+      WHERE p."groupId" = g.id AND p.status = 'PENDING') AS "pendingCount"
   FROM "group" g
   JOIN membership m ON m."groupId" = g.id
-  WHERE m."userId" = $1 AND m.status = 'APPROVED'
+  JOIN "user" o ON o.id = g."ownerId"
+  WHERE m."userId" = $1 AND m.status IN ('APPROVED', 'PENDING')
   ORDER BY g."createdAt" DESC, g.id DESC`;
 
 // Quem recebe os avisos do grupo: participantes aprovados, menos quem organiza.
@@ -47,6 +52,13 @@ const NOTICE_RECIPIENTS_SQL = `
   WHERE m."groupId" = $1 AND m.status = 'APPROVED' AND m."userId" <> $2
   ORDER BY m."joinedAt", m.id`;
 
+// Aprova os pedidos pendentes do grupo e devolve quem foi aprovado.
+const APPROVE_PENDING_SQL = `
+  UPDATE membership m SET status = 'APPROVED'
+  FROM "user" u
+  WHERE m."groupId" = $1 AND m.status = 'PENDING' AND u.id = m."userId"
+  RETURNING u.name, u.email`;
+
 type MyGroupRow = {
   id: string;
   name: string;
@@ -55,7 +67,10 @@ type MyGroupRow = {
   drawScheduledAt: Date | null;
   eventAt: Date | null;
   createdAt: Date;
+  membershipStatus: 'APPROVED' | 'PENDING';
+  organizerName: string;
   participantCount: number;
+  pendingCount: number;
 };
 
 export const CLOSED_GROUP_EDIT = 'Grupo encerrado não pode ser editado.';
@@ -127,7 +142,7 @@ function changedFields(group: Group, next: GroupFields): string[] {
   });
 }
 
-function isInviteCodeCollision(error: unknown): boolean {
+export function isInviteCodeCollision(error: unknown): boolean {
   if (!(error instanceof QueryFailedError)) return false;
   const driverError = error.driverError as {
     code?: string;
@@ -228,19 +243,28 @@ export class GroupsService {
     const rows = await this.dataSource.query<MyGroupRow[]>(MY_GROUPS_SQL, [
       userId,
     ]);
-    const summaries = rows.map((row): GroupSummary => ({
-      id: row.id,
-      name: row.name,
-      status: row.status,
-      participantCount: row.participantCount,
-      isOrganizer: row.ownerId === userId,
-      drawScheduledAt: toIso(row.drawScheduledAt),
-      eventAt: toIso(row.eventAt),
-      createdAt: row.createdAt.toISOString(),
-    }));
+    const summaries = rows.map((row): GroupSummary => {
+      const isOrganizer = row.ownerId === userId;
+      return {
+        id: row.id,
+        name: row.name,
+        status: row.status,
+        participantCount: row.participantCount,
+        isOrganizer,
+        drawScheduledAt: toIso(row.drawScheduledAt),
+        eventAt: toIso(row.eventAt),
+        createdAt: row.createdAt.toISOString(),
+        membershipStatus: row.membershipStatus,
+        organizerName: row.organizerName,
+        pendingCount: isOrganizer ? row.pendingCount : null,
+      };
+    });
+    // Pedido pendente fica em Ativos.
+    const isClosed = (group: GroupSummary) =>
+      group.status === 'CLOSED' && group.membershipStatus === 'APPROVED';
     return {
-      active: summaries.filter((group) => group.status !== 'CLOSED'),
-      closed: summaries.filter((group) => group.status === 'CLOSED'),
+      active: summaries.filter((group) => !isClosed(group)),
+      closed: summaries.filter(isClosed),
     };
   }
 
@@ -258,8 +282,9 @@ export class GroupsService {
     body: GroupInputDto,
   ): Promise<GroupDetail> {
     const input = normalizeGroupInput(toGroupInput(body));
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
 
-    const { group, changed } = await this.dataSource.transaction(
+    const { group, changed, approvedCount } = await this.dataSource.transaction(
       async (manager) => {
         const { group } = await this.access.requireOrganizer(user.id, groupId, {
           manager,
@@ -281,11 +306,36 @@ export class GroupsService {
 
         const next = toGroupFields(input);
         const changed = changedFields(group, next);
+        // Desligar a aprovação aprova os pedidos pendentes na mesma
+        // transação: pendente sobrando travaria o sorteio.
+        const turnsOffApproval =
+          group.requiresApproval && !next.requiresApproval;
         if (changed.length > 0) {
           Object.assign(group, next);
           await manager.getRepository(Group).save(group);
         }
-        return { group, changed };
+
+        let approvedCount = 0;
+        if (turnsOffApproval) {
+          const [approved] = await manager.query<
+            [{ name: string; email: string }[], number]
+          >(APPROVE_PENDING_SQL, [group.id]);
+          await this.email.enqueueMany(
+            approved.map((person) =>
+              approvedEmail({
+                to: person.email,
+                name: person.name,
+                organizerName: user.name,
+                groupName: group.name,
+                groupId: group.id,
+                webUrl,
+              }),
+            ),
+            { manager },
+          );
+          approvedCount = approved.length;
+        }
+        return { group, changed, approvedCount };
       },
     );
 
@@ -293,6 +343,12 @@ export class GroupsService {
       this.events.record('group.updated', {
         groupId: group.id,
         fields: changed.join(','),
+      });
+    }
+    for (let i = 0; i < approvedCount; i++) {
+      this.events.record('membership.approved', {
+        groupId: group.id,
+        trigger: 'auto',
       });
     }
     return toGroupDetail(group, { id: user.id, name: user.name }, user.id);

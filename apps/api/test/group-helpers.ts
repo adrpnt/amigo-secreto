@@ -21,11 +21,18 @@ export type GroupsApi = {
   sessions: SessionsService;
 };
 
-// Sobe as rotas de grupo com sessão e CSRF num banco isolado.
-export async function startGroupsApi(database: string): Promise<GroupsApi> {
+// Sobe as rotas de grupo com sessão e CSRF num banco isolado. Com
+// `trustProxyHops: 1`, cada teste fala de um IP próprio pelo X-Forwarded-For.
+export async function startGroupsApi(
+  database: string,
+  options: { trustProxyHops?: number } = {},
+): Promise<GroupsApi> {
   // O ConfigModule valida o ambiente quando o módulo é importado.
   vi.stubEnv('DATABASE_URL', await createIsolatedDatabase(database));
   stubAccountEnv();
+  if (options.trustProxyHops !== undefined) {
+    vi.stubEnv('TRUST_PROXY_HOPS', String(options.trustProxyHops));
+  }
   const { GroupsApiFixtureModule } =
     await import('./fixtures/groups-api-fixture.module.js');
   const app = await NestFactory.create(GroupsApiFixtureModule, {

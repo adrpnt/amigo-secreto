@@ -19,6 +19,9 @@ type Summary = {
   drawScheduledAt: string | null;
   eventAt: string | null;
   createdAt: string;
+  membershipStatus: string;
+  organizerName: string;
+  pendingCount: number | null;
 };
 
 type MyGroups = { active: Summary[]; closed: Summary[] };
@@ -108,21 +111,19 @@ describe('meus grupos', () => {
       drawScheduledAt: '2026-12-10T20:00:00.000Z',
       eventAt: '2026-12-20T22:00:00.000Z',
       createdAt: at(1),
+      membershipStatus: 'APPROVED',
+      organizerName: 'Ana Souza',
+      pendingCount: 0,
     });
     expect(groups.active[0].status).toBe('DRAWN');
     expect(groups.closed[0].status).toBe('CLOSED');
   });
 
-  it('não lista grupo de que a pessoa não participa nem participação pendente ou recusada', async () => {
+  it('não lista grupo de que a pessoa não participa nem participação recusada', async () => {
     const { userId, list } = await signedIn();
     const { id: otherId } = await insertUser(api.dataSource, 'Bia');
     const mine = await insertGroup(api.dataSource, { ownerId: userId });
     await insertGroup(api.dataSource, { ownerId: otherId, name: 'De fora' });
-    const pending = await insertGroup(api.dataSource, {
-      ownerId: otherId,
-      name: 'Pendente',
-    });
-    await insertMembership(api.dataSource, pending, userId, 'PENDING');
     const rejected = await insertGroup(api.dataSource, {
       ownerId: otherId,
       name: 'Recusada',
