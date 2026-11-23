@@ -45,6 +45,9 @@ describe('ver grupo', () => {
       requiresApproval: true,
     });
     await insertMembership(api.dataSource, groupId, member.id, 'APPROVED');
+    const [{ inviteCode }] = await api.dataSource.query<
+      { inviteCode: string }[]
+    >('SELECT "inviteCode" FROM "group" WHERE id = $1', [groupId]);
 
     const asMember = await getGroup(
       await openSession(api.sessions, member.id),
@@ -72,6 +75,7 @@ describe('ver grupo', () => {
       isOrganizer: false,
       closedAt: null,
       createdAt: '2026-11-01T12:00:00.000Z',
+      inviteCode,
     });
     expect(asOwner.status).toBe(200);
     expect((asOwner.body as { isOrganizer: boolean }).isOrganizer).toBe(true);

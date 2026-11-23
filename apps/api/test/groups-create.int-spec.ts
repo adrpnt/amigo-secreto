@@ -27,6 +27,7 @@ type GroupRow = {
   requiresApproval: boolean;
   status: string;
   closedAt: Date | null;
+  inviteCode: string;
 };
 
 const NEXT_YEAR = new Date().getUTCFullYear() + 1;
@@ -194,6 +195,7 @@ describe('criar grupo', () => {
       isOrganizer: true,
       closedAt: null,
       createdAt: expect.any(String) as string,
+      inviteCode: group.inviteCode,
     });
   });
 

@@ -7,6 +7,7 @@ import { DataSource } from 'typeorm';
 import { configureApp } from '../src/app.setup.js';
 import type { CookieResponse } from '../src/auth/cookies.js';
 import { SessionsService } from '../src/auth/sessions.service.js';
+import { generateInviteCode } from '../src/invites/invite-code.js';
 import { AppLogger } from '../src/observability/app-logger.js';
 import { stubAccountEnv } from './account-env.js';
 import { createIsolatedDatabase } from './isolated-database.js';
@@ -112,8 +113,9 @@ export async function insertGroup(
   const [row] = await dataSource.query<{ id: string }[]>(
     `INSERT INTO "group" (name, "ownerId", status, "closedAt", "createdAt",
        "drawScheduledAt", "eventAt", description, "eventLocation",
-       "giftMinValue", "giftMaxValue", "isOnlineEvent", "requiresApproval")
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+       "giftMinValue", "giftMaxValue", "isOnlineEvent", "requiresApproval",
+       "inviteCode")
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
      RETURNING id`,
     [
       seed.name ?? 'Família',
@@ -129,6 +131,7 @@ export async function insertGroup(
       seed.giftMaxValue ?? null,
       seed.isOnlineEvent ?? false,
       seed.requiresApproval ?? false,
+      generateInviteCode(),
     ],
   );
   await insertMembership(dataSource, row.id, seed.ownerId, 'APPROVED');

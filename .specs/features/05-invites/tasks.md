@@ -152,10 +152,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/group-invite-code.int-spec.ts`: `código do convite do grupo > grupo criado pela API ganha um código de 10 caracteres do alfabeto`, `> a migration dá um código a cada grupo que já existia`, `> o banco recusa dois grupos com o mesmo código`, `> o banco recusa grupo sem código`, `> devolve o código na leitura do grupo a participante aprovado`, `> gera outro código quando o primeiro já existe`
-- [ ] As suítes da `04-groups` passam sem mudança de asserção
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 378 tests pass na API e 95 no web
+- [x] Testes em `test/group-invite-code.int-spec.ts`: `código do convite do grupo > grupo criado pela API ganha um código de 10 caracteres do alfabeto`, `> a migration dá um código a cada grupo que já existia`, `> o banco recusa dois grupos com o mesmo código`, `> o banco recusa grupo sem código`, `> devolve o código na leitura do grupo a participante aprovado`, `> gera outro código quando o primeiro já existe`
+- [x] As suítes da `04-groups` passam sem mudança de asserção (exceto o `inviteCode` acrescentado em três asserções, aprovado em `**Settled mid-build:**`)
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 378 tests pass na API e 95 no web
 
 **Tests**: integration
 **Gate**: Full
@@ -1458,7 +1458,7 @@ Proof: run web | ✓ inviteMetadata > mantém marcação HTML do nome como texto
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)").
+**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)").
 **Dispatched:** none
 **Walked:** none
 

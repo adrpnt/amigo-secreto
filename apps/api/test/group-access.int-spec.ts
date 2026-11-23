@@ -10,6 +10,7 @@ import pg from 'pg';
 import { DataSource } from 'typeorm';
 import { inject } from 'vitest';
 import { GroupAccess } from '../src/groups/group-access.service.js';
+import { generateInviteCode } from '../src/invites/invite-code.js';
 
 class RollbackSignal extends Error {}
 
@@ -94,8 +95,9 @@ describe('acesso ao grupo', () => {
     rejectedId = await insertUser('recusada');
     outsiderId = await insertUser('de-fora');
     const rows: { id: string }[] = await dataSource.query(
-      `INSERT INTO "group" (name, "ownerId") VALUES ('Família', $1) RETURNING id`,
-      [ownerId],
+      `INSERT INTO "group" (name, "ownerId", "inviteCode")
+       VALUES ('Família', $1, $2) RETURNING id`,
+      [ownerId, generateInviteCode()],
     );
     groupId = rows[0].id;
     await insertMembership(ownerId, 'APPROVED');
