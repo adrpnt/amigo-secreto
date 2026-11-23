@@ -1,5 +1,6 @@
 import type {
   InviteEmailsResult,
+  MemberItem,
   MembersPage,
   SessionUser,
 } from '@amigo-secreto/shared';
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { InviteEmailsDto } from './dto/invite-emails.dto.js';
+import { MemberDecisionDto } from './dto/member-decision.dto.js';
 import { InvitesService } from './invites.service.js';
 import { MembersService } from './members.service.js';
 
@@ -34,6 +36,10 @@ const NOT_FOUND = {
 };
 const ORGANIZER_ONLY = {
   description: 'Só quem organiza pode alterar o grupo.',
+};
+const MEMBER_NOT_FOUND = {
+  description:
+    'Grupo não encontrado (como nas outras rotas) ou Participante não encontrado.: participação inexistente, de outro grupo ou com id que não é UUID.',
 };
 const NOT_OPEN = {
   description: 'Com o sorteio feito, ninguém entra nem sai do grupo.',
@@ -72,6 +78,46 @@ export class GroupMembersController {
     @Query('cursor') cursor: unknown,
   ): Promise<MembersPage> {
     return this.members.list(user.id, id, { search, cursor });
+  }
+
+  @Post(':id/members/:membershipId/approve')
+  @HttpCode(200)
+  @ApiOkResponse({
+    description:
+      'Participação aprovada, com o aviso à pessoa. Se ela já estava aprovada ou não está mais no status `from`, devolve o estado atual sem aviso.',
+  })
+  @ApiBadRequestResponse({ description: '`from` ausente ou inválido.' })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse(MEMBER_NOT_FOUND)
+  @ApiConflictResponse(NOT_OPEN)
+  approve(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+    @Param('membershipId') membershipId: string,
+    @Body() body: MemberDecisionDto,
+  ): Promise<MemberItem> {
+    return this.members.approve(user, id, membershipId, body.from);
+  }
+
+  @Post(':id/members/:membershipId/reject')
+  @HttpCode(200)
+  @ApiOkResponse({
+    description:
+      'Pedido recusado, com o aviso à pessoa. Se ela já estava recusada ou não está mais no status `from`, devolve o estado atual sem aviso.',
+  })
+  @ApiBadRequestResponse({ description: '`from` ausente ou inválido.' })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse({
+    description: `${MEMBER_NOT_FOUND.description} Também para participação aprovada: tirar um aprovado é remover.`,
+  })
+  @ApiConflictResponse(NOT_OPEN)
+  reject(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+    @Param('membershipId') membershipId: string,
+    @Body() body: MemberDecisionDto,
+  ): Promise<MemberItem> {
+    return this.members.reject(user, id, membershipId, body.from);
   }
 
   @Post(':id/invite/regenerate')

@@ -2,13 +2,28 @@ import type {
   MemberItem,
   MembersPage,
   MembershipStatus,
+  SessionUser,
 } from '@amigo-secreto/shared';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { isUUID } from 'class-validator';
-import { DataSource } from 'typeorm';
+import { DataSource, type EntityManager } from 'typeorm';
+import type { EnvironmentVariables } from '../config/env.validation.js';
+import { EmailService } from '../email/email.service.js';
 import { GroupAccess } from '../groups/group-access.service.js';
+import type { Group } from '../groups/group.entity.js';
+import { Membership } from '../groups/membership.entity.js';
+import { BusinessEventsService } from '../observability/business-events.service.js';
+import { GROUP_NOT_OPEN } from './invites.service.js';
+import { approvedEmail, rejectedEmail } from './invite-emails.js';
 
 export const INVALID_DATA = 'Dados inválidos.';
+export const MEMBER_NOT_FOUND = 'Participante não encontrado.';
 
 const PAGE_SIZE = 20;
 
@@ -53,6 +68,25 @@ type MemberRow = {
 
 type Cursor = [rank: number, sortName: string, id: string];
 
+// Participação do grupo com os dados da pessoa, para a resposta e o aviso.
+const MEMBER_SQL = `
+  SELECT m.id, m."userId", m.status, u.name, u.email, u."avatarUrl"
+  FROM membership m
+  JOIN "user" u ON u.id = m."userId"
+  WHERE m.id = $1 AND m."groupId" = $2`;
+
+type MemberWithEmail = {
+  id: string;
+  userId: string;
+  status: MembershipStatus;
+  name: string;
+  email: string;
+  avatarUrl: string | null;
+};
+
+// O status que a tela mostrava quando a pessoa tocou em aprovar ou recusar.
+export type SeenStatus = 'PENDING' | 'REJECTED';
+
 export type MembersQuery = { search?: unknown; cursor?: unknown };
 
 function encodeCursor(row: MemberRow): string {
@@ -92,7 +126,9 @@ function optionalText(value: unknown): string | undefined {
   return value;
 }
 
-function toMemberItem(row: MemberRow): MemberItem {
+function toMemberItem(
+  row: Pick<MemberRow, 'id' | 'name' | 'avatarUrl' | 'status' | 'isOrganizer'>,
+): MemberItem {
   return {
     membershipId: row.id,
     name: row.name,
@@ -107,6 +143,9 @@ export class MembersService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly access: GroupAccess,
+    private readonly email: EmailService,
+    private readonly events: BusinessEventsService,
+    private readonly config: ConfigService<EnvironmentVariables, true>,
   ) {}
 
   async list(
@@ -140,5 +179,108 @@ export class MembersService {
         rows.length > PAGE_SIZE ? encodeCursor(page[PAGE_SIZE - 1]) : null,
       approvedCount: count,
     };
+  }
+
+  approve(
+    user: SessionUser,
+    groupId: string,
+    membershipId: string,
+    from: SeenStatus,
+  ): Promise<MemberItem> {
+    return this.decide(user, groupId, membershipId, from, 'APPROVED');
+  }
+
+  reject(
+    user: SessionUser,
+    groupId: string,
+    membershipId: string,
+    from: SeenStatus,
+  ): Promise<MemberItem> {
+    return this.decide(user, groupId, membershipId, from, 'REJECTED');
+  }
+
+  // A trava do grupo põe em fila aprovar e recusar simultâneos. O segundo
+  // encontra a participação fora do status que a tela mostrava (`from`) e
+  // devolve o estado atual sem aviso, então só o primeiro vale, nas duas
+  // ordens. Recusar um aprovado é papel do remover: aqui é 404.
+  private async decide(
+    user: SessionUser,
+    groupId: string,
+    membershipId: string,
+    from: SeenStatus,
+    target: 'APPROVED' | 'REJECTED',
+  ): Promise<MemberItem> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+
+    const { item, changed } = await this.dataSource.transaction(
+      async (manager) => {
+        const { group } = await this.access.requireOrganizer(user.id, groupId, {
+          manager,
+          lock: true,
+        });
+        if (group.status !== 'OPEN') {
+          throw new ConflictException(GROUP_NOT_OPEN);
+        }
+        const member = await this.findMember(manager, group, membershipId);
+        if (target === 'REJECTED' && member.status === 'APPROVED') {
+          throw new NotFoundException(MEMBER_NOT_FOUND);
+        }
+        const isOrganizer = member.userId === group.ownerId;
+        if (member.status === target || member.status !== from) {
+          return {
+            item: toMemberItem({ ...member, isOrganizer }),
+            changed: false,
+          };
+        }
+
+        await manager
+          .getRepository(Membership)
+          .update({ id: member.id }, { status: target });
+        const notice = {
+          to: member.email,
+          name: member.name,
+          organizerName: user.name,
+          groupName: group.name,
+          webUrl,
+        };
+        await this.email.enqueue(
+          target === 'APPROVED'
+            ? approvedEmail({ ...notice, groupId: group.id })
+            : rejectedEmail(notice),
+          { manager },
+        );
+        return {
+          item: toMemberItem({ ...member, status: target, isOrganizer }),
+          changed: true,
+        };
+      },
+    );
+
+    if (changed) {
+      if (target === 'APPROVED') {
+        this.events.record('membership.approved', {
+          groupId,
+          trigger: 'manual',
+        });
+      } else {
+        this.events.record('membership.rejected', { groupId });
+      }
+    }
+    return item;
+  }
+
+  // O Postgres recusaria com erro 500 o cast de um id que não é UUID.
+  private async findMember(
+    manager: EntityManager,
+    group: Group,
+    membershipId: string,
+  ): Promise<MemberWithEmail> {
+    if (!isUUID(membershipId)) throw new NotFoundException(MEMBER_NOT_FOUND);
+    const [member] = await manager.query<MemberWithEmail[]>(MEMBER_SQL, [
+      membershipId,
+      group.id,
+    ]);
+    if (!member) throw new NotFoundException(MEMBER_NOT_FOUND);
+    return member;
   }
 }
