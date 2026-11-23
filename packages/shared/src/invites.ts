@@ -56,7 +56,11 @@ export function isEmailAddress(value: string): boolean {
 
 // Os válidos saem em minúsculas; os inválidos, como digitados. Repetidos,
 // sem diferenciar maiúsculas, contam uma vez, na ordem em que aparecem.
-export function parseInviteEmails(text: string): {
+// `isValid` deixa a API somar a regra do envio de e-mail à do formulário.
+export function parseInviteEmails(
+  text: string,
+  isValid: (email: string) => boolean = isEmailAddress,
+): {
   emails: string[];
   invalid: string[];
 } {
@@ -68,7 +72,7 @@ export function parseInviteEmails(text: string): {
     const key = entry.toLowerCase();
     if (entry === '' || seen.has(key)) continue;
     seen.add(key);
-    if (isEmailAddress(entry)) {
+    if (isValid(entry)) {
       emails.push(key);
     } else {
       invalid.push(entry);
@@ -79,11 +83,14 @@ export function parseInviteEmails(text: string): {
 }
 
 // A lista dos inválidos vem antes do limite, que conta só os válidos.
-export function validateInviteEmails(text: string): {
+export function validateInviteEmails(
+  text: string,
+  isValid: (email: string) => boolean = isEmailAddress,
+): {
   emails: string[];
   fields: { emails?: string };
 } {
-  const { emails, invalid } = parseInviteEmails(text);
+  const { emails, invalid } = parseInviteEmails(text, isValid);
 
   if (invalid.length > 0) {
     return {

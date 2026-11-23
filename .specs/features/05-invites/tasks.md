@@ -345,9 +345,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/invites-emails.int-spec.ts`: `convidar por e-mail > enfileira um convite por endereço distinto com o link do grupo e grava cada envio`, `> devolve a quantidade de e-mails enviados`, `> recusa com 400 e a lista dos inválidos sem enviar nenhum`, `> recusa com 400 endereço que o isEmail da API recusa`, `> aceita 20 endereços distintos e recusa 21 sem enviar nenhum`, `> recusa com 400 o campo vazio`, `> aceita o envio que chega a 100 em 24 horas e recusa com 429 o que passaria, sem enviar nenhum`, `> volta a aceitar quando o envio mais antigo sai da janela de 24 horas`, `> responde 409 com o grupo SORTEADO ou ENCERRADO sem enviar`, `> responde 403 a participante que não organiza sem enviar`, `> envia também para quem já participa`, `> emite invite.emails_sent com count e sem e-mails`, `> não emite invite.emails_sent quando o envio é recusado`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 450 tests pass na API
+- [x] Testes em `test/invites-emails.int-spec.ts`: `convidar por e-mail > enfileira um convite por endereço distinto com o link do grupo e grava cada envio`, `> devolve a quantidade de e-mails enviados`, `> recusa com 400 e a lista dos inválidos sem enviar nenhum`, `> recusa com 400 endereço que o isEmail da API recusa`, `> aceita 20 endereços distintos e recusa 21 sem enviar nenhum`, `> recusa com 400 o campo vazio`, `> aceita o envio que chega a 100 em 24 horas e recusa com 429 o que passaria, sem enviar nenhum`, `> volta a aceitar quando o envio mais antigo sai da janela de 24 horas`, `> responde 409 com o grupo SORTEADO ou ENCERRADO sem enviar`, `> responde 403 a participante que não organiza sem enviar`, `> envia também para quem já participa`, `> emite invite.emails_sent com count e sem e-mails`, `> não emite invite.emails_sent quando o envio é recusado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 450 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

@@ -1,10 +1,13 @@
-import type {
-  GroupStatus,
-  InviteView,
-  InviteViewer,
-  JoinResult,
-  MembershipStatus,
-  SessionUser,
+import {
+  type GroupStatus,
+  type InviteEmailsResult,
+  type InviteView,
+  type InviteViewer,
+  isEmailAddress,
+  type JoinResult,
+  type MembershipStatus,
+  type SessionUser,
+  validateInviteEmails,
 } from '@amigo-secreto/shared';
 import {
   ConflictException,
@@ -12,11 +15,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DataSource } from 'typeorm';
+import { isEmail } from 'class-validator';
+import { DataSource, type EntityManager } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { EmailService } from '../email/email.service.js';
 import { GroupAccess } from '../groups/group-access.service.js';
 import { Group } from '../groups/group.entity.js';
+import { GroupValidationException } from '../groups/group-validation.exception.js';
 import { isInviteCodeCollision } from '../groups/groups.service.js';
 import { Membership } from '../groups/membership.entity.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
@@ -25,8 +30,14 @@ import {
   rateLimitKey,
 } from '../rate-limit/rate-limit.service.js';
 import { User } from '../users/user.entity.js';
+import { EmailInvite } from './email-invite.entity.js';
+import { EmailInviteLimitException } from './email-invite-limit.exception.js';
 import { generateInviteCode, normalizeInviteCode } from './invite-code.js';
-import { joinRequestEmail, memberJoinedEmail } from './invite-emails.js';
+import {
+  emailInviteEmail,
+  joinRequestEmail,
+  memberJoinedEmail,
+} from './invite-emails.js';
 import { isPreviewBot } from './preview-bots.js';
 
 export const INVITE_NOT_FOUND = 'Convite não encontrado.';
@@ -44,6 +55,28 @@ const JOIN_WINDOW_MS = 60 * 60 * 1000;
 const JOIN_LIMIT = 30;
 const REGENERATE_WINDOW_MS = 60 * 60 * 1000;
 const REGENERATE_LIMIT = 10;
+const EMAIL_INVITE_LIMIT = 100;
+
+// Envios do grupo nas últimas 24 horas.
+const EMAIL_INVITES_IN_WINDOW_SQL = `
+  SELECT count(*)::int AS count FROM email_invite
+  WHERE "groupId" = $1 AND "createdAt" > now() - interval '24 hours'`;
+
+// Quanto falta para o envio de posição $2 (a partir do mais antigo) sair da
+// janela de 24 horas.
+const EMAIL_INVITE_RETRY_SQL = `
+  SELECT GREATEST(0, EXTRACT(EPOCH FROM
+    "createdAt" + interval '24 hours' - now()) * 1000)::float8 AS "retryAfterMs"
+  FROM email_invite
+  WHERE "groupId" = $1 AND "createdAt" > now() - interval '24 hours'
+  ORDER BY "createdAt", id
+  OFFSET $2 LIMIT 1`;
+
+// Além da regra do formulário, o endereço tem de passar no isEmail que o
+// EmailService confere antes de enfileirar.
+function isSendableEmail(email: string): boolean {
+  return isEmailAddress(email) && isEmail(email);
+}
 
 // Grupo do código, com o nome de quem organiza e a participação de quem abre
 // (nula sem sessão ou sem participação).
@@ -260,6 +293,69 @@ export class InvitesService {
     }
     this.events.record('invite.regenerated', { groupId });
     return { inviteCode };
+  }
+
+  // Envia para todos, mesmo para quem já participa. Com o grupo travado, a
+  // contagem das 24 horas não corre contra outro envio simultâneo.
+  async sendEmails(
+    user: SessionUser,
+    groupId: string,
+    text: string,
+  ): Promise<InviteEmailsResult> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+    const count = await this.dataSource.transaction(async (manager) => {
+      const { group } = await this.access.requireOrganizer(user.id, groupId, {
+        manager,
+        lock: true,
+      });
+      if (group.status !== 'OPEN') {
+        throw new ConflictException(GROUP_NOT_OPEN);
+      }
+      const { emails, fields } = validateInviteEmails(text, isSendableEmail);
+      if (fields.emails !== undefined) {
+        throw new GroupValidationException(fields);
+      }
+      await this.assertEmailInviteLimit(manager, group.id, emails.length);
+
+      await manager
+        .getRepository(EmailInvite)
+        .insert(emails.map((email) => ({ groupId: group.id, email })));
+      await this.email.enqueueMany(
+        emails.map((to) =>
+          emailInviteEmail({
+            to,
+            groupName: group.name,
+            organizerName: user.name,
+            inviteCode: group.inviteCode,
+            webUrl,
+          }),
+        ),
+        { manager },
+      );
+      return emails.length;
+    });
+    this.events.record('invite.emails_sent', { groupId, count });
+    return { count };
+  }
+
+  // O tempo de espera sai do envio que precisa deixar a janela para o pedido
+  // caber.
+  private async assertEmailInviteLimit(
+    manager: EntityManager,
+    groupId: string,
+    requested: number,
+  ): Promise<void> {
+    const [{ count }] = await manager.query<{ count: number }[]>(
+      EMAIL_INVITES_IN_WINDOW_SQL,
+      [groupId],
+    );
+    const excess = count + requested - EMAIL_INVITE_LIMIT;
+    if (excess <= 0) return;
+    const [{ retryAfterMs }] = await manager.query<{ retryAfterMs: number }[]>(
+      EMAIL_INVITE_RETRY_SQL,
+      [groupId, excess - 1],
+    );
+    throw new EmailInviteLimitException(Math.ceil(retryAfterMs));
   }
 
   // Vem antes de procurar o código: acima do limite, todo código recebe 429,

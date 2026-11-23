@@ -1,6 +1,7 @@
-import type { SessionUser } from '@amigo-secreto/shared';
-import { Controller, HttpCode, Param, Post } from '@nestjs/common';
+import type { InviteEmailsResult, SessionUser } from '@amigo-secreto/shared';
+import { Body, Controller, HttpCode, Param, Post } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiConflictResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
@@ -10,6 +11,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { InviteEmailsDto } from './dto/invite-emails.dto.js';
 import { InvitesService } from './invites.service.js';
 
 const NOT_FOUND = {
@@ -47,5 +49,30 @@ export class GroupMembersController {
     @Param('id') id: string,
   ): Promise<{ inviteCode: string }> {
     return this.invites.regenerate(user, id);
+  }
+
+  @Post(':id/invite/emails')
+  @HttpCode(200)
+  @ApiOkResponse({
+    description:
+      'Um convite por endereço distinto enfileirado e gravado; `count` é a quantidade enviada.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Lista vazia, com endereço inválido ou com mais de 20 distintos; `fields.emails` traz a mensagem.',
+  })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse(NOT_FOUND)
+  @ApiConflictResponse(NOT_OPEN)
+  @ApiTooManyRequestsResponse({
+    description:
+      'O envio passaria de 100 convites por e-mail do grupo em 24 horas; `Retry-After` em segundos.',
+  })
+  sendEmails(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+    @Body() body: InviteEmailsDto,
+  ): Promise<InviteEmailsResult> {
+    return this.invites.sendEmails(user, id, body.emails);
   }
 }
