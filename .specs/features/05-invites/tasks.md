@@ -475,9 +475,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/members-leave.int-spec.ts`: `sair do grupo > apaga a participação e o grupo some de Meus grupos`, `> quem saiu abre o convite como quem nunca participou e pode entrar de novo`, `> responde 409 com o grupo SORTEADO ou ENCERRADO e mantém a participação`, `> responde 409 Transfira a organização antes de sair do grupo. a quem organiza`, `> responde 404 a quem não participa`, `> enfileira o aviso de saída a quem organiza`, `> emite membership.left sem dados pessoais`, `> não emite evento nem aviso quando a saída é recusada`, `> sair enquanto quem organiza remove aplica o primeiro e o segundo responde 404 ou o estado atual`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 505 tests pass na API
+- [x] Testes em `test/members-leave.int-spec.ts`: `sair do grupo > apaga a participação e o grupo some de Meus grupos`, `> quem saiu abre o convite como quem nunca participou e pode entrar de novo`, `> responde 409 com o grupo SORTEADO ou ENCERRADO e mantém a participação`, `> responde 409 Transfira a organização antes de sair do grupo. a quem organiza`, `> responde 404 a quem não participa`, `> enfileira o aviso de saída a quem organiza`, `> emite membership.left sem dados pessoais`, `> não emite evento nem aviso quando a saída é recusada`, `> sair enquanto quem organiza remove aplica o primeiro e o segundo responde 404 ou o estado atual`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 505 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

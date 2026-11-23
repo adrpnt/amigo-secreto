@@ -143,6 +143,23 @@ export class GroupMembersController {
     return this.members.remove(user, id, membershipId);
   }
 
+  @Post(':id/leave')
+  @HttpCode(204)
+  @ApiNoContentResponse({
+    description:
+      'Participação apagada, com o aviso a quem organiza: a pessoa pode voltar pelo link como quem nunca participou.',
+  })
+  @ApiNotFoundResponse(NOT_FOUND)
+  @ApiConflictResponse({
+    description: `${NOT_OPEN.description} Ou, a quem organiza: Transfira a organização antes de sair do grupo.`,
+  })
+  leave(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return this.members.leave(user, id);
+  }
+
   @Post(':id/invite/regenerate')
   @HttpCode(200)
   @ApiOkResponse({

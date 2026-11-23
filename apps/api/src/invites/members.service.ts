@@ -19,12 +19,20 @@ import { GroupAccess } from '../groups/group-access.service.js';
 import type { Group } from '../groups/group.entity.js';
 import { Membership } from '../groups/membership.entity.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
+import { User } from '../users/user.entity.js';
 import { GROUP_NOT_OPEN } from './invites.service.js';
-import { approvedEmail, rejectedEmail, removedEmail } from './invite-emails.js';
+import {
+  approvedEmail,
+  memberLeftEmail,
+  rejectedEmail,
+  removedEmail,
+} from './invite-emails.js';
 
 export const INVALID_DATA = 'Dados inválidos.';
 export const MEMBER_NOT_FOUND = 'Participante não encontrado.';
 export const ORGANIZER_NOT_REMOVABLE = 'Quem organiza não pode ser removido.';
+export const ORGANIZER_MUST_TRANSFER =
+  'Transfira a organização antes de sair do grupo.';
 
 const PAGE_SIZE = 20;
 
@@ -311,6 +319,45 @@ export class MembersService {
     });
 
     this.events.record('membership.removed', { groupId });
+  }
+
+  // Sair apaga a participação: quem sai volta pelo link como quem nunca
+  // participou. Quem organiza ouve primeiro que precisa transferir, porque
+  // no grupo SORTEADO a transferência ainda é possível.
+  async leave(user: SessionUser, groupId: string): Promise<void> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+
+    await this.dataSource.transaction(async (manager) => {
+      const { group, membership } = await this.access.requireMember(
+        user.id,
+        groupId,
+        { manager, lock: true },
+      );
+      if (group.ownerId === user.id) {
+        throw new ConflictException(ORGANIZER_MUST_TRANSFER);
+      }
+      if (group.status !== 'OPEN') {
+        throw new ConflictException(GROUP_NOT_OPEN);
+      }
+
+      await manager.getRepository(Membership).delete({ id: membership.id });
+      const organizer = await manager
+        .getRepository(User)
+        .findOneByOrFail({ id: group.ownerId });
+      await this.email.enqueue(
+        memberLeftEmail({
+          to: organizer.email,
+          name: organizer.name,
+          personName: user.name,
+          groupName: group.name,
+          groupId: group.id,
+          webUrl,
+        }),
+        { manager },
+      );
+    });
+
+    this.events.record('membership.left', { groupId });
   }
 
   // O Postgres recusaria com erro 500 o cast de um id que não é UUID.
