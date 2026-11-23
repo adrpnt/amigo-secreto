@@ -216,9 +216,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/invites/preview-bots.spec.ts`: `robôs de preview > reconhece WhatsApp, facebookexternalhit, Facebot, TelegramBot, Slackbot, Twitterbot, Discordbot e LinkedInBot`, `> não reconhece navegadores comuns nem User-Agent ausente`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 383 tests pass na API
+- [x] Testes em `src/invites/preview-bots.spec.ts`: `robôs de preview > reconhece WhatsApp, facebookexternalhit, Facebot, TelegramBot, Slackbot, Twitterbot, Discordbot e LinkedInBot`, `> não reconhece navegadores comuns nem User-Agent ausente`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 383 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick
