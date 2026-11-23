@@ -12,6 +12,9 @@ import {
 } from 'typeorm';
 import { User } from '../users/user.entity.js';
 
+// Nome que o TypeORM gerou para o índice; a criação reconhece a colisão por ele.
+export const INVITE_CODE_INDEX = 'IDX_4f349bf7a69113fc48c2ac5271';
+
 // Status em maiúsculas, como o do job (exceção à regra de snake_case).
 @Entity('group')
 @Check(`"status" IN ('OPEN', 'DRAWN', 'CLOSED')`)
@@ -60,6 +63,11 @@ export class Group {
 
   @Column({ type: 'varchar', length: 10, default: 'OPEN' })
   status: GroupStatus;
+
+  // Código do link de convite, sempre em minúsculas.
+  @Index(INVITE_CODE_INDEX, { unique: true })
+  @Column({ type: 'varchar', length: 10 })
+  inviteCode: string;
 
   // Gravado ao encerrar; a retenção conta a partir dele.
   @Column({ type: 'timestamptz', nullable: true })

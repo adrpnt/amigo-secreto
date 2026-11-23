@@ -1,5 +1,6 @@
 import pg from 'pg';
 import { inject } from 'vitest';
+import { generateInviteCode } from '../src/invites/invite-code.js';
 
 async function query<T extends pg.QueryResultRow>(
   text: string,
@@ -25,8 +26,9 @@ async function insertUser(email: string): Promise<string> {
 
 async function insertGroup(ownerId: string): Promise<string> {
   const [group] = await query<{ id: string }>(
-    `INSERT INTO "group" (name, "ownerId") VALUES ('Família', $1) RETURNING id`,
-    [ownerId],
+    `INSERT INTO "group" (name, "ownerId", "inviteCode")
+     VALUES ('Família', $1, $2) RETURNING id`,
+    [ownerId, generateInviteCode()],
   );
   return group.id;
 }

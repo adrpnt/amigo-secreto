@@ -58,6 +58,7 @@ export type GroupDetail = {
   isOrganizer: boolean;
   closedAt: string | null;
   createdAt: string;
+  inviteCode: string;
 };
 
 export const GROUP_MESSAGES = {

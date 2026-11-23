@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { inject } from 'vitest';
 import { CreateGroupTable1795290372036 } from '../src/database/migrations/1795290372036-CreateGroupTable.js';
 import { CreateUserTable1795180059667 } from '../src/database/migrations/1795180059667-CreateUserTable.js';
+import { generateInviteCode } from '../src/invites/invite-code.js';
 
 const REVERT_DATABASE = 'group_table_revert';
 const CHECK_VIOLATION = /violates check constraint/;
@@ -59,14 +60,15 @@ async function withOwner(
   const insertGroup = (row: GroupRow = {}) =>
     query(
       databaseUrl,
-      `INSERT INTO "group" (name, "ownerId", "giftMinValue", "giftMaxValue", status, "closedAt")
-       VALUES ('Família', $1, $2, $3, $4, $5) RETURNING id`,
+      `INSERT INTO "group" (name, "ownerId", "giftMinValue", "giftMaxValue", status, "closedAt", "inviteCode")
+       VALUES ('Família', $1, $2, $3, $4, $5, $6) RETURNING id`,
       [
         owner.id,
         row.giftMinValue ?? null,
         row.giftMaxValue ?? null,
         row.status ?? 'OPEN',
         row.closedAt ?? null,
+        generateInviteCode(),
       ],
     );
   try {
@@ -114,6 +116,7 @@ describe('tabela group', () => {
       isOnlineEvent: ['boolean', 'NO', null],
       requiresApproval: ['boolean', 'NO', null],
       status: ['character varying', 'NO', 10],
+      inviteCode: ['character varying', 'NO', 10],
       closedAt: ['timestamp with time zone', 'YES', null],
       createdAt: ['timestamp with time zone', 'NO', null],
       updatedAt: ['timestamp with time zone', 'NO', null],

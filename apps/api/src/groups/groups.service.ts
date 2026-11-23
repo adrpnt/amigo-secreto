@@ -10,9 +10,10 @@ import {
 } from '@amigo-secreto/shared';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DataSource, type EntityManager } from 'typeorm';
+import { DataSource, type EntityManager, QueryFailedError } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { EmailService } from '../email/email.service.js';
+import { generateInviteCode } from '../invites/invite-code.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import {
   RateLimitService,
@@ -21,7 +22,7 @@ import {
 import { User } from '../users/user.entity.js';
 import type { GroupInputDto } from './dto/group-input.dto.js';
 import { GroupAccess } from './group-access.service.js';
-import { Group } from './group.entity.js';
+import { Group, INVITE_CODE_INDEX } from './group.entity.js';
 import { groupClosedEmail, groupDeletedEmail } from './group-emails.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
@@ -126,6 +127,17 @@ function changedFields(group: Group, next: GroupFields): string[] {
   });
 }
 
+function isInviteCodeCollision(error: unknown): boolean {
+  if (!(error instanceof QueryFailedError)) return false;
+  const driverError = error.driverError as {
+    code?: string;
+    constraint?: string;
+  };
+  return (
+    driverError.code === '23505' && driverError.constraint === INVITE_CODE_INDEX
+  );
+}
+
 export function toGroupDetail(
   group: Group,
   owner: { id: string; name: string },
@@ -147,6 +159,7 @@ export function toGroupDetail(
     isOrganizer: group.ownerId === viewerId,
     closedAt: toIso(group.closedAt),
     createdAt: group.createdAt.toISOString(),
+    inviteCode: group.inviteCode,
   };
 }
 
@@ -178,23 +191,34 @@ export class GroupsService {
       },
     ]);
 
-    const group = await this.dataSource.transaction(async (manager) => {
-      const groups = manager.getRepository(Group);
-      const created = await groups.save(
-        groups.create({
-          ...toGroupFields(input),
-          ownerId: user.id,
-          status: 'OPEN',
-          closedAt: null,
-        }),
-      );
-      await manager.getRepository(Membership).insert({
-        groupId: created.id,
-        userId: user.id,
-        status: 'APPROVED',
+    const insertGroup = () =>
+      this.dataSource.transaction(async (manager) => {
+        const groups = manager.getRepository(Group);
+        const created = await groups.save(
+          groups.create({
+            ...toGroupFields(input),
+            ownerId: user.id,
+            status: 'OPEN',
+            closedAt: null,
+            inviteCode: generateInviteCode(),
+          }),
+        );
+        await manager.getRepository(Membership).insert({
+          groupId: created.id,
+          userId: user.id,
+          status: 'APPROVED',
+        });
+        return created;
       });
-      return created;
-    });
+
+    // Na rara colisão do código sorteado, sorteia outro uma vez.
+    let group: Group;
+    try {
+      group = await insertGroup();
+    } catch (error) {
+      if (!isInviteCodeCollision(error)) throw error;
+      group = await insertGroup();
+    }
 
     this.events.record('group.created', { groupId: group.id });
     return toGroupDetail(group, { id: user.id, name: user.name }, user.id);

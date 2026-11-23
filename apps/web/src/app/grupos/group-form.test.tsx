@@ -27,6 +27,7 @@ const GROUP: GroupDetail = {
   isOrganizer: true,
   closedAt: null,
   createdAt: '2026-11-21T12:00:00.000Z',
+  inviteCode: 'ab23cd45ef',
 };
 
 function jsonResponse(status: number, body: object): Response {

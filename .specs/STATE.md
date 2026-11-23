@@ -164,16 +164,26 @@
 - **Trade-off**: Cada serviço chama o `GroupAccess` explicitamente; esquecer a chamada não é pego por um guard global, só pelos testes de acesso de cada rota.
 - **Scope**: `04-groups` e as features `05-invites` a `09-secret-messages`.
 - **Date**: 2026-11-21
+- **Revised**: 2026-11-23 - exceção para rotas que recebem um código secreto em vez de um id de grupo (abrir e entrar pelo convite da `05-invites`): o limite por IP vem antes de procurar o código, e acima dele todo código recebe 429, existente ou não; com 404 antes, o 429 revelaria quais códigos existem. Pergunta ao usuário no Design da `05-invites`: "Como ordenar?", resposta "429 antes no convite (Recomendado)", entre essa e "Manter a ordem do AD-016". As rotas de grupo continuam na ordem 404, 403, 409, 400, 429.
+- **Status**: active
+
+### AD-017
+
+- **Decision**: O site conhece a própria URL pela variável `WEB_URL` do `apps/web`, lida em tempo de requisição, obrigatória em produção e com padrão `http://localhost:3000` fora dela; ela alimenta o `metadataBase` e os links absolutos mostrados na tela. Quando o servidor do Next chama a API em nome de quem abriu a página e a rota limita por IP ou depende do cliente, a chamada repassa o `X-Forwarded-For` e o `User-Agent` recebidos, como o `proxy.ts` já repassa em `/api/*`; a API lê o IP com o `TRUST_PROXY_HOPS` de sempre (AD-014).
+- **Reason**: O Next 16 recusa caminho relativo em metadados sem `metadataBase` (documentação do `generateMetadata` 16.4.5, via Context7, 2026-11-23), e o preview Open Graph precisa de URL absoluta. Sem o repasse, todo acesso montado no servidor chegaria à API com o IP do Next, e o limite por IP valeria para todo mundo junto. Perguntas ao usuário no Design da `05-invites`: "Como o site sabe a URL dele?", resposta "WEB_URL no site (Recomendado)", entre essa, "Cabeçalhos da requisição" e "API devolve a URL"; "Como resolver [o IP do convite]?", resposta "Repassar X-Forwarded-For (Recomendado)", entre essa e "Carregar no navegador".
+- **Trade-off**: Uma variável a mais para configurar no deploy do site, com o mesmo valor do `WEB_URL` da API. O IP repassado vale o mesmo que o do `proxy.ts`: depende de a hospedagem gravar o `X-Forwarded-For` e de o `TRUST_PROXY_HOPS` contar os saltos certos.
+- **Scope**: `apps/web` e `apps/api`, a partir da `05-invites`; vale para as páginas públicas da `12-public-pages`.
+- **Date**: 2026-11-23
 - **Status**: active
 
 ## Handoff
 
-- **Feature**: 04-groups (`.specs/features/04-groups/`), concluída e verificada
-- **Phase / Task**: fase 4 (T24 a T32) e fechamento da feature na branch da PER-110; `validate_verification.py 04-groups` saiu com 0 em `329f049` (180 provas verdes; shared 19, API 368, web 95, e2e 79)
-- **Completed**: T1 a T32; walk das nove histórias; Verifier com 7 achados, todos fechados (GRP-10 e GRP-11 acrescentados à spec, testes reforçados em C68, C74, C78 e C83); lições L-021 a L-025 e L-020 promovida a confirmed
+- **Feature**: 05-invites (`.specs/features/05-invites/`), em execução
+- **Phase / Task**: fase 1 (T1 a T8) concluída na branch da PER-111; gate Build verde em `fc4fbb0` (shared 27, API 396, web 95, e2e 79)
+- **Completed**: T1 a T8; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (lista de e-mails, `inviteCode` em três asserções da `04-groups`, texto e arredondamento do 429 de convites por e-mail, com o INV-11 AC 6 emendado)
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 4; depois, a próxima feature do roadmap
-- **Linear**: milestone `04 · Groups`; PER-107, PER-108 e PER-109 mergeadas; PER-110 com T24 a T32 marcadas, PR aberto
+- **Next step**: revisão e merge do PR da fase 1; depois, criar a branch da PER-112 a partir da `main` atualizada, mover a issue para In Progress e começar a T9
+- **Linear**: milestone `05 · Invites`; PER-111 com T1 a T8 marcadas e PR aberto; PER-112 a PER-116 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-110-fase-4-telas-e-navegacao
+- **Branch**: pntadr/per-111-fase-1-regras-compartilhadas-e-banco
