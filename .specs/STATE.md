@@ -178,12 +178,12 @@
 
 ## Handoff
 
-- **Feature**: 05-invites (`.specs/features/05-invites/`), spec, design e tasks aprovados em 2026-11-23; execução não começou
-- **Phase / Task**: antes da T1 (fase 1, T1 a T8)
-- **Completed**: spec aprovada (com emenda do INV-02 AC 14 a 16), design aprovado (AD-016 revisado, AD-017 novo), tasks aprovadas (37 tasks, 6 fases, 133 checks)
+- **Feature**: 05-invites (`.specs/features/05-invites/`), em execução
+- **Phase / Task**: fase 1 (T1 a T8) concluída na branch da PER-111; gate Build verde em `fc4fbb0` (shared 27, API 396, web 95, e2e 79)
+- **Completed**: T1 a T8; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (lista de e-mails, `inviteCode` em três asserções da `04-groups`, texto e arredondamento do 429 de convites por e-mail, com o INV-11 AC 6 emendado)
 - **In-progress** (file:line): none
-- **Next step**: quando o usuário pedir, rodar `validate_tasks.py 05-invites --execute`, criar a branch `pntadr/per-111-fase-1-regras-compartilhadas-e-banco` a partir da `main` atualizada, mover a PER-111 para In Progress e começar a T1
-- **Linear**: milestone `05 · Invites`; PER-111 (fase 1) a PER-116 (fase 6), em Backlog, cada uma bloqueando a seguinte
+- **Next step**: revisão e merge do PR da fase 1; depois, criar a branch da PER-112 a partir da `main` atualizada, mover a issue para In Progress e começar a T9
+- **Linear**: milestone `05 · Invites`; PER-111 com T1 a T8 marcadas e PR aberto; PER-112 a PER-116 em Backlog
 - **Blockers**: none
-- **Uncommitted files**: `.specs/STATE.md` e `.specs/features/05-invites/` (spec, context, design, tasks); entram no primeiro commit da fase 1, como na 04-groups
-- **Branch**: main
+- **Uncommitted files**: none
+- **Branch**: pntadr/per-111-fase-1-regras-compartilhadas-e-banco
