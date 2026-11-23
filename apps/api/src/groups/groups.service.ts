@@ -14,6 +14,7 @@ import { DataSource, type EntityManager, QueryFailedError } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { EmailService } from '../email/email.service.js';
 import { generateInviteCode } from '../invites/invite-code.js';
+import { approvedEmail } from '../invites/invite-emails.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import {
   RateLimitService,
@@ -46,6 +47,13 @@ const NOTICE_RECIPIENTS_SQL = `
   JOIN "user" u ON u.id = m."userId"
   WHERE m."groupId" = $1 AND m.status = 'APPROVED' AND m."userId" <> $2
   ORDER BY m."joinedAt", m.id`;
+
+// Aprova os pedidos pendentes do grupo e devolve quem foi aprovado.
+const APPROVE_PENDING_SQL = `
+  UPDATE membership m SET status = 'APPROVED'
+  FROM "user" u
+  WHERE m."groupId" = $1 AND m.status = 'PENDING' AND u.id = m."userId"
+  RETURNING u.name, u.email`;
 
 type MyGroupRow = {
   id: string;
@@ -258,8 +266,9 @@ export class GroupsService {
     body: GroupInputDto,
   ): Promise<GroupDetail> {
     const input = normalizeGroupInput(toGroupInput(body));
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
 
-    const { group, changed } = await this.dataSource.transaction(
+    const { group, changed, approvedCount } = await this.dataSource.transaction(
       async (manager) => {
         const { group } = await this.access.requireOrganizer(user.id, groupId, {
           manager,
@@ -281,11 +290,36 @@ export class GroupsService {
 
         const next = toGroupFields(input);
         const changed = changedFields(group, next);
+        // Desligar a aprovação aprova os pedidos pendentes na mesma
+        // transação: pendente sobrando travaria o sorteio.
+        const turnsOffApproval =
+          group.requiresApproval && !next.requiresApproval;
         if (changed.length > 0) {
           Object.assign(group, next);
           await manager.getRepository(Group).save(group);
         }
-        return { group, changed };
+
+        let approvedCount = 0;
+        if (turnsOffApproval) {
+          const [approved] = await manager.query<
+            [{ name: string; email: string }[], number]
+          >(APPROVE_PENDING_SQL, [group.id]);
+          await this.email.enqueueMany(
+            approved.map((person) =>
+              approvedEmail({
+                to: person.email,
+                name: person.name,
+                organizerName: user.name,
+                groupName: group.name,
+                groupId: group.id,
+                webUrl,
+              }),
+            ),
+            { manager },
+          );
+          approvedCount = approved.length;
+        }
+        return { group, changed, approvedCount };
       },
     );
 
@@ -293,6 +327,12 @@ export class GroupsService {
       this.events.record('group.updated', {
         groupId: group.id,
         fields: changed.join(','),
+      });
+    }
+    for (let i = 0; i < approvedCount; i++) {
+      this.events.record('membership.approved', {
+        groupId: group.id,
+        trigger: 'auto',
       });
     }
     return toGroupDetail(group, { id: user.id, name: user.name }, user.id);

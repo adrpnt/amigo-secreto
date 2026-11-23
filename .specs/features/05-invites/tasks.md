@@ -366,10 +366,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/groups-update-approval.int-spec.ts`: `desligar a aprovação > aprova na mesma transação os pendentes do grupo`, `> não muda recusados nem participações de outros grupos`, `> enfileira o aviso de entrada aprovada a cada pessoa aprovada`, `> emite membership.approved com trigger auto para cada participação`, `> não aprova nada quando a edição é recusada`
-- [ ] `test/groups-update.int-spec.ts` passa sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 455 tests pass na API
+- [x] Testes em `test/groups-update-approval.int-spec.ts`: `desligar a aprovação > aprova na mesma transação os pendentes do grupo`, `> não muda recusados nem participações de outros grupos`, `> enfileira o aviso de entrada aprovada a cada pessoa aprovada`, `> emite membership.approved com trigger auto para cada participação`, `> não aprova nada quando a edição é recusada`
+- [x] `test/groups-update.int-spec.ts` passa sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 455 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
