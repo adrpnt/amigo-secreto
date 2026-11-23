@@ -7,6 +7,7 @@ import { EmailInvite } from './email-invite.entity.js';
 import { GroupMembersController } from './group-members.controller.js';
 import { InvitesController } from './invites.controller.js';
 import { InvitesService } from './invites.service.js';
+import { MembersService } from './members.service.js';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { InvitesService } from './invites.service.js';
     RateLimitModule,
   ],
   controllers: [InvitesController, GroupMembersController],
-  providers: [InvitesService],
+  providers: [InvitesService, MembersService],
 })
 export class InvitesModule {}
