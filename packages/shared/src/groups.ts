@@ -35,6 +35,11 @@ export type GroupSummary = {
   drawScheduledAt: string | null;
   eventAt: string | null;
   createdAt: string;
+  // Pedido pendente aparece em Ativos, num card sem link.
+  membershipStatus: 'APPROVED' | 'PENDING';
+  organizerName: string;
+  // Só para quem organiza; null para os outros.
+  pendingCount: number | null;
 };
 
 export type MyGroupsResponse = {

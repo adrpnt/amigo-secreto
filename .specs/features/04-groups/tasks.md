@@ -856,7 +856,7 @@ Proof: run api | ✓ meus grupos > separa ativos (ABERTO e SORTEADO) de encerrad
 Proof: run web | ✓ MyGroupsView > lista Ativos e Encerrados na ordem recebida
 
 **C19** - Grupo sem participação aprovada da pessoa não aparece (GRP-02, AC 2)
-Proof: run api | ✓ meus grupos > não lista grupo de que a pessoa não participa nem participação pendente ou recusada
+Proof: run api | ✓ meus grupos > não lista grupo de que a pessoa não participa nem participação recusada
 
 **C20** - O card mostra nome, StatusTag e "1 participante"/"N participantes", contando só aprovados (GRP-02, AC 3)
 Proof: run api | ✓ meus grupos > conta só os participantes aprovados

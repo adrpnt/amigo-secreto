@@ -28,16 +28,20 @@ import { groupClosedEmail, groupDeletedEmail } from './group-emails.js';
 import { GroupValidationException } from './group-validation.exception.js';
 import { Membership } from './membership.entity.js';
 
-// Grupos em que a pessoa tem participação aprovada, com a contagem de
-// participantes aprovados, do mais novo para o mais antigo.
+// Grupos em que a pessoa tem participação aprovada ou pendente, com o nome de
+// quem organiza, a contagem de aprovados e a de pendentes, do mais novo para
+// o mais antigo. Recusados e removidos ficam de fora.
 const MY_GROUPS_SQL = `
   SELECT g.id, g.name, g.status, g."ownerId", g."drawScheduledAt", g."eventAt",
-    g."createdAt",
+    g."createdAt", m.status AS "membershipStatus", o.name AS "organizerName",
     (SELECT count(*)::int FROM membership p
-      WHERE p."groupId" = g.id AND p.status = 'APPROVED') AS "participantCount"
+      WHERE p."groupId" = g.id AND p.status = 'APPROVED') AS "participantCount",
+    (SELECT count(*)::int FROM membership p
+      WHERE p."groupId" = g.id AND p.status = 'PENDING') AS "pendingCount"
   FROM "group" g
   JOIN membership m ON m."groupId" = g.id
-  WHERE m."userId" = $1 AND m.status = 'APPROVED'
+  JOIN "user" o ON o.id = g."ownerId"
+  WHERE m."userId" = $1 AND m.status IN ('APPROVED', 'PENDING')
   ORDER BY g."createdAt" DESC, g.id DESC`;
 
 // Quem recebe os avisos do grupo: participantes aprovados, menos quem organiza.
@@ -63,7 +67,10 @@ type MyGroupRow = {
   drawScheduledAt: Date | null;
   eventAt: Date | null;
   createdAt: Date;
+  membershipStatus: 'APPROVED' | 'PENDING';
+  organizerName: string;
   participantCount: number;
+  pendingCount: number;
 };
 
 export const CLOSED_GROUP_EDIT = 'Grupo encerrado não pode ser editado.';
@@ -236,19 +243,28 @@ export class GroupsService {
     const rows = await this.dataSource.query<MyGroupRow[]>(MY_GROUPS_SQL, [
       userId,
     ]);
-    const summaries = rows.map((row): GroupSummary => ({
-      id: row.id,
-      name: row.name,
-      status: row.status,
-      participantCount: row.participantCount,
-      isOrganizer: row.ownerId === userId,
-      drawScheduledAt: toIso(row.drawScheduledAt),
-      eventAt: toIso(row.eventAt),
-      createdAt: row.createdAt.toISOString(),
-    }));
+    const summaries = rows.map((row): GroupSummary => {
+      const isOrganizer = row.ownerId === userId;
+      return {
+        id: row.id,
+        name: row.name,
+        status: row.status,
+        participantCount: row.participantCount,
+        isOrganizer,
+        drawScheduledAt: toIso(row.drawScheduledAt),
+        eventAt: toIso(row.eventAt),
+        createdAt: row.createdAt.toISOString(),
+        membershipStatus: row.membershipStatus,
+        organizerName: row.organizerName,
+        pendingCount: isOrganizer ? row.pendingCount : null,
+      };
+    });
+    // Pedido pendente fica em Ativos.
+    const isClosed = (group: GroupSummary) =>
+      group.status === 'CLOSED' && group.membershipStatus === 'APPROVED';
     return {
-      active: summaries.filter((group) => group.status !== 'CLOSED'),
-      closed: summaries.filter((group) => group.status === 'CLOSED'),
+      active: summaries.filter((group) => !isClosed(group)),
+      closed: summaries.filter(isClosed),
     };
   }
 

@@ -12,6 +12,9 @@ const SUMMARY: GroupSummary = {
   drawScheduledAt: '2026-12-10T23:00:00.000Z',
   eventAt: '2026-12-20T22:00:00.000Z',
   createdAt: '2026-11-21T12:00:00.000Z',
+  membershipStatus: 'APPROVED',
+  organizerName: 'Ana Souza',
+  pendingCount: null,
 };
 
 describe('GroupCard', () => {
