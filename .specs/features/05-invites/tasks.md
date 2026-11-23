@@ -131,9 +131,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/invites/invite-code.spec.ts`: `código do convite > gera 10 caracteres do alfabeto sem 0, 1, i, l e o`, `> gera códigos diferentes em 1000 chamadas`, `> normaliza maiúsculas para minúsculas`, `> recusa código com tamanho ou caractere fora do alfabeto`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 372 tests pass na API
+- [x] Testes em `src/invites/invite-code.spec.ts`: `código do convite > gera 10 caracteres do alfabeto sem 0, 1, i, l e o`, `> gera códigos diferentes em 1000 chamadas`, `> normaliza maiúsculas para minúsculas`, `> recusa código com tamanho ou caractere fora do alfabeto`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 372 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick
