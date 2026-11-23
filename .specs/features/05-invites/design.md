@@ -167,8 +167,8 @@ Aprovar, recusar, remover, sair, transferir e gerar link seguem o mesmo molde: `
 #### `GroupMembersController` (`/groups/:id`)
 
 - `GET /groups/:id/members?search=&cursor=` → `MembersPage`.
-- `POST /groups/:id/members/:membershipId/approve` → `MemberItem`.
-- `POST /groups/:id/members/:membershipId/reject` → `MemberItem`.
+- `POST /groups/:id/members/:membershipId/approve` com `{ from }` → `MemberItem`.
+- `POST /groups/:id/members/:membershipId/reject` com `{ from }` → `MemberItem`.
 - `DELETE /groups/:id/members/:membershipId` → 204 (remover: participação vira `REJECTED`).
 - `POST /groups/:id/leave` → 204 (apaga a participação).
 - `POST /groups/:id/transfer` com `{ membershipId }` → `GroupDetail`.
@@ -185,6 +185,7 @@ Aprovar, recusar, remover, sair, transferir e gerar link seguem o mesmo molde: `
 
 - `list(userId, groupId, { search, cursor })`, `approve`, `reject`, `remove`, `leave`, `transfer`.
 - `approve` / `reject` aceitam a participação no estado pedido e devolvem o estado atual sem aviso (INV-04 AC 9).
+- `from` (`PENDING` ou `REJECTED`) é o status que a tela mostrava; se a participação não está mais nele, a API devolve o estado atual sem aviso, e só o primeiro de aprovar e recusar simultâneos vale, nas duas ordens. Recusar um aprovado responde 404 "Participante não encontrado." (decisões de 2026-11-23, na execução).
 - `transfer`: status ENCERRADO 409 "Grupo encerrado não pode ser alterado."; alvo que não é aprovado ou é quem organiza 404 "Participante não encontrado."; troca `group.ownerId`.
 
 #### `invite-emails.ts`

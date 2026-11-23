@@ -178,8 +178,8 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 5. WHEN quem organiza desmarca "Exigir aprovação para entrar" e salva o grupo THEN o sistema SHALL aprovar, na mesma transação, todos os pedidos pendentes do grupo.
 6. IF o grupo não está ABERTO THEN a API SHALL responder 409 "Com o sorteio feito, ninguém entra nem sai do grupo." a aprovar ou recusar, sem mudar a participação (RN07).
 7. IF quem aprova ou recusa é participante aprovado mas não organiza o grupo THEN a API SHALL responder 403 "Só quem organiza pode alterar o grupo." e não mudar a participação.
-8. IF a participação não existe ou não é do grupo THEN a API SHALL responder 404 "Participante não encontrado." e não mudar nada.
-9. IF a participação já está no estado pedido THEN a API SHALL devolver o estado atual sem enviar outro aviso.
+8. IF a participação não existe, não é do grupo ou, ao recusar, está aprovada THEN a API SHALL responder 404 "Participante não encontrado." e não mudar nada (recusa de aprovado, user: "404 Participante não encontrado. (Recomendado)", 2026-11-23).
+9. IF a participação já está no estado pedido, ou não está mais no estado que a tela mostrava (`from` do pedido), THEN a API SHALL devolver o estado atual sem enviar outro aviso (estado visto, user: "Site manda o estado visto (Recomendado)", 2026-11-23).
 10. The sistema SHALL não mostrar pendentes nem recusados a quem não organiza o grupo, nem pela tela nem pela API.
 
 **Independent Test**: Num grupo com aprovação, o organizador aprova um pedido e recusa outro; o recusado aparece com "Aprovar" e, aprovado depois, vai para a lista; um participante comum recebe 403 ao tentar aprovar pela API.
