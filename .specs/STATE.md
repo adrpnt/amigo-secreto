@@ -182,8 +182,8 @@
 - **Phase / Task**: fase 1 (T1 a T8) concluída na branch da PER-111; gate Build verde em `fc4fbb0` (shared 27, API 396, web 95, e2e 79)
 - **Completed**: T1 a T8; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (lista de e-mails, `inviteCode` em três asserções da `04-groups`, texto e arredondamento do 429 de convites por e-mail, com o INV-11 AC 6 emendado)
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 1; depois, criar a branch da PER-112 a partir da `main` atualizada, mover a issue para In Progress e começar a T9
-- **Linear**: milestone `05 · Invites`; PER-111 com T1 a T8 marcadas e PR aberto; PER-112 a PER-116 em Backlog
+- **Next step**: criar a branch da PER-112 a partir da `main` atualizada, mover a issue para In Progress e começar a T9; na T10, trocar o `MembershipStatus` da entidade pelo do shared
+- **Linear**: milestone `05 · Invites`; PER-111 com T1 a T8 marcadas e PR #23 mergeado; PER-112 a PER-116 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-111-fase-1-regras-compartilhadas-e-banco
+- **Branch**: main
