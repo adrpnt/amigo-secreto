@@ -15,7 +15,9 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { EmailService } from '../email/email.service.js';
+import { GroupAccess } from '../groups/group-access.service.js';
 import { Group } from '../groups/group.entity.js';
+import { isInviteCodeCollision } from '../groups/groups.service.js';
 import { Membership } from '../groups/membership.entity.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import {
@@ -23,7 +25,7 @@ import {
   rateLimitKey,
 } from '../rate-limit/rate-limit.service.js';
 import { User } from '../users/user.entity.js';
-import { normalizeInviteCode } from './invite-code.js';
+import { generateInviteCode, normalizeInviteCode } from './invite-code.js';
 import { joinRequestEmail, memberJoinedEmail } from './invite-emails.js';
 import { isPreviewBot } from './preview-bots.js';
 
@@ -32,12 +34,16 @@ export const DRAWN_GROUP_ENTRY =
   'Este grupo já fez o sorteio e não aceita novas entradas.';
 export const CLOSED_GROUP_ENTRY =
   'Este grupo foi encerrado e não aceita novas entradas.';
+export const GROUP_NOT_OPEN =
+  'Com o sorteio feito, ninguém entra nem sai do grupo.';
 
 const VIEW_WINDOW_MS = 60_000;
 const VIEW_LIMIT = 60;
 const BOT_VIEW_LIMIT = 600;
 const JOIN_WINDOW_MS = 60 * 60 * 1000;
 const JOIN_LIMIT = 30;
+const REGENERATE_WINDOW_MS = 60 * 60 * 1000;
+const REGENERATE_LIMIT = 10;
 
 // Grupo do código, com o nome de quem organiza e a participação de quem abre
 // (nula sem sessão ou sem participação).
@@ -76,6 +82,7 @@ function toJoinResult(status: MembershipStatus, groupId: string): JoinResult {
 export class InvitesService {
   constructor(
     private readonly dataSource: DataSource,
+    private readonly access: GroupAccess,
     private readonly rateLimit: RateLimitService,
     private readonly events: BusinessEventsService,
     private readonly email: EmailService,
@@ -210,6 +217,49 @@ export class InvitesService {
       );
     }
     return result;
+  }
+
+  // O limite do grupo vem depois de 404, 403 e 409 e entra na transação: só
+  // troca feita conta. Na rara colisão do código sorteado, sorteia outro uma vez.
+  async regenerate(
+    user: SessionUser,
+    groupId: string,
+  ): Promise<{ inviteCode: string }> {
+    const replaceCode = () =>
+      this.dataSource.transaction(async (manager) => {
+        const { group } = await this.access.requireOrganizer(user.id, groupId, {
+          manager,
+          lock: true,
+        });
+        if (group.status !== 'OPEN') {
+          throw new ConflictException(GROUP_NOT_OPEN);
+        }
+        await this.rateLimit.assertWithinLimits(
+          [
+            {
+              key: rateLimitKey('invites.regenerate', 'group', group.id),
+              limit: REGENERATE_LIMIT,
+              windowMs: REGENERATE_WINDOW_MS,
+            },
+          ],
+          { manager },
+        );
+        const inviteCode = generateInviteCode();
+        await manager
+          .getRepository(Group)
+          .update({ id: group.id }, { inviteCode });
+        return inviteCode;
+      });
+
+    let inviteCode: string;
+    try {
+      inviteCode = await replaceCode();
+    } catch (error) {
+      if (!isInviteCodeCollision(error)) throw error;
+      inviteCode = await replaceCode();
+    }
+    this.events.record('invite.regenerated', { groupId });
+    return { inviteCode };
   }
 
   // Vem antes de procurar o código: acima do limite, todo código recebe 429,

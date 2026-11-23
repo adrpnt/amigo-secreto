@@ -324,9 +324,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `test/invites-regenerate.int-spec.ts`: `gerar novo link > troca o código do grupo e devolve o novo`, `> o código antigo passa a responder 404 ao abrir e ao entrar`, `> mantém todas as participações do grupo`, `> responde 409 com o grupo SORTEADO ou ENCERRADO e mantém o código`, `> responde 403 a participante que não organiza e mantém o código`, `> responde 404 a quem não participa`, `> responde 429 à 11ª troca da hora do grupo e aceita a 10ª`, `> emite invite.regenerated sem o código`, `> não emite invite.regenerated quando a troca é recusada`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 437 tests pass na API
+- [x] Testes em `test/invites-regenerate.int-spec.ts`: `gerar novo link > troca o código do grupo e devolve o novo`, `> o código antigo passa a responder 404 ao abrir e ao entrar`, `> mantém todas as participações do grupo`, `> responde 409 com o grupo SORTEADO ou ENCERRADO e mantém o código`, `> responde 403 a participante que não organiza e mantém o código`, `> responde 404 a quem não participa`, `> responde 429 à 11ª troca da hora do grupo e aceita a 10ª`, `> emite invite.regenerated sem o código`, `> não emite invite.regenerated quando a troca é recusada`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 437 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

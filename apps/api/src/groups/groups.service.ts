@@ -127,7 +127,7 @@ function changedFields(group: Group, next: GroupFields): string[] {
   });
 }
 
-function isInviteCodeCollision(error: unknown): boolean {
+export function isInviteCodeCollision(error: unknown): boolean {
   if (!(error instanceof QueryFailedError)) return false;
   const driverError = error.driverError as {
     code?: string;
