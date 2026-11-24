@@ -1,5 +1,6 @@
 'use client';
 
+import { isEmailAddress } from '@amigo-secreto/shared';
 import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiFetch } from '@/lib/api-fetch';
-import { isValidEmail } from '@/lib/email';
 import { safeNext } from '@/lib/safe-next';
 
 type SignInValues = {
@@ -24,7 +24,7 @@ const GENERIC_ERROR = 'Algo deu errado. Tente de novo.';
 
 function validate(values: SignInValues): FieldErrors {
   const errors: FieldErrors = {};
-  if (!isValidEmail(values.email)) errors.email = 'Informe um e-mail válido.';
+  if (!isEmailAddress(values.email)) errors.email = 'Informe um e-mail válido.';
   if (values.password.length === 0) errors.password = 'Informe sua senha.';
   return errors;
 }

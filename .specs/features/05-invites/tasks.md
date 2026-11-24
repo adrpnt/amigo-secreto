@@ -561,9 +561,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Os testes de unidade e os e2e de cadastro, entrada e recuperação passam sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 101 tests pass no web
+- [x] Os testes de unidade e os e2e de cadastro, entrada e recuperação passam sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 101 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
