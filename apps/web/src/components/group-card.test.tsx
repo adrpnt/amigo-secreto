@@ -51,4 +51,55 @@ describe('GroupCard', () => {
     expect(link).toContainElement(screen.getByText('3 participantes'));
     expect(link).toContainElement(screen.getByText('Sorteio em 10/12/2026'));
   });
+
+  it('pendente mostra nome, Organizado por e Aguardando aprovação, sem link', () => {
+    render(
+      <GroupCard
+        group={{ ...SUMMARY, membershipStatus: 'PENDING', participantCount: 0 }}
+      />,
+    );
+
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Família Souza' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Organizado por Ana Souza')).toBeInTheDocument();
+    const tag = screen.getByText('Aguardando aprovação');
+    expect(tag).toHaveTextContent(/^Aguardando aprovação$/);
+    expect(tag.querySelector('svg')).not.toBeNull();
+    expect(screen.queryByRole('link')).toBeNull();
+    expect(screen.queryByText('ABERTO')).toBeNull();
+    expect(screen.queryByText(/participante/)).toBeNull();
+    expect(screen.queryByText('Sorteio em 10/12/2026')).toBeNull();
+  });
+
+  it('mostra 1 pendente e N pendentes a quem organiza', () => {
+    const { unmount } = render(
+      <GroupCard group={{ ...SUMMARY, isOrganizer: true, pendingCount: 1 }} />,
+    );
+    expect(screen.getByText('3 participantes, 1 pendente')).toBeInTheDocument();
+    unmount();
+
+    render(
+      <GroupCard group={{ ...SUMMARY, isOrganizer: true, pendingCount: 2 }} />,
+    );
+    expect(
+      screen.getByText('3 participantes, 2 pendentes'),
+    ).toBeInTheDocument();
+  });
+
+  it('não mostra pendentes quando não há pedidos', () => {
+    const { unmount } = render(
+      <GroupCard group={{ ...SUMMARY, isOrganizer: true, pendingCount: 0 }} />,
+    );
+    expect(screen.getByText('3 participantes')).toHaveTextContent(
+      /^3 participantes$/,
+    );
+    unmount();
+
+    render(<GroupCard group={SUMMARY} />);
+    expect(screen.getByText('3 participantes')).toHaveTextContent(
+      /^3 participantes$/,
+    );
+    expect(screen.queryByText(/pendente/)).toBeNull();
+  });
 });

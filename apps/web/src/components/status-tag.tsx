@@ -1,10 +1,19 @@
 import type { ReactNode } from 'react';
-import type { GroupStatus } from '@amigo-secreto/shared';
-import { Archive, Gift, LockOpen, type LucideIcon } from 'lucide-react';
+import type { GroupStatus, MembershipStatus } from '@amigo-secreto/shared';
+import {
+  Archive,
+  Clock,
+  Gift,
+  LockOpen,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const GROUP_STATUS: Record<
-  GroupStatus,
+type TagStatus = GroupStatus | Exclude<MembershipStatus, 'APPROVED'>;
+
+const STATUS: Record<
+  TagStatus,
   { label: string; icon: LucideIcon; className: string }
 > = {
   OPEN: {
@@ -22,17 +31,30 @@ const GROUP_STATUS: Record<
     icon: Archive,
     className: 'bg-muted text-muted-foreground',
   },
+  PENDING: {
+    label: 'Pendente',
+    icon: Clock,
+    className: 'bg-warning-subtle text-warning-subtle-foreground',
+  },
+  REJECTED: {
+    label: 'Recusado',
+    icon: X,
+    className: 'bg-destructive-subtle text-destructive-subtle-foreground',
+  },
 };
+
+// Status de grupo em maiúsculas; status de participação em frase normal.
+const UPPERCASE = new Set<TagStatus>(['OPEN', 'DRAWN', 'CLOSED']);
 
 const BASE_CLASS =
   'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs leading-4 font-medium whitespace-nowrap';
 
 type StatusTagProps =
-  | { status: GroupStatus; children?: never }
+  | { status: TagStatus; children?: never }
   | { status?: never; children: ReactNode };
 
-// Status do grupo em maiúsculas, sempre com ícone e palavra. Sem status, a tag
-// é neutra e mostra o texto recebido ("Você organiza").
+// Status do grupo ou da participação, sempre com ícone e palavra. Sem status, a
+// tag é neutra e mostra o texto recebido ("Você organiza").
 export function StatusTag(props: StatusTagProps) {
   if (!props.status) {
     return (
@@ -44,9 +66,15 @@ export function StatusTag(props: StatusTagProps) {
     );
   }
 
-  const { label, icon: Icon, className } = GROUP_STATUS[props.status];
+  const { label, icon: Icon, className } = STATUS[props.status];
   return (
-    <span className={cn(BASE_CLASS, 'tracking-[0.04em]', className)}>
+    <span
+      className={cn(
+        BASE_CLASS,
+        UPPERCASE.has(props.status) && 'tracking-[0.04em]',
+        className,
+      )}
+    >
       <Icon aria-hidden="true" className="size-3.5" />
       {label}
     </span>
