@@ -329,6 +329,87 @@ test.describe('grupos', () => {
       eventLocation: null,
     });
   });
+
+  test('as abas levam de Grupo a Participantes e de volta', async ({
+    page,
+  }) => {
+    await signedInAs(page);
+    const group = await createGroup(page.request, {
+      name: `Família ${randomUUID().slice(0, 8)}`,
+    });
+
+    await page.goto(`/grupos/${group.id}`);
+    const tabs = page.getByRole('navigation', { name: 'Seções do grupo' });
+    await expect(tabs.getByRole('link', { name: 'Grupo' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+
+    await tabs.getByRole('link', { name: 'Participantes' }).click();
+    await expect(page).toHaveURL(`/grupos/${group.id}/participantes`);
+    await expect(
+      tabs.getByRole('link', { name: 'Participantes' }),
+    ).toHaveAttribute('aria-current', 'page');
+    await expect(tabs.getByRole('link', { name: 'Grupo' })).not.toHaveAttribute(
+      'aria-current',
+    );
+    await expect(
+      page.getByRole('heading', { level: 1, name: group.name }),
+    ).toBeVisible();
+
+    await tabs.getByRole('link', { name: 'Grupo' }).click();
+    await expect(page).toHaveURL(`/grupos/${group.id}`);
+    await expect(tabs.getByRole('link', { name: 'Grupo' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  });
+
+  test('participante sai do grupo e o grupo some de Meus grupos', async ({
+    page,
+    request,
+  }) => {
+    const ownerEmail = newEmail();
+    await registerAccount(request, ownerEmail);
+    await signIn(request, ownerEmail);
+    const name = `Firma ${randomUUID().slice(0, 8)}`;
+    const group = await createGroup(request, { name });
+    await signedInAs(page);
+    const join = await page.request.post(
+      `/api/invites/${group.inviteCode}/join`,
+      { headers: { 'X-CSRF-Token': await csrfToken(page.request) } },
+    );
+    expect(join.status()).toBe(200);
+
+    await page.goto(`/grupos/${group.id}`);
+    await page.getByRole('button', { name: 'Sair do grupo' }).click();
+    const dialog = page.getByRole('dialog', {
+      name: `Sair do grupo ${name}?`,
+    });
+    await dialog.getByRole('button', { name: 'Sair do grupo' }).click();
+
+    await expect(page).toHaveURL('/grupos');
+    await expect(
+      page.getByText('Você ainda não participa de nenhum grupo.'),
+    ).toBeVisible();
+    await expect(page.getByText(name)).toHaveCount(0);
+  });
+
+  test('a edição do grupo não mostra as abas', async ({ page }) => {
+    await signedInAs(page);
+    const group = await createGroup(page.request, {
+      name: `Família ${randomUUID().slice(0, 8)}`,
+    });
+
+    await page.goto(`/grupos/${group.id}/editar`);
+
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Editar grupo' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('navigation', { name: 'Seções do grupo' }),
+    ).toHaveCount(0);
+  });
 });
 
 test.describe('navegação', () => {
