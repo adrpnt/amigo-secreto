@@ -778,9 +778,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/lib/invites.test.ts`: `getInvite > repassa cookie, X-Forwarded-For e User-Agent e devolve o convite`, `> devolve null no 404`, `> devolve a mensagem no 429`, `> lança em outro status`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 159 tests pass no web
+- [x] Testes em `src/lib/invites.test.ts`: `getInvite > repassa cookie, X-Forwarded-For e User-Agent e devolve o convite`, `> devolve null no 404`, `> devolve a mensagem no 429`, `> lança em outro status`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 159 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
