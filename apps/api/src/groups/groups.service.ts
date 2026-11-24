@@ -307,9 +307,12 @@ export class GroupsService {
         const next = toGroupFields(input);
         const changed = changedFields(group, next);
         // Desligar a aprovação aprova os pedidos pendentes na mesma
-        // transação: pendente sobrando travaria o sorteio.
+        // transação: pendente sobrando travaria o sorteio. Com o sorteio
+        // feito ninguém entra, então o grupo SORTEADO só salva o campo.
         const turnsOffApproval =
-          group.requiresApproval && !next.requiresApproval;
+          group.status === 'OPEN' &&
+          group.requiresApproval &&
+          !next.requiresApproval;
         if (changed.length > 0) {
           Object.assign(group, next);
           await manager.getRepository(Group).save(group);

@@ -1,6 +1,7 @@
 # Invites Specification
 
 **Approved**: 2026-11-23 - user: "Aprovo a spec como está."
+**Amended**: 2026-11-24 - na verificação: com o grupo SORTEADO, desligar a aprovação salva o campo e não aprova os pendentes (INV-04 AC 11), user: "Salva o campo, não aprova (Recomendado)", entre essa e "409 ao mudar a aprovação".
 **Amended**: 2026-11-23 - no Design: robôs de preview têm limite próprio de 600 por minuto por IP (INV-02 AC 14 e AC 15), user: "Limite próprio de 600/min (Recomendado)", entre essa, "Manter 60/min para todos" e "Robôs sem limite"; acima do limite por IP, abrir e entrar respondem 429 antes de procurar o código (INV-02 AC 16, exceção ao AD-016), user: "429 antes no convite (Recomendado)", entre essa e "Manter a ordem do AD-016".
 
 ## Problem Statement
@@ -181,6 +182,7 @@ Every ambiguity is resolved or recorded here - nothing is left silently unclear.
 8. IF a participação não existe, não é do grupo ou, ao recusar, está aprovada THEN a API SHALL responder 404 "Participante não encontrado." e não mudar nada (recusa de aprovado, user: "404 Participante não encontrado. (Recomendado)", 2026-11-23).
 9. IF a participação já está no estado pedido, ou não está mais no estado que a tela mostrava (`from` do pedido), THEN a API SHALL devolver o estado atual sem enviar outro aviso (estado visto, user: "Site manda o estado visto (Recomendado)", 2026-11-23).
 10. The sistema SHALL não mostrar pendentes nem recusados a quem não organiza o grupo, nem pela tela nem pela API.
+11. WHILE o grupo está SORTEADO, WHEN quem organiza desmarca "Exigir aprovação para entrar" e salva o grupo, THEN o sistema SHALL salvar o campo e manter os pedidos pendentes como estão, sem aviso nem evento (achado da verificação, user: "Salva o campo, não aprova (Recomendado)", 2026-11-24).
 
 **Independent Test**: Num grupo com aprovação, o organizador aprova um pedido e recusa outro; o recusado aparece com "Aprovar" e, aprovado depois, vai para a lista; um participante comum recebe 403 ao tentar aprovar pela API.
 
