@@ -179,11 +179,11 @@
 ## Handoff
 
 - **Feature**: 05-invites (`.specs/features/05-invites/`), em execução
-- **Phase / Task**: fase 4 (T20 a T24) concluída na branch da PER-114; gate Build verde em `795de19` (shared 27, API 516, web 122, e2e 79)
-- **Completed**: T1 a T24; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (na fase 4: `WEB_URL` do e2e no `playwright.config.ts`, frase do README; "Convidar por e-mail" abre o formulário no próprio bloco, WhatsApp como link, aviso no rodapé por 3 s, erros de gerar link como no GroupActions; sucesso do convite por e-mail em alerta verde, ajuda do design system, erros como no GroupForm). A T23 ganhou o teste `InviteBlock > Convidar por e-mail mostra e esconde o formulário` (prova da C88); contagens do web da T23 em diante subiram 1
+- **Phase / Task**: fase 5 (T25 a T30) concluída na branch da PER-115; gate Build verde em `ebc6e1c` (shared 27, API 516, web 155, e2e 79)
+- **Completed**: T1 a T30; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (na fase 5: StatusTag com Pendente e Recusado, "Ações para {nome}", botões de 44 px, tag "Organiza" neutra; lista com callbacks e `reloadKey`, recarga da 1ª página com a busca atual, "Carregando…" e alerta de erro, `h2` e busca com rótulo visível; erros das ações como no bloco de convite, "Removendo…"/"Transferindo…", transferir em `tone="primary"`; pendentes na linha de participantes do card e card pendente só com o que a spec pede; nav "Seções do grupo" sem contagem; "Sair do grupo" em contorno, 204/404 levam a `/grupos`). A T25 ganhou o teste `StatusTag > escreve Pendente e Recusado com ícone`; contagens do web da T25 em diante subiram 1
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 4, criar a branch da PER-115 a partir da `main` atualizada, mover a issue para In Progress e começar a T25
-- **Linear**: milestone `05 · Invites`; PER-111 a PER-113 mergeadas; PER-114 com T20 a T24 marcadas e PR aberto; PER-115 e PER-116 em Backlog
+- **Next step**: depois do merge do PR da fase 5, criar a branch da PER-116 a partir da `main` atualizada, mover a issue para In Progress e começar a T31; ao fim da fase 6, o fechamento da feature antes do PR
+- **Linear**: milestone `05 · Invites`; PER-111 a PER-114 mergeadas; PER-115 com T25 a T30 marcadas e PR aberto; PER-116 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-114-fase-4-base-do-site-e-bloco-de-convite
+- **Branch**: pntadr/per-115-fase-5-participantes-e-navegacao-no-site
