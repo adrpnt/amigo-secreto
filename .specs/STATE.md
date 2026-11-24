@@ -178,12 +178,12 @@
 
 ## Handoff
 
-- **Feature**: 05-invites (`.specs/features/05-invites/`), em execução
-- **Phase / Task**: fase 5 (T25 a T30) concluída na branch da PER-115; gate Build verde em `ebc6e1c` (shared 27, API 516, web 155, e2e 79)
-- **Completed**: T1 a T30; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (na fase 5: StatusTag com Pendente e Recusado, "Ações para {nome}", botões de 44 px, tag "Organiza" neutra; lista com callbacks e `reloadKey`, recarga da 1ª página com a busca atual, "Carregando…" e alerta de erro, `h2` e busca com rótulo visível; erros das ações como no bloco de convite, "Removendo…"/"Transferindo…", transferir em `tone="primary"`; pendentes na linha de participantes do card e card pendente só com o que a spec pede; nav "Seções do grupo" sem contagem; "Sair do grupo" em contorno, 204/404 levam a `/grupos`). A T25 ganhou o teste `StatusTag > escreve Pendente e Recusado com ícone`; contagens do web da T25 em diante subiram 1
+- **Feature**: 05-invites (`.specs/features/05-invites/`), concluída; `validate_verification.py` com saída 0 em `a174a58`
+- **Phase / Task**: fase 6 (T31 a T37) concluída na branch da PER-116; gate Build verde em `fcc75cd` (shared 27, API 516, web 182, e2e 105); provas da rodada 2 verdes em `a174a58` (295 de 295)
+- **Completed**: T1 a T37; walk das histórias registrado no `**Walked:**`; Verifier independente com 2 achados, os dois fechados: grupo SORTEADO que desliga a aprovação salva o campo e mantém os pendentes (INV-04 AC 11, check C134, `ab9a8dd`) e prova da fonte criptográfica do código do convite (C8, `a174a58`); lições L-026 e L-027 registradas como candidatas. O alerta sobre o preview no Telegram não se confirmou e a mudança foi descartada antes do commit
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 5, criar a branch da PER-116 a partir da `main` atualizada, mover a issue para In Progress e começar a T31; ao fim da fase 6, o fechamento da feature antes do PR
-- **Linear**: milestone `05 · Invites`; PER-111 a PER-114 mergeadas; PER-115 com T25 a T30 marcadas e PR aberto; PER-116 em Backlog
+- **Next step**: push da branch e PR da fase 6 contra a `main`, depois esperar a revisão
+- **Linear**: milestone `05 · Invites`; PER-111 a PER-115 mergeadas; PER-116 com T31 a T37 marcadas, em In Progress
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-115-fase-5-participantes-e-navegacao-no-site
+- **Branch**: pntadr/per-116-fase-6-telas

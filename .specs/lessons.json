@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 26,
+  "next_id": 28,
   "lessons": [
     {
       "id": "L-001",
@@ -456,6 +456,42 @@
       ],
       "created": "2026-11-22T13:27:53Z",
       "last_seen": "2026-11-22T13:27:53Z"
+    },
+    {
+      "id": "L-026",
+      "key": "ac_gap::provar uma regra comum a varias operacoes em cada operacao inclusive nas recusas de cada uma",
+      "text": "Provar uma regra comum a várias operações em cada operação, inclusive nas recusas de cada uma.",
+      "signal": "ac_gap",
+      "scope": "events",
+      "status": "candidate",
+      "features": [
+        "05-invites"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "verification.md achado 1 (groups.service.ts update, INV-04 AC 11, C134) (events)"
+      ],
+      "created": "2026-11-24T12:20:22Z",
+      "last_seen": "2026-11-24T12:20:22Z"
+    },
+    {
+      "id": "L-027",
+      "key": "weak_test::provar a fonte de um valor aleatorio controlando a funcao que sorteia nao so pelo formato e pela unicidade do resultado",
+      "text": "Provar a fonte de um valor aleatório controlando a função que sorteia, não só pelo formato e pela unicidade do resultado.",
+      "signal": "weak_test",
+      "scope": "security",
+      "status": "candidate",
+      "features": [
+        "05-invites"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "verification.md achado 2 (C8, invite-code.spec.ts) (security)"
+      ],
+      "created": "2026-11-24T12:20:22Z",
+      "last_seen": "2026-11-24T12:20:22Z"
     }
   ]
 }
