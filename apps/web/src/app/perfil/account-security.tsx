@@ -1,5 +1,6 @@
 'use client';
 
+import { isEmailAddress } from '@amigo-secreto/shared';
 import { CircleAlert } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { type FormEvent, useState } from 'react';
@@ -9,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiFetch } from '@/lib/api-fetch';
-import { isValidEmail } from '@/lib/email';
 
 const GENERIC_ERROR = 'Algo deu errado. Tente de novo.';
 const WRONG_PASSWORD = 'Senha atual incorreta.';
@@ -24,7 +24,7 @@ type FieldErrors = Partial<Record<keyof EmailChangeValues, string>>;
 
 function validate(values: EmailChangeValues): FieldErrors {
   const errors: FieldErrors = {};
-  if (!isValidEmail(values.newEmail)) {
+  if (!isEmailAddress(values.newEmail)) {
     errors.newEmail = 'Informe um e-mail válido.';
   }
   if (values.password.length === 0) {

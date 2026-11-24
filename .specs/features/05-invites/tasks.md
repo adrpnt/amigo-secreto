@@ -519,9 +519,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/lib/site-url.test.ts`: `siteUrl > lê WEB_URL da requisição`, `> usa http://localhost:3000 fora de produção sem WEB_URL`, `> lança em produção sem WEB_URL`; `siteMetadata > põe o WEB_URL no metadataBase`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 99 tests pass no web
+- [x] Testes em `src/lib/site-url.test.ts`: `siteUrl > lê WEB_URL da requisição`, `> usa http://localhost:3000 fora de produção sem WEB_URL`, `> lança em produção sem WEB_URL`; `siteMetadata > põe o WEB_URL no metadataBase`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 99 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -540,9 +540,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa X-Forwarded-For e User-Agent quando pedido`, `> não repassa os cabeçalhos do cliente por padrão`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 101 tests pass no web
+- [x] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa X-Forwarded-For e User-Agent quando pedido`, `> não repassa os cabeçalhos do cliente por padrão`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 101 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -561,9 +561,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Os testes de unidade e os e2e de cadastro, entrada e recuperação passam sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 101 tests pass no web
+- [x] Os testes de unidade e os e2e de cadastro, entrada e recuperação passam sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 101 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -582,10 +582,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/components/invite-block.test.tsx`: `InviteBlock > mostra Compartilhar no WhatsApp e o link inteiro num campo só leitura com Copiar link`, `> Compartilhar no WhatsApp abre wa.me com o texto e o link`, `> Copiar link copia e anuncia Link copiado`, `> seleciona o link quando o navegador recusa a cópia`, `> mostra Convidar por e-mail e Gerar novo link só para quem organiza`, `> troca o bloco pelo aviso com o grupo SORTEADO`, `> troca o bloco pelo aviso com o grupo ENCERRADO`, `> Gerar novo link confirma com os textos da spec e foco em Manter link`, `> confirmar mostra o link novo e anuncia Novo link gerado`, `> Manter link fecha sem trocar`, `> mostra a mensagem da API num 409 ou 429 ao gerar link`
-- [ ] Testes em `src/lib/whatsapp.test.ts`: `whatsappShareUrl > codifica o nome e o link no texto`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 113 tests pass no web
+- [x] Testes em `src/components/invite-block.test.tsx`: `InviteBlock > mostra Compartilhar no WhatsApp e o link inteiro num campo só leitura com Copiar link`, `> Compartilhar no WhatsApp abre wa.me com o texto e o link`, `> Copiar link copia e anuncia Link copiado`, `> seleciona o link quando o navegador recusa a cópia`, `> mostra Convidar por e-mail e Gerar novo link só para quem organiza`, `> troca o bloco pelo aviso com o grupo SORTEADO`, `> troca o bloco pelo aviso com o grupo ENCERRADO`, `> Gerar novo link confirma com os textos da spec e foco em Manter link`, `> confirmar mostra o link novo e anuncia Novo link gerado`, `> Manter link fecha sem trocar`, `> mostra a mensagem da API num 409 ou 429 ao gerar link`, `> Convidar por e-mail mostra e esconde o formulário`
+- [x] Testes em `src/lib/whatsapp.test.ts`: `whatsappShareUrl > codifica o nome e o link no texto`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 114 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -604,9 +604,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/components/email-invite-form.test.tsx`: `EmailInviteForm > mostra o campo E-mails e Enviar convites`, `> mostra Informe pelo menos um e-mail. sem enviar`, `> lista os inválidos sem enviar`, `> recusa mais de 20 sem enviar`, `> envia e mostra Convite enviado para 1 e-mail. e Convites enviados para N e-mails.`, `> desabilita o botão e mostra Enviando… durante o envio`, `> mostra a mensagem do 429 e do 409 da API`, `> mostra o erro do campo num 400 da API`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 121 tests pass no web
+- [x] Testes em `src/components/email-invite-form.test.tsx`: `EmailInviteForm > mostra o campo E-mails e Enviar convites`, `> mostra Informe pelo menos um e-mail. sem enviar`, `> lista os inválidos sem enviar`, `> recusa mais de 20 sem enviar`, `> envia e mostra Convite enviado para 1 e-mail. e Convites enviados para N e-mails.`, `> desabilita o botão e mostra Enviando… durante o envio`, `> mostra a mensagem do 429 e do 409 da API`, `> mostra o erro do campo num 400 da API`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 122 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -629,7 +629,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/components/participant-row.test.tsx`: `ParticipantRow > mostra avatar, nome e a tag Organiza em quem organiza`, `> mostra iniciais sem foto e nunca o e-mail`, `> pendente mostra Pendente e os botões Aprovar {nome} e Recusar {nome}`, `> recusado mostra Recusado e Aprovar {nome}`, `> menu de quem organiza mostra Transferir organização e Remover do grupo com o grupo ABERTO`, `> com o grupo SORTEADO o menu mostra só Transferir organização`, `> sem menu na linha de quem organiza e para quem não organiza`, `> não mostra Aprovar nem Recusar com o grupo fora de ABERTO`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 129 tests pass no web
+- [ ] Test count: 130 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -650,7 +650,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/components/participants-list.test.tsx`: `ParticipantsList > mostra o total de participantes aprovados`, `> Carregar mais acrescenta a página seguinte ao fim e some sem cursor`, `> busca na API depois de 300 ms com o termo`, `> mostra Ninguém encontrado com esse nome.`, `> descarta a resposta de uma busca antiga`, `> mostra a lista na ordem devolvida pela API sem reordenar`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 135 tests pass no web
+- [ ] Test count: 136 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -671,7 +671,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/components/member-actions.test.tsx`: `MemberActions > Aprovar chama a API e recarrega a lista`, `> Recusar chama a API sem confirmação e recarrega a lista`, `> Remover do grupo confirma com os textos da spec e foco em Manter no grupo`, `> Manter no grupo, Esc e toque fora fecham sem remover`, `> confirmar a remoção chama a API e recarrega a lista`, `> Transferir organização confirma com os textos da spec e foco em Manter organização`, `> confirmar a transferência chama a API e recarrega a página`, `> mostra a mensagem da API num 403, 404 ou 409`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 143 tests pass no web
+- [ ] Test count: 144 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -693,7 +693,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 - [ ] Testes em `src/components/group-card.test.tsx`: `GroupCard > pendente mostra nome, Organizado por e Aguardando aprovação, sem link`, `> mostra 1 pendente e N pendentes a quem organiza`, `> não mostra pendentes quando não há pedidos`
 - [ ] Os testes existentes do `GroupCard` e de `MyGroupsView` passam sem mudança de asserção
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 146 tests pass no web
+- [ ] Test count: 147 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -714,7 +714,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/components/group-tabs.test.tsx`: `GroupTabs > mostra Grupo e Participantes com a aba atual marcada`, `> cada aba leva à sua rota`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 148 tests pass no web
+- [ ] Test count: 149 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -735,7 +735,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/app/grupos/[id]/leave-group.test.tsx`: `LeaveGroup > mostra Sair do grupo a quem participa e não organiza com o grupo ABERTO`, `> não mostra Sair do grupo a quem organiza nem com o grupo fora de ABERTO`, `> confirma com os textos da spec e foco em Ficar no grupo`, `> confirmar chama a API e leva a /grupos`, `> mostra a mensagem da API num 409`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 153 tests pass no web
+- [ ] Test count: 154 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -758,7 +758,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `e2e/invites.spec.ts`: `convite › a imagem do preview é um PNG de 1200 x 630`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 153 tests pass no web e 80 no e2e
+- [ ] Test count: 154 tests pass no web e 80 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -779,7 +779,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/lib/invites.test.ts`: `getInvite > repassa cookie, X-Forwarded-For e User-Agent e devolve o convite`, `> devolve null no 404`, `> devolve a mensagem no 429`, `> lança em outro status`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 157 tests pass no web
+- [ ] Test count: 158 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -800,7 +800,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `src/app/convite/[code]/join-button.test.tsx`: `JoinButton > mostra Entrar no grupo sem aprovação`, `> mostra o texto da aprovação e Pedir para entrar com aprovação`, `> entrar leva a /grupos/{id}`, `> pedir para entrar atualiza a página`, `> desabilita o botão e mostra Entrando… durante o pedido`, `> mostra Não foi possível entrar no grupo. Tente de novo. e mantém o botão num erro inesperado`, `> mostra a mensagem da API num 409 ou 429`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 164 tests pass no web
+- [ ] Test count: 165 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
@@ -823,7 +823,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 - [ ] Testes em `src/app/convite/[code]/invite-metadata.test.ts`: `inviteMetadata > código válido usa Convite: {grupo}, a descrição e a imagem /og/convite.png de 1200 x 630`, `> código inválido usa Convite do Amigo Secreto sem dados de grupo`, `> 429 do robô monta o preview sem dados de grupo`, `> mantém marcação HTML do nome como texto nas meta tags`
 - [ ] Testes em `e2e/invites.spec.ts`: `convite › sem sessão mostra o grupo, cria conta e volta ao convite`, `› cria conta com Google pelo convite e volta ao convite`, `› entra no grupo sem aprovação e cai na página do grupo`, `› pede para entrar com aprovação, vê o aviso do pedido e o card em Meus grupos`, `› participante aprovado vai direto para o grupo`, `› código inexistente mostra Convite não encontrado`, `› aceita o código em maiúsculas`, `› as meta tags trazem o título, a descrição e a imagem do grupo`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 175 tests pass no web e 88 no e2e
+- [ ] Test count: 176 tests pass no web e 88 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -846,7 +846,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 - [ ] Testes em `e2e/groups.spec.ts`: `grupos › as abas levam de Grupo a Participantes e de volta`, `› participante sai do grupo e o grupo some de Meus grupos`, `› a edição do grupo não mostra as abas`
 - [ ] Os e2e existentes de `groups.spec.ts` passam sem mudança
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 176 tests pass no web e 91 no e2e
+- [ ] Test count: 177 tests pass no web e 91 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -867,7 +867,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `e2e/participants.spec.ts`: `participantes › mostra o bloco de convite e a lista com o total`, `› participante comum vê o link sem Gerar novo link nem Convidar por e-mail`, `› organizador aprova um pedido e recusa outro, e aprova o recusado depois`, `› organizador remove participante, que não entra de novo pelo link`, `› organizador transfere a organização e passa a ver o grupo como participante`, `› gerar novo link barra o link antigo`, `› convida por e-mail e o convite chega com o link do grupo`, `› Carregar mais traz os participantes seguintes e a busca ignora acentos`, `› Meus grupos mostra N pendentes a quem organiza`, `› pessoa pendente abre o grupo e a aba Participantes e vê Grupo não encontrado.`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 176 tests pass no web e 101 no e2e
+- [ ] Test count: 177 tests pass no web e 101 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -888,7 +888,7 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 - [ ] Testes em `e2e/accessibility.spec.ts`: `acessibilidade › /convite/{código} sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos/{id}/participantes sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos/{id} com as abas sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos com card pendente sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`
 - [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 176 tests pass no web e 105 no e2e
+- [ ] Test count: 177 tests pass no web e 105 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
@@ -1251,6 +1251,7 @@ Proof: run api | ✓ gerar novo link > responde 429 à 11ª troca da hora do gru
 
 **C88** - "Convidar por e-mail" mostra "E-mails", que separa por vírgula, ponto e vírgula, espaço ou quebra de linha, e "Enviar convites" (INV-11, AC 1)
 Proof: run web | ✓ EmailInviteForm > mostra o campo E-mails e Enviar convites
+Proof: run web | ✓ InviteBlock > Convidar por e-mail mostra e esconde o formulário
 Proof: run shared | ✓ parseInviteEmails > separa por vírgula, ponto e vírgula, espaço e quebra de linha
 Proof: run shared | ✓ parseInviteEmails > descarta separadores repetidos e pontas vazias
 
@@ -1460,7 +1461,7 @@ Proof: run web | ✓ inviteMetadata > mantém marcação HTML do nome como texto
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)"). T8 (2026-11-23): o tempo do 429 do limite de convites por e-mail arredonda para cima, e 60 minutos ou mais vira horas (user: "Para cima (Recomendado)"); com 1 minuto o texto diz "em 1 minuto." (user: '"em 1 minuto." (Recomendado)'), acrescentado ao INV-11 AC 6 na spec. Fase 2 (2026-11-23): o `membership.entity.ts` deixa de definir o próprio `MembershipStatus` e importa o do `@amigo-secreto/shared`, na T10, a primeira task que cria participação com o tipo do shared (user: "Pode trocar o MembershipStatus na fase 2."). T14 (2026-11-23): o teste `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo` da `04-groups` compara o card inteiro com `toEqual`; o objeto esperado recebe `membershipStatus`, `organizerName` e `pendingCount`, em vez de ficar sem mudança (user: "Acrescentar os campos (Recomendado)"). O teste `meus grupos > não lista grupo de que a pessoa não participa nem participação pendente ou recusada` contradiz o INV-06 AC 3: perde o grupo pendente e passa a se chamar `meus grupos > não lista grupo de que a pessoa não participa nem participação recusada`, e a linha Proof da C19 no `tasks.md` da `04-groups` recebe o nome novo (user: "Tirar o pendente e renomear (Recomendado)"). T15 (2026-11-23): o cursor não pula ninguém, mas quem muda de estado e cai depois do fim da página já carregada aparece de novo na página seguinte, no lugar novo; o teste `lista de participantes > aprovar alguém com a lista aberta não pula nem repete ninguém na página seguinte` aprova uma pessoa que cai antes e outra que cai depois do fim da página 1, prova que ninguém sem mudança pula ou repete e que a pessoa que mudou aparece uma vez na página 2, como aprovada; o nome do teste fica como está (user: "Os dois casos (Recomendado)"). Na mesma task, a busca ignora espaços no começo e no fim do termo, e só espaços conta como sem busca (user: "Manter o trim (Recomendado)"); `search` ou `cursor` repetidos na URL respondem 400 "Dados inválidos." (user: "400 Dados inválidos. (Recomendado)"). T16 (2026-11-23): recusar uma participação aprovada, inclusive a de quem organiza, responde 404 "Participante não encontrado." sem mudar nada (user: "404 Participante não encontrado. (Recomendado)"); aprovar e recusar levam no corpo `{ from }` com o status que a tela mostrava (`PENDING` ou `REJECTED`), e se a participação não está mais nele a API devolve o estado atual sem aviso, para que só o primeiro de aprovar e recusar simultâneos valha nas duas ordens; a T27 manda o status da linha (user: "Site manda o estado visto (Recomendado)"). INV-04 AC 8 e AC 9 e o design receberam o texto; a T16 ganha dois testes, um para cada critério novo, com prova nas C43 e C44, e as contagens da API das T16 a T19 sobem 2. T17 a T19 (2026-11-23), precedência de erros: remover a participação de quem organiza num grupo SORTEADO ou ENCERRADO responde o 409 do status do grupo (user: "Status primeiro (Recomendado)"); quem organiza pedindo para sair de um grupo SORTEADO ou ENCERRADO recebe 409 "Transfira a organização antes de sair do grupo." (user: "Organizador primeiro (Recomendado)"); transferir com `membershipId` que não é UUID responde 404 "Participante não encontrado." (user: "404 Participante não encontrado. (Recomendado)").
+**Settled mid-build:** T1 (2026-11-23), lista de e-mails do convite: os inválidos aparecem em "Confira estes e-mails: {lista}" separados por ", ", na ordem e na grafia digitadas, cada repetido uma vez só (user: "Vírgula, como digitado (Recomendado)"); com inválidos e mais de 20 ao mesmo tempo, vale a mensagem dos inválidos (user: "Inválidos primeiro (Recomendado)"); o limite de 20 conta só os válidos distintos (user: "Só os válidos (Recomendado)"). T3 (2026-11-23): os testes `criar grupo > cria o grupo ABERTO só com o nome...` e `ver grupo > devolve os dados do grupo...` da `04-groups` comparam o corpo inteiro com `toEqual`; recebem `inviteCode` no corpo esperado, com o valor lido do banco, em vez de ficarem sem mudança (user: "Acrescentar o código (Recomendado)"). O teste `tabela group > é criada pela migration com as colunas do grupo` recebe a coluna `inviteCode` na lista esperada, e os INSERTs de preparação de `group-table`, `membership-table` e `group-access` passam a gravar um código, sem mexer em asserção (user: "Acrescentar a coluna (Recomendado)"). T8 (2026-11-23): o tempo do 429 do limite de convites por e-mail arredonda para cima, e 60 minutos ou mais vira horas (user: "Para cima (Recomendado)"); com 1 minuto o texto diz "em 1 minuto." (user: '"em 1 minuto." (Recomendado)'), acrescentado ao INV-11 AC 6 na spec. Fase 2 (2026-11-23): o `membership.entity.ts` deixa de definir o próprio `MembershipStatus` e importa o do `@amigo-secreto/shared`, na T10, a primeira task que cria participação com o tipo do shared (user: "Pode trocar o MembershipStatus na fase 2."). T14 (2026-11-23): o teste `meus grupos > separa ativos (ABERTO e SORTEADO) de encerrados, do mais novo para o mais antigo` da `04-groups` compara o card inteiro com `toEqual`; o objeto esperado recebe `membershipStatus`, `organizerName` e `pendingCount`, em vez de ficar sem mudança (user: "Acrescentar os campos (Recomendado)"). O teste `meus grupos > não lista grupo de que a pessoa não participa nem participação pendente ou recusada` contradiz o INV-06 AC 3: perde o grupo pendente e passa a se chamar `meus grupos > não lista grupo de que a pessoa não participa nem participação recusada`, e a linha Proof da C19 no `tasks.md` da `04-groups` recebe o nome novo (user: "Tirar o pendente e renomear (Recomendado)"). T15 (2026-11-23): o cursor não pula ninguém, mas quem muda de estado e cai depois do fim da página já carregada aparece de novo na página seguinte, no lugar novo; o teste `lista de participantes > aprovar alguém com a lista aberta não pula nem repete ninguém na página seguinte` aprova uma pessoa que cai antes e outra que cai depois do fim da página 1, prova que ninguém sem mudança pula ou repete e que a pessoa que mudou aparece uma vez na página 2, como aprovada; o nome do teste fica como está (user: "Os dois casos (Recomendado)"). Na mesma task, a busca ignora espaços no começo e no fim do termo, e só espaços conta como sem busca (user: "Manter o trim (Recomendado)"); `search` ou `cursor` repetidos na URL respondem 400 "Dados inválidos." (user: "400 Dados inválidos. (Recomendado)"). T16 (2026-11-23): recusar uma participação aprovada, inclusive a de quem organiza, responde 404 "Participante não encontrado." sem mudar nada (user: "404 Participante não encontrado. (Recomendado)"); aprovar e recusar levam no corpo `{ from }` com o status que a tela mostrava (`PENDING` ou `REJECTED`), e se a participação não está mais nele a API devolve o estado atual sem aviso, para que só o primeiro de aprovar e recusar simultâneos valha nas duas ordens; a T27 manda o status da linha (user: "Site manda o estado visto (Recomendado)"). INV-04 AC 8 e AC 9 e o design receberam o texto; a T16 ganha dois testes, um para cada critério novo, com prova nas C43 e C44, e as contagens da API das T16 a T19 sobem 2. T17 a T19 (2026-11-23), precedência de erros: remover a participação de quem organiza num grupo SORTEADO ou ENCERRADO responde o 409 do status do grupo (user: "Status primeiro (Recomendado)"); quem organiza pedindo para sair de um grupo SORTEADO ou ENCERRADO recebe 409 "Transfira a organização antes de sair do grupo." (user: "Organizador primeiro (Recomendado)"); transferir com `membershipId` que não é UUID responde 404 "Participante não encontrado." (user: "404 Participante não encontrado. (Recomendado)"). T20 (2026-11-23): o `WEB_URL` do e2e entra no `env` dos dois servidores do site no `playwright.config.ts`, cada um com a própria URL (`web` na 3200, `web-api-down` na 3100), e o `scripts/e2e.ts` fica sem mudança, porque é o Playwright que sobe o `next start` (user: "playwright.config, cada um a sua (Recomendado)"); a frase do passo 3 do README passa a dizer que `AUTH_SECRET` (API) e `WEB_URL` (API e web) têm padrões fora de produção e são obrigatórias em produção, e o `apps/web/.env.example` ganha `WEB_URL=http://localhost:3000` (user: "Ajustar a frase (Recomendado)"). T23 (2026-11-23): "Convidar por e-mail" mostra no próprio bloco, abaixo dos botões, o formulário que a página entrega ao `InviteBlock`, e tocar de novo esconde (`aria-expanded`); a T23 ganha o teste `InviteBlock > Convidar por e-mail mostra e esconde o formulário`, prova da C88, e as contagens do web da T23 em diante sobem 1 (user: "Abre no bloco (Recomendado)"). "Compartilhar no WhatsApp" é um link `target="_blank"` com `rel="noopener noreferrer"` e o estilo do botão principal (user: "Link com cara de botão (Recomendado)"). "Link copiado" e "Novo link gerado" aparecem numa faixa fixa no rodapé, fundo `foreground` e texto `background`, que some depois de 3 segundos; a região `role="status"` fica sempre na página (user: "Rodapé, some em 3 s (Recomendado)"). Ao confirmar "Gerar novo link", o botão mostra "Gerando…" e fica desabilitado; 409 e 429 mostram a mensagem da API num alerta dentro do bloco, outros erros "Não foi possível concluir. Tente de novo."; em todo erro a confirmação fecha e o link fica o mesmo (user: "Assim mesmo (Recomendado)"). T24 (2026-11-23): o sucesso do envio aparece num alerta verde abaixo do botão, com `role="status"`; o campo fica vazio, o formulário continua aberto, e o alerta some ao digitar de novo (user: "Alerta verde no formulário (Recomendado)"). O campo "E-mails" leva a ajuda do design system, "Separe por vírgula ou um por linha. Todos recebem o mesmo link.", ligada por `aria-describedby`, e o placeholder "ana@exemplo.com, bruno@exemplo.com" (user: "Texto do design system (Recomendado)"). Como no formulário de grupo: valida no envio e, depois do primeiro envio, a cada tecla; 400 com `fields` mostra o erro no campo; 403, 409 e 429 mostram a mensagem da API num alerta vermelho; outros erros, "Não foi possível enviar os convites. Tente de novo." (user: "Assim mesmo (Recomendado)").
 **Dispatched:** none
 **Walked:** none
 

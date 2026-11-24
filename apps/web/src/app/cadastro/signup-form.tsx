@@ -1,5 +1,6 @@
 'use client';
 
+import { isEmailAddress } from '@amigo-secreto/shared';
 import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { type FormEvent, type ReactNode, useState } from 'react';
@@ -10,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiFetch } from '@/lib/api-fetch';
-import { isValidEmail } from '@/lib/email';
 
 type SignUpValues = {
   name: string;
@@ -32,7 +32,7 @@ function validate(values: SignUpValues): FieldErrors {
   if (name.length === 0) errors.name = 'Informe seu nome.';
   else if ([...name].length > 80) errors.name = 'Use até 80 caracteres.';
 
-  if (!isValidEmail(values.email)) {
+  if (!isEmailAddress(values.email)) {
     errors.email = 'Informe um e-mail válido.';
   }
 

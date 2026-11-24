@@ -1,5 +1,6 @@
 'use client';
 
+import { isEmailAddress } from '@amigo-secreto/shared';
 import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { type FormEvent, useState } from 'react';
@@ -9,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { apiFetch } from '@/lib/api-fetch';
-import { isValidEmail } from '@/lib/email';
 
 const GENERIC_ERROR = 'Algo deu errado. Tente de novo.';
 
@@ -22,12 +22,14 @@ export function ForgotPasswordForm({ next }: { next?: string }) {
 
   // Antes do primeiro envio o campo não aparece com erro.
   const emailError =
-    submitted && !isValidEmail(email) ? 'Informe um e-mail válido.' : undefined;
+    submitted && !isEmailAddress(email)
+      ? 'Informe um e-mail válido.'
+      : undefined;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitted(true);
-    if (!isValidEmail(email)) return;
+    if (!isEmailAddress(email)) return;
 
     setFormError(null);
     setSubmitting(true);
