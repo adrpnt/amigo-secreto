@@ -271,4 +271,30 @@ describe('desligar a aprovação', () => {
       events.filter((record) => record.event === 'membership.approved'),
     ).toEqual([]);
   });
+
+  it('com o grupo SORTEADO salva o campo e mantém os pendentes, sem aviso nem evento', async () => {
+    const { groupId, cookies, pending } = await groupWithPending({
+      status: 'DRAWN',
+    });
+
+    const events = await captureEvents(() =>
+      updateGroup(cookies, groupId, {
+        name: 'Família',
+        requiresApproval: false,
+      }).expect(200),
+    );
+
+    const [group] = await api.dataSource.query<{ requiresApproval: boolean }[]>(
+      'SELECT "requiresApproval" FROM "group" WHERE id = $1',
+      [groupId],
+    );
+    expect(group.requiresApproval).toBe(false);
+    for (const person of pending) {
+      expect(await statusOf(groupId, person.id)).toBe('PENDING');
+      expect(await emailJobsTo(person.email)).toEqual([]);
+    }
+    expect(
+      events.filter((record) => record.event === 'membership.approved'),
+    ).toEqual([]);
+  });
 });

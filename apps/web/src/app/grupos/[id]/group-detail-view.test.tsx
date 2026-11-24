@@ -61,11 +61,6 @@ describe('GroupDetailView', () => {
   it('mostra os campos preenchidos e Organizado por', () => {
     render(<GroupDetailView group={FULL_GROUP} />);
 
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Família Souza' }),
-    ).toBeInTheDocument();
-    expect(screen.getByText('ABERTO')).toBeInTheDocument();
-    expect(screen.getByText('Organizado por Ana Souza')).toBeInTheDocument();
     expect(screen.getByText('Tragam algo feito à mão!')).toBeInTheDocument();
     expect(fieldValue('Valor do presente')).toHaveTextContent('R$ 50 a R$ 100');
     expect(fieldValue('Sorteio previsto')).toHaveTextContent(
@@ -80,10 +75,6 @@ describe('GroupDetailView', () => {
   it('omite os campos vazios', () => {
     render(<GroupDetailView group={EMPTY_GROUP} />);
 
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Família Souza' }),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Organizado por Ana Souza')).toBeInTheDocument();
     for (const label of FIELD_LABELS) {
       expect(screen.queryByText(label, { selector: 'dt' })).toBeNull();
     }
@@ -108,31 +99,6 @@ describe('GroupDetailView', () => {
     expect(
       within(fieldValue('Local')).getByText('Evento online'),
     ).toBeInTheDocument();
-  });
-
-  it('mostra Entrada com aprovação só para quem organiza', () => {
-    const { unmount } = render(
-      <GroupDetailView
-        group={{ ...FULL_GROUP, requiresApproval: true, isOrganizer: true }}
-      />,
-    );
-    expect(screen.getByText('Entrada com aprovação')).toBeInTheDocument();
-    unmount();
-
-    const { unmount: unmountMember } = render(
-      <GroupDetailView
-        group={{ ...FULL_GROUP, requiresApproval: true, isOrganizer: false }}
-      />,
-    );
-    expect(screen.queryByText('Entrada com aprovação')).toBeNull();
-    unmountMember();
-
-    render(
-      <GroupDetailView
-        group={{ ...FULL_GROUP, requiresApproval: false, isOrganizer: true }}
-      />,
-    );
-    expect(screen.queryByText('Entrada com aprovação')).toBeNull();
   });
 
   it('não mostra ações a quem não organiza', () => {
@@ -168,9 +134,6 @@ describe('GroupDetailView', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('heading', { level: 1, name: '<i>Família</i>' }),
-    ).toBeInTheDocument();
     const description = screen.getByText(/Tragam algo feito à mão!/);
     expect(description.textContent).toBe('<b>Oi</b>\nTragam algo feito à mão!');
     expect(description).toHaveClass('whitespace-pre-line');

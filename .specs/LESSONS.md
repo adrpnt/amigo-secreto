@@ -162,6 +162,18 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: C83 (achado 5) (transactions)
 - last seen: 2026-11-22T13:27:53Z
 
+### L-026 - Provar uma regra comum a várias operações em cada operação, inclusive nas recusas de cada uma.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `events` · harmful: 0
+- features: 05-invites
+- evidence: verification.md achado 1 (groups.service.ts update, INV-04 AC 11, C134) (events)
+- last seen: 2026-11-24T12:20:22Z
+
+### L-027 - Provar a fonte de um valor aleatório controlando a função que sorteia, não só pelo formato e pela unicidade do resultado.
+- signal: `weak_test` · recurrence: 1 feature(s) · scope: `security` · harmful: 0
+- features: 05-invites
+- evidence: verification.md achado 2 (C8, invite-code.spec.ts) (security)
+- last seen: 2026-11-24T12:20:22Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

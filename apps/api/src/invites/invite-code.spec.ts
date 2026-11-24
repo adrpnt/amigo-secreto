@@ -1,8 +1,15 @@
+import { randomInt } from 'node:crypto';
 import {
   INVITE_CODE_ALPHABET,
   generateInviteCode,
   normalizeInviteCode,
 } from './invite-code.js';
+
+// O randomInt real continua valendo; o teste da fonte controla a sequência.
+vi.mock('node:crypto', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:crypto')>();
+  return { ...actual, randomInt: vi.fn(actual.randomInt) };
+});
 
 const CODE_PATTERN = /^[23456789abcdefghjkmnpqrstuvwxyz]{10}$/;
 
@@ -19,6 +26,19 @@ describe('código do convite', () => {
       Array.from({ length: 1000 }, () => generateInviteCode()),
     );
     expect(codes.size).toBe(1000);
+  });
+
+  it('sorteia cada caractere com randomInt do node:crypto', () => {
+    const draw = vi.mocked<(max: number) => number>(randomInt);
+    draw.mockClear();
+    for (const index of [30, 0, 1, 2, 3, 4, 5, 6, 7, 8]) {
+      draw.mockReturnValueOnce(index);
+    }
+
+    expect(generateInviteCode()).toBe('z23456789a');
+    expect(draw.mock.calls).toEqual(
+      Array.from({ length: 10 }, () => [INVITE_CODE_ALPHABET.length]),
+    );
   });
 
   it('normaliza maiúsculas para minúsculas', () => {
