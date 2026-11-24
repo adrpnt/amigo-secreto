@@ -928,6 +928,7 @@ Proof: run web | ✓ InviteBlock > troca o bloco pelo aviso com o grupo ENCERRAD
 **C8** - Grupo criado ganha código de 10 caracteres de `23456789abcdefghjkmnpqrstuvwxyz`, aleatório e único (INV-01, AC 8)
 Proof: run api | ✓ código do convite > gera 10 caracteres do alfabeto sem 0, 1, i, l e o
 Proof: run api | ✓ código do convite > gera códigos diferentes em 1000 chamadas
+Proof: run api | ✓ código do convite > sorteia cada caractere com randomInt do node:crypto
 Proof: run api | ✓ código do convite do grupo > grupo criado pela API ganha um código de 10 caracteres do alfabeto
 Proof: run api | ✓ código do convite do grupo > o banco recusa dois grupos com o mesmo código
 
