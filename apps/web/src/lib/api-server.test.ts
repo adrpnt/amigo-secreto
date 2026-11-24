@@ -1,10 +1,10 @@
 // @vitest-environment node
 import { createServer, type RequestListener, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { apiServerFetch } from './api-server';
 
-vi.mock('next/headers', () => ({ cookies: vi.fn() }));
+vi.mock('next/headers', () => ({ cookies: vi.fn(), headers: vi.fn() }));
 
 let server: Server | undefined;
 
@@ -19,6 +19,28 @@ function requestCookies(header: string) {
   vi.mocked(cookies).mockResolvedValue({
     toString: () => header,
   } as Awaited<ReturnType<typeof cookies>>);
+}
+
+function requestHeaders(values: Record<string, string>) {
+  vi.mocked(headers).mockResolvedValue(new Headers(values));
+}
+
+type ClientHeaders = {
+  forwardedFor?: string | string[];
+  userAgent?: string;
+};
+
+async function startApiRecordingClient(): Promise<ClientHeaders[]> {
+  const received: ClientHeaders[] = [];
+  await startApi((request, response) => {
+    received.push({
+      forwardedFor: request.headers['x-forwarded-for'],
+      userAgent: request.headers['user-agent'],
+    });
+    response.writeHead(200, { 'content-type': 'application/json' });
+    response.end(JSON.stringify({ ok: true }));
+  });
+  return received;
 }
 
 afterEach(async () => {
@@ -53,6 +75,45 @@ describe('apiServerFetch', () => {
       },
     ]);
     expect(fetchSpy.mock.calls[0][1]).toMatchObject({ cache: 'no-store' });
+  });
+
+  it('repassa X-Forwarded-For e User-Agent quando pedido', async () => {
+    const received = await startApiRecordingClient();
+    requestCookies('sid=token-da-sessao');
+    requestHeaders({
+      'x-forwarded-for': '203.0.113.7',
+      'user-agent': 'Mozilla/5.0 (iPhone) WhatsApp/2.24',
+    });
+
+    const response = await apiServerFetch('/invites/abc123', {
+      forwardClient: true,
+    });
+
+    expect(response.status).toBe(200);
+    expect(received).toEqual([
+      {
+        forwardedFor: '203.0.113.7',
+        userAgent: 'Mozilla/5.0 (iPhone) WhatsApp/2.24',
+      },
+    ]);
+  });
+
+  it('não repassa os cabeçalhos do cliente por padrão', async () => {
+    const received = await startApiRecordingClient();
+    requestCookies('sid=token-da-sessao');
+    requestHeaders({
+      'x-forwarded-for': '203.0.113.7',
+      'user-agent': 'Mozilla/5.0 (iPhone) WhatsApp/2.24',
+    });
+
+    const response = await apiServerFetch('/groups/mine');
+
+    expect(response.status).toBe(200);
+    expect(received).toHaveLength(1);
+    expect(received[0].forwardedFor).toBeUndefined();
+    expect(received[0].userAgent).not.toBe(
+      'Mozilla/5.0 (iPhone) WhatsApp/2.24',
+    );
   });
 
   it('lança erro sem API_INTERNAL_URL', async () => {

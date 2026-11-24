@@ -540,9 +540,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa X-Forwarded-For e User-Agent quando pedido`, `> não repassa os cabeçalhos do cliente por padrão`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 101 tests pass no web
+- [x] Testes em `src/lib/api-server.test.ts`: `apiServerFetch > repassa X-Forwarded-For e User-Agent quando pedido`, `> não repassa os cabeçalhos do cliente por padrão`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 101 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
