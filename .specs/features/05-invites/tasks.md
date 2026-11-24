@@ -866,10 +866,10 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `e2e/participants.spec.ts`: `participantes › mostra o bloco de convite e a lista com o total`, `› participante comum vê o link sem Gerar novo link nem Convidar por e-mail`, `› organizador aprova um pedido e recusa outro, e aprova o recusado depois`, `› organizador remove participante, que não entra de novo pelo link`, `› organizador transfere a organização e passa a ver o grupo como participante`, `› gerar novo link barra o link antigo`, `› convida por e-mail e o convite chega com o link do grupo`, `› Carregar mais traz os participantes seguintes e a busca ignora acentos`, `› Meus grupos mostra N pendentes a quem organiza`, `› pessoa pendente abre o grupo e a aba Participantes e vê Grupo não encontrado.`
-- [ ] Testes em `src/lib/members.test.ts`: `getMembers > devolve a primeira página da lista`, `> devolve null no 404`, `> lança em outro status`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 182 tests pass no web e 101 no e2e
+- [x] Testes em `e2e/participants.spec.ts`: `participantes › mostra o bloco de convite e a lista com o total`, `› participante comum vê o link sem Gerar novo link nem Convidar por e-mail`, `› organizador aprova um pedido e recusa outro, e aprova o recusado depois`, `› organizador remove participante, que não entra de novo pelo link`, `› organizador transfere a organização e passa a ver o grupo como participante`, `› gerar novo link barra o link antigo`, `› convida por e-mail e o convite chega com o link do grupo`, `› Carregar mais traz os participantes seguintes e a busca ignora acentos`, `› Meus grupos mostra N pendentes a quem organiza`, `› pessoa pendente abre o grupo e a aba Participantes e vê Grupo não encontrado.`
+- [x] Testes em `src/lib/members.test.ts`: `getMembers > devolve a primeira página da lista`, `> devolve null no 404`, `> lança em outro status`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 182 tests pass no web e 101 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
