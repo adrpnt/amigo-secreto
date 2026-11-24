@@ -4,6 +4,7 @@ import { type ReactNode, Suspense } from 'react';
 import { AppHeader } from '@/components/app-header';
 import { EmailVerificationBanner } from '@/components/email-verification-banner';
 import { ThemeProvider } from '@/components/theme-provider';
+import { siteMetadata } from '@/lib/site-url';
 import './globals.css';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -11,9 +12,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-plus-jakarta-sans',
 });
 
-export const metadata: Metadata = {
-  title: 'Amigo Secreto',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: 'Amigo Secreto', ...(await siteMetadata()) };
+}
 
 // Aplica o tema salvo antes do primeiro quadro. O script do next-themes fica
 // no <body> e pode rodar depois de um script assíncrono do <head>, quando o

@@ -50,7 +50,7 @@ docker-compose.yml   PostgreSQL e Mailpit para desenvolvimento local
    cp apps/web/.env.example apps/web/.env.local
    ```
 
-   Os valores padrão já funcionam com o `docker-compose.yml`. Fora de produção, `AUTH_SECRET` e `WEB_URL` têm padrões de desenvolvimento. Para testar o login com Google, preencha `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`.
+   Os valores padrão já funcionam com o `docker-compose.yml`. Fora de produção, `AUTH_SECRET` (API) e `WEB_URL` (API e web) têm padrões de desenvolvimento; em produção são obrigatórias. Para testar o login com Google, preencha `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET`.
 
 4. Rode as migrations do banco:
 

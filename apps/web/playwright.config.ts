@@ -51,14 +51,17 @@ export default defineConfig({
       command: `pnpm exec next start --port ${WEB_PORT}`,
       url: WEB_URL,
       reuseExistingServer: false,
-      env: { API_INTERNAL_URL: API_URL },
+      env: { API_INTERNAL_URL: API_URL, WEB_URL },
     },
     {
       name: 'web-api-down',
       command: 'pnpm exec next start --port 3100',
       url: 'http://localhost:3100',
       reuseExistingServer: false,
-      env: { API_INTERNAL_URL: CLOSED_API_URL },
+      env: {
+        API_INTERNAL_URL: CLOSED_API_URL,
+        WEB_URL: 'http://localhost:3100',
+      },
     },
   ],
 });
