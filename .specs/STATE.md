@@ -179,11 +179,11 @@
 ## Handoff
 
 - **Feature**: 05-invites (`.specs/features/05-invites/`), em execução
-- **Phase / Task**: fase 3 (T15 a T19) concluída na branch da PER-113; gate Build verde em `178aab3` (shared 27, API 516, web 95, e2e 79)
-- **Completed**: T1 a T19; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (na fase 3: teste do cursor com a lista aberta cobre os dois casos; busca com trim; parâmetro repetido 400; recusar aprovado 404; `{ from }` em aprovar e recusar, que a T27 precisa mandar; precedência de erros em remover, sair e transferir). INV-04 AC 8 e AC 9 e o design receberam o texto; contagens da API das T16 a T19 subiram 2
+- **Phase / Task**: fase 4 (T20 a T24) concluída na branch da PER-114; gate Build verde em `795de19` (shared 27, API 516, web 122, e2e 79)
+- **Completed**: T1 a T24; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (na fase 4: `WEB_URL` do e2e no `playwright.config.ts`, frase do README; "Convidar por e-mail" abre o formulário no próprio bloco, WhatsApp como link, aviso no rodapé por 3 s, erros de gerar link como no GroupActions; sucesso do convite por e-mail em alerta verde, ajuda do design system, erros como no GroupForm). A T23 ganhou o teste `InviteBlock > Convidar por e-mail mostra e esconde o formulário` (prova da C88); contagens do web da T23 em diante subiram 1
 - **In-progress** (file:line): none
-- **Next step**: depois do merge do PR da fase 3, criar a branch da PER-114 a partir da `main` atualizada, mover a issue para In Progress e começar a T20
-- **Linear**: milestone `05 · Invites`; PER-111 e PER-112 mergeadas; PER-113 com T15 a T19 marcadas e PR aberto; PER-114 a PER-116 em Backlog
+- **Next step**: depois do merge do PR da fase 4, criar a branch da PER-115 a partir da `main` atualizada, mover a issue para In Progress e começar a T25
+- **Linear**: milestone `05 · Invites`; PER-111 a PER-113 mergeadas; PER-114 com T20 a T24 marcadas e PR aberto; PER-115 e PER-116 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-113-fase-3-api-dos-participantes
+- **Branch**: pntadr/per-114-fase-4-base-do-site-e-bloco-de-convite
