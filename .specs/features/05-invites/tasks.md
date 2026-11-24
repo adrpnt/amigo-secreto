@@ -888,9 +888,9 @@ T31 → T32 → T33 → T34 → T35 → T36 → T37
 
 **Done when**:
 
-- [ ] Testes em `e2e/accessibility.spec.ts`: `acessibilidade › /convite/{código} sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos/{id}/participantes sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos/{id} com as abas sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos com card pendente sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
-- [ ] Test count: 182 tests pass no web e 105 no e2e
+- [x] Testes em `e2e/accessibility.spec.ts`: `acessibilidade › /convite/{código} sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos/{id}/participantes sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos/{id} com as abas sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`, `› /grupos com card pendente sem violações nos dois temas e sem rolagem horizontal em 360 e 1440 px`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm build && pnpm test && pnpm test:e2e`
+- [x] Test count: 182 tests pass no web e 105 no e2e
 
 **Tests**: e2e
 **Gate**: E2E
