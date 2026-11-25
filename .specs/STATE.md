@@ -187,12 +187,12 @@
 
 ## Handoff
 
-- **Feature**: 06-draw (`.specs/features/06-draw/`); spec, design e tasks aprovados em 2026-11-25; fase 1 em execução
-- **Phase / Task**: fase 1 (T1 a T5); T1 a T5 concluídas; falta o gate Build da fase
-- **Completed**: Specify, Design (AD-018), Tasks (23 tasks em 5 fases, 114 checks); T1 a T5
+- **Feature**: 06-draw (`.specs/features/06-draw/`), em execução
+- **Phase / Task**: fase 1 (T1 a T5) concluída na branch da PER-122; gate Build verde em `5dc5703` (shared 31, API 539, web 182, e2e 105)
+- **Completed**: T1 a T5; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (formato do `ExclusionPair` e `EmailSender.send(message, jobId)`)
 - **In-progress** (file:line): none
-- **Next step**: gate Build da fase 1, push e PR da PER-122
-- **Linear**: milestone `06 · Draw`; PER-122 em In Progress; PER-123 a PER-126 em Backlog
+- **Next step**: revisão e merge do PR da fase 1; depois, criar a branch da PER-123 a partir da `main` atualizada, mover a issue para In Progress e começar a T6
+- **Linear**: milestone `06 · Draw`; PER-122 com T1 a T5 marcadas e PR aberto; PER-123 a PER-126 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
 - **Branch**: pntadr/per-122-fase-1-regras-algoritmo-e-banco
