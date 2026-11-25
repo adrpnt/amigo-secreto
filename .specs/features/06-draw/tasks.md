@@ -147,9 +147,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `src/draws/draw-algorithm.spec.ts`: `distribuição do sorteio > cada pessoa tira exatamente uma e é tirada por exatamente uma em 500 sorteios`, `> ninguém tira a si mesmo em 500 sorteios`, `> nunca junta as duas pessoas de um par, em nenhum sentido, em 500 sorteios`, `> sem pares sai sempre corrente única`, `> com pares e até 10 pessoas sai corrente única quando ela existe`, `> com pares que impedem a corrente sai outra distribuição válida`, `> devolve bloqueado quando nenhuma distribuição existe`, `> sorteia com randomInt do node:crypto`, `> distribui 1000 pessoas sem pares em menos de 100 ms`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 532 tests pass na API
+- [x] Testes em `src/draws/draw-algorithm.spec.ts`: `distribuição do sorteio > cada pessoa tira exatamente uma e é tirada por exatamente uma em 500 sorteios`, `> ninguém tira a si mesmo em 500 sorteios`, `> nunca junta as duas pessoas de um par, em nenhum sentido, em 500 sorteios`, `> sem pares sai sempre corrente única`, `> com pares e até 10 pessoas sai corrente única quando ela existe`, `> com pares que impedem a corrente sai outra distribuição válida`, `> devolve bloqueado quando nenhuma distribuição existe`, `> sorteia com randomInt do node:crypto`, `> distribui 1000 pessoas sem pares em menos de 100 ms`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 532 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick

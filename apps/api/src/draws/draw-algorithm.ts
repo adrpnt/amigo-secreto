@@ -1,9 +1,20 @@
+import { randomInt } from 'node:crypto';
+
 // Algoritmo do sorteio: função pura, sem banco e sem Nest. As pessoas são ids
 // e os pares de restrição valem nos dois sentidos.
 
 type Pair = [string, string];
 
+type Random = (max: number) => number;
+
+export type DrawOutcome =
+  | { kind: 'ok'; pairs: Map<string, string>; singleCycle: boolean }
+  | { kind: 'blocked'; blocked: string[] };
+
 const UNMATCHED = -1;
+
+// Até 10 pessoas, a busca completa da corrente cabe nesse orçamento.
+const CYCLE_SEARCH_BUDGET = 2_000_000;
 
 // Quem cada pessoa pode tirar (índices): outra pessoa, fora dos pares.
 function allowedReceivers(people: string[], exclusions: Pair[]): number[][] {
@@ -125,4 +136,100 @@ export function findBlocked(
   const receiverOf = maximumMatching(allowed);
   if (!receiverOf.includes(UNMATCHED)) return null;
   return hallViolator(allowed, receiverOf).map((giver) => people[giver]);
+}
+
+// Fisher-Yates sobre uma cópia.
+function shuffle<T>(items: T[], random: Random): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = random(i + 1);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+// Busca em profundidade de uma corrente que passa por todos e volta a quem
+// começou; null quando não acha dentro do orçamento.
+function findCycle(allowed: number[][]): number[] | null {
+  const size = allowed.length;
+  const path = [0];
+  const used = new Array<boolean>(size).fill(false);
+  used[0] = true;
+  let steps = 0;
+
+  const extend = (): boolean => {
+    steps++;
+    if (steps > CYCLE_SEARCH_BUDGET) return false;
+    const last = path[path.length - 1];
+    if (path.length === size) return allowed[last].includes(0);
+    for (const next of allowed[last]) {
+      if (used[next]) continue;
+      used[next] = true;
+      path.push(next);
+      if (extend()) return true;
+      if (steps > CYCLE_SEARCH_BUDGET) return false;
+      path.pop();
+      used[next] = false;
+    }
+    return false;
+  };
+
+  return extend() ? path : null;
+}
+
+function formsSingleCycle(receiverOf: number[]): boolean {
+  let length = 0;
+  let current = 0;
+  do {
+    current = receiverOf[current];
+    length++;
+  } while (current !== 0 && length <= receiverOf.length);
+  return length === receiverOf.length;
+}
+
+// Sem pares, uma corrente embaralhada. Com pares: confere a viabilidade,
+// tenta uma corrente e, sem ela, usa o emparelhamento embaralhado.
+export function drawAssignments(
+  people: string[],
+  exclusions: Pair[],
+  random: Random = (max) => randomInt(max),
+): DrawOutcome {
+  const order = shuffle(people, random);
+
+  if (exclusions.length === 0) {
+    const pairs = new Map(
+      order.map((giver, i) => [giver, order[(i + 1) % order.length]]),
+    );
+    return { kind: 'ok', pairs, singleCycle: true };
+  }
+
+  const allowed = allowedReceivers(order, exclusions).map((receivers) =>
+    shuffle(receivers, random),
+  );
+  const receiverOf = maximumMatching(allowed);
+  if (receiverOf.includes(UNMATCHED)) {
+    const blocked = new Set(
+      hallViolator(allowed, receiverOf).map((giver) => order[giver]),
+    );
+    return {
+      kind: 'blocked',
+      blocked: people.filter((person) => blocked.has(person)),
+    };
+  }
+
+  const cycle = findCycle(allowed);
+  if (cycle !== null) {
+    const pairs = new Map(
+      cycle.map((giver, i) => [
+        order[giver],
+        order[cycle[(i + 1) % cycle.length]],
+      ]),
+    );
+    return { kind: 'ok', pairs, singleCycle: true };
+  }
+
+  const pairs = new Map(
+    receiverOf.map((receiver, giver) => [order[giver], order[receiver]]),
+  );
+  return { kind: 'ok', pairs, singleCycle: formsSingleCycle(receiverOf) };
 }
