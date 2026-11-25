@@ -168,9 +168,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-tables.int-spec.ts`: `tabelas do sorteio > são criadas pela migration com as colunas do design`, `> o banco recusa par de restrição repetido ou fora de ordem`, `> o banco recusa segunda rodada ativa no mesmo grupo`, `> o banco recusa pessoa que tira a si mesma ou que tira ou é tirada duas vezes na rodada`, `> excluir o grupo apaga pares de restrição, rodadas e pares sorteados`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 537 tests pass na API
+- [x] Testes em `test/draw-tables.int-spec.ts`: `tabelas do sorteio > são criadas pela migration com as colunas do design`, `> o banco recusa par de restrição repetido ou fora de ordem`, `> o banco recusa segunda rodada ativa no mesmo grupo`, `> o banco recusa pessoa que tira a si mesma ou que tira ou é tirada duas vezes na rodada`, `> excluir o grupo apaga pares de restrição, rodadas e pares sorteados`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 537 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

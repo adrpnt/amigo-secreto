@@ -157,6 +157,59 @@ export async function insertMembership(
   );
 }
 
+// Grava o par de restrição como a API grava: o menor id em userAId.
+export async function insertExclusion(
+  dataSource: DataSource,
+  groupId: string,
+  userId: string,
+  otherUserId: string,
+): Promise<string> {
+  const [userAId, userBId] = [userId, otherUserId].sort();
+  const [row] = await dataSource.query<{ id: string }[]>(
+    `INSERT INTO exclusion ("groupId", "userAId", "userBId")
+     VALUES ($1, $2, $3) RETURNING id`,
+    [groupId, userAId, userBId],
+  );
+  return row.id;
+}
+
+export type DrawSeed = {
+  // Pares [quem tira, quem é tirado].
+  assignments?: [string, string][];
+  status?: 'ACTIVE' | 'CANCELLED';
+  singleCycle?: boolean;
+  createdAt?: string;
+};
+
+// Grava a rodada direto no banco, com os pares sorteados; não muda o status
+// do grupo.
+export async function insertDraw(
+  dataSource: DataSource,
+  groupId: string,
+  seed: DrawSeed = {},
+): Promise<string> {
+  const status = seed.status ?? 'ACTIVE';
+  const [row] = await dataSource.query<{ id: string }[]>(
+    `INSERT INTO draw ("groupId", status, "singleCycle", "createdAt", "cancelledAt")
+     VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+    [
+      groupId,
+      status,
+      seed.singleCycle ?? true,
+      seed.createdAt ?? new Date().toISOString(),
+      status === 'CANCELLED' ? new Date() : null,
+    ],
+  );
+  for (const [giverUserId, receiverUserId] of seed.assignments ?? []) {
+    await dataSource.query(
+      `INSERT INTO assignment ("drawId", "giverUserId", "receiverUserId")
+       VALUES ($1, $2, $3)`,
+      [row.id, giverUserId, receiverUserId],
+    );
+  }
+  return row.id;
+}
+
 // Captura as linhas de evento de negócio gravadas durante `action`.
 export async function captureEvents(
   action: () => Promise<unknown>,
