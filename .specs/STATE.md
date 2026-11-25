@@ -176,14 +176,23 @@
 - **Date**: 2026-11-23
 - **Status**: active
 
+### AD-018
+
+- **Decision**: E-mail com conteúdo sigiloso (o nome sorteado da `06-draw`; nas features seguintes, as mensagens secretas da `09-secret-messages`) não vai para a fila como `email.send` com o texto pronto. A operação enfileira um job próprio só com ids (ex.: `draw.result_email` com `{ drawId, giverUserId }`); na hora de enviar, o handler lê o dado, monta o e-mail e o entrega pelo `EmailSender` do `EmailModule`, com a mesma chave de idempotência `email/{job.id}`. Se o dado não existe mais (rodada cancelada, grupo excluído), o job termina sem enviar.
+- **Reason**: O conteúdo sigiloso não fica gravado no payload da tabela `job`, que aparece em consultas e suporte, e o e-mail de um dado desfeito não sai. Perguntas ao usuário em 2026-11-25, no Design da `06-draw`: "Como o e-mail do resultado sai sem guardar o nome sorteado na fila?", resposta "Job próprio que monta na hora (Recomendado)", entre essa e "Nome cifrado no payload"; o padrão para as features seguintes foi aprovado com o design, user: "Aprovada."
+- **Trade-off**: Um handler por tipo de e-mail sigiloso; o texto usa o dado lido na hora do envio (ex.: o nome atual da pessoa), não o da hora da operação.
+- **Scope**: `apps/api`; `06-draw` e `09-secret-messages`.
+- **Date**: 2026-11-25
+- **Status**: active
+
 ## Handoff
 
-- **Feature**: 05-invites (`.specs/features/05-invites/`), concluída; `validate_verification.py` com saída 0 em `a174a58`
-- **Phase / Task**: fase 6 (T31 a T37) concluída na branch da PER-116; gate Build verde em `fcc75cd` (shared 27, API 516, web 182, e2e 105); provas da rodada 2 verdes em `a174a58` (295 de 295)
-- **Completed**: T1 a T37; walk das histórias registrado no `**Walked:**`; Verifier independente com 2 achados, os dois fechados: grupo SORTEADO que desliga a aprovação salva o campo e mantém os pendentes (INV-04 AC 11, check C134, `ab9a8dd`) e prova da fonte criptográfica do código do convite (C8, `a174a58`); lições L-026 e L-027 registradas como candidatas. O alerta sobre o preview no Telegram não se confirmou e a mudança foi descartada antes do commit
+- **Feature**: 06-draw (`.specs/features/06-draw/`), em execução
+- **Phase / Task**: fase 1 (T1 a T5) concluída na branch da PER-122; gate Build verde em `5dc5703` (shared 31, API 539, web 182, e2e 105)
+- **Completed**: T1 a T5; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (formato do `ExclusionPair` e `EmailSender.send(message, jobId)`)
 - **In-progress** (file:line): none
-- **Next step**: push da branch e PR da fase 6 contra a `main`, depois esperar a revisão
-- **Linear**: milestone `05 · Invites`; PER-111 a PER-115 mergeadas; PER-116 com T31 a T37 marcadas, em In Progress
+- **Next step**: revisão e merge do PR da fase 1; depois, criar a branch da PER-123 a partir da `main` atualizada, mover a issue para In Progress e começar a T6
+- **Linear**: milestone `06 · Draw`; PER-122 com T1 a T5 marcadas e PR aberto; PER-123 a PER-126 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-116-fase-6-telas
+- **Branch**: pntadr/per-122-fase-1-regras-algoritmo-e-banco
