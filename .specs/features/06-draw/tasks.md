@@ -126,9 +126,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `src/draws/draw-algorithm.spec.ts`: `viabilidade do sorteio > sem pares sempre há distribuição a partir de 3 pessoas`, `> 3 pessoas e um par não têm distribuição e o par entra nos bloqueados`, `> 4 pessoas e um par têm distribuição`, `> devolve como bloqueadas só pessoas de um conjunto com menos pessoas permitidas do que o tamanho dele`, `> pessoa com par com todos os outros fica bloqueada`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
-- [ ] Test count: 523 tests pass na API
+- [x] Testes em `src/draws/draw-algorithm.spec.ts`: `viabilidade do sorteio > sem pares sempre há distribuição a partir de 3 pessoas`, `> 3 pessoas e um par não têm distribuição e o par entra nos bloqueados`, `> 4 pessoas e um par têm distribuição`, `> devolve como bloqueadas só pessoas de um conjunto com menos pessoas permitidas do que o tamanho dele`, `> pessoa com par com todos os outros fica bloqueada`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm turbo run test --filter=@amigo-secreto/api -- --project unit`
+- [x] Test count: 523 tests pass na API
 
 **Tests**: unit
 **Gate**: Quick

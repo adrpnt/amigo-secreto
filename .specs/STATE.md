@@ -188,10 +188,10 @@
 ## Handoff
 
 - **Feature**: 06-draw (`.specs/features/06-draw/`); spec, design e tasks aprovados em 2026-11-25; fase 1 em execução
-- **Phase / Task**: fase 1 (T1 a T5); T1 concluída
-- **Completed**: Specify, Design (AD-018), Tasks (23 tasks em 5 fases, 114 checks); T1
+- **Phase / Task**: fase 1 (T1 a T5); T1 e T2 concluídas
+- **Completed**: Specify, Design (AD-018), Tasks (23 tasks em 5 fases, 114 checks); T1, T2
 - **In-progress** (file:line): none
-- **Next step**: T2 (viabilidade e pares a revisar)
+- **Next step**: T3 (distribuição)
 - **Linear**: milestone `06 · Draw`; PER-122 em In Progress; PER-123 a PER-126 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
