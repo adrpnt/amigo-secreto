@@ -1,23 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import type { Job } from '../jobs/job.entity.js';
 import type { JobHandler } from '../jobs/job-handler.registry.js';
-import { BusinessEventsService } from '../observability/business-events.service.js';
-import { renderEmail } from './email-layout.js';
-import { EMAIL_TRANSPORT, type EmailTransport } from './email-transport.js';
+import { EmailSender } from './email-sender.js';
 import type { EmailMessage } from './email.types.js';
 
 @Injectable()
 export class SendEmailHandler implements JobHandler {
-  constructor(
-    @Inject(EMAIL_TRANSPORT) private readonly transport: EmailTransport,
-    private readonly businessEvents: BusinessEventsService,
-  ) {}
+  constructor(private readonly sender: EmailSender) {}
 
-  // A mesma chave em todas as tentativas: o Resend não manda duas vezes o
-  // e-mail que já aceitou.
   async handle(job: Job): Promise<void> {
-    const email = renderEmail(job.payload as EmailMessage);
-    await this.transport.send(email, `email/${job.id}`);
-    this.businessEvents.record('email.sent', { jobId: job.id });
+    await this.sender.send(job.payload as EmailMessage, job.id);
   }
 }

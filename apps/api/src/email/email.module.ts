@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import type { EnvironmentVariables } from '../config/env.validation.js';
 import { JobHandlerRegistry } from '../jobs/job-handler.registry.js';
 import { JobsModule } from '../jobs/jobs.module.js';
+import { EmailSender } from './email-sender.js';
 import { EMAIL_TRANSPORT } from './email-transport.js';
 import { EMAIL_SEND_JOB, EmailService } from './email.service.js';
 import { LogTransport } from './log.transport.js';
@@ -14,6 +15,7 @@ import { SendEmailHandler } from './send-email.handler.js';
   imports: [JobsModule],
   providers: [
     EmailService,
+    EmailSender,
     SendEmailHandler,
     {
       provide: EMAIL_TRANSPORT,
@@ -29,7 +31,7 @@ import { SendEmailHandler } from './send-email.handler.js';
       },
     },
   ],
-  exports: [EmailService],
+  exports: [EmailService, EmailSender],
 })
 export class EmailModule implements OnModuleInit {
   constructor(

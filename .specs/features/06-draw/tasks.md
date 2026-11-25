@@ -189,10 +189,10 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `src/email/email-sender.spec.ts`: `EmailSender > envia o e-mail montado com a chave recebida e emite email.sent`, `> não emite email.sent quando o transporte falha`
-- [ ] As suítes de e-mail existentes (`email-send`, `email-secrecy`, `email-service`) passam sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 539 tests pass na API
+- [x] Testes em `src/email/email-sender.spec.ts`: `EmailSender > envia o e-mail montado com a chave recebida e emite email.sent`, `> não emite email.sent quando o transporte falha`
+- [x] As suítes de e-mail existentes (`email-send`, `email-secrecy`, `email-service`) passam sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 539 tests pass na API
 
 **Tests**: unit
 **Gate**: Full
@@ -988,7 +988,7 @@ Proof: run web | ✓ ExclusionEditor > liga o erro ao campo por aria-describedby
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)".
+**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
