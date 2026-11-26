@@ -406,14 +406,14 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-reminder-backfill.int-spec.ts`: `lembretes de grupos existentes > a migration agenda o lembrete dos grupos ABERTOS com sorteio previsto no futuro e só deles`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 617 tests pass na API
+- [x] Testes em `test/draw-reminder-backfill.int-spec.ts`: `lembretes de grupos existentes > a migration agenda o lembrete dos grupos ABERTOS com sorteio previsto no futuro e só deles`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 617 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
 
-**Commit**: `feat(api): schedule reminders for groups created before reminders existed`
+**Commit**: `feat(api): schedule reminders for groups that already exist`
 
 ---
 
@@ -988,7 +988,7 @@ Proof: run web | ✓ ExclusionEditor > liga o erro ao campo por aria-describedby
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)". T10, pré-visualização: o layout de e-mail não tinha texto de pré-visualização e o cliente mostraria "Você tirou: {nome}" na prévia; o `EmailMessage` ganha o campo opcional `preview`, que o layout põe num bloco oculto no topo do HTML seguido de espaços invisíveis, e só o e-mail do resultado o usa, user: "Prévia oculta (Recomendado)"; o texto é "Abra num lugar reservado para ver quem você tirou.", user: "Abra num lugar reservado (Recomendado)". T11, `minutesSinceDraw`: minutos completos entre o sorteio e o cancelamento, arredondados para baixo (59 s dá 0), user: "Minutos completos (Recomendado)".
+**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)". T10, pré-visualização: o layout de e-mail não tinha texto de pré-visualização e o cliente mostraria "Você tirou: {nome}" na prévia; o `EmailMessage` ganha o campo opcional `preview`, que o layout põe num bloco oculto no topo do HTML seguido de espaços invisíveis, e só o e-mail do resultado o usa, user: "Prévia oculta (Recomendado)"; o texto é "Abra num lugar reservado para ver quem você tirou.", user: "Abra num lugar reservado (Recomendado)". T11, `minutesSinceDraw`: minutos completos entre o sorteio e o cancelamento, arredondados para baixo (59 s dá 0), user: "Minutos completos (Recomendado)". T15, `down` da migration dos lembretes: não faz nada, porque depois do deploy o app também grava lembretes e não dá para separar os da migration, user: "Não fazer nada (Recomendado)". T15, mensagem de commit encurtada para 72 caracteres ou menos: "feat(api): schedule reminders for groups that already exist", user: "Encurtar (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
