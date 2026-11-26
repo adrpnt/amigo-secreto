@@ -298,9 +298,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-result-email.int-spec.ts`: `e-mail do resultado > envia a cada participante o assunto sem o nome e o nome só no corpo`, `> a pré-visualização do e-mail não contém o nome sorteado`, `> não envia depois que o sorteio é cancelado`, `> não envia depois que o grupo é excluído`, `> mostra nomes com marcação HTML como texto`, `> falha do transporte não leva nome nem e-mail ao log nem ao Sentry`, `> repete com a mesma chave depois de falha passageira`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 587 tests pass na API
+- [x] Testes em `test/draw-result-email.int-spec.ts`: `e-mail do resultado > envia a cada participante o assunto sem o nome e o nome só no corpo`, `> a pré-visualização do e-mail não contém o nome sorteado`, `> não envia depois que o sorteio é cancelado`, `> não envia depois que o grupo é excluído`, `> mostra nomes com marcação HTML como texto`, `> falha do transporte não leva nome nem e-mail ao log nem ao Sentry`, `> repete com a mesma chave depois de falha passageira`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 587 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -988,7 +988,7 @@ Proof: run web | ✓ ExclusionEditor > liga o erro ao campo por aria-describedby
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)".
+**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)". T10, pré-visualização: o layout de e-mail não tinha texto de pré-visualização e o cliente mostraria "Você tirou: {nome}" na prévia; o `EmailMessage` ganha o campo opcional `preview`, que o layout põe num bloco oculto no topo do HTML seguido de espaços invisíveis, e só o e-mail do resultado o usa, user: "Prévia oculta (Recomendado)"; o texto é "Abra num lugar reservado para ver quem você tirou.", user: "Abra num lugar reservado (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
