@@ -256,9 +256,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-panel.int-spec.ts`: `painel do sorteio > conta aprovados e pendentes`, `> grupo sem pares é viável e não lista pares a revisar`, `> 3 aprovados e um par não são viáveis e listam o par a revisar`, `> lista só os pares das pessoas bloqueadas`, `> devolve status e drawnAt depois do sorteio`, `> responde 403 a participante que não organiza`, `> não contém nenhum par sorteado`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 560 tests pass na API
+- [x] Testes em `test/draw-panel.int-spec.ts`: `painel do sorteio > conta aprovados e pendentes`, `> grupo sem pares é viável e não lista pares a revisar`, `> 3 aprovados e um par não são viáveis e listam o par a revisar`, `> lista só os pares das pessoas bloqueadas`, `> devolve status e drawnAt depois do sorteio`, `> responde 403 a participante que não organiza`, `> não contém nenhum par sorteado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 560 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

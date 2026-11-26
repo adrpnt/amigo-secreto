@@ -4,6 +4,7 @@ import { GroupsModule } from '../groups/groups.module.js';
 import { Assignment } from './assignment.entity.js';
 import { Draw } from './draw.entity.js';
 import { DrawsController } from './draws.controller.js';
+import { DrawsService } from './draws.service.js';
 import { Exclusion } from './exclusion.entity.js';
 import { ExclusionsService } from './exclusions.service.js';
 
@@ -13,6 +14,6 @@ import { ExclusionsService } from './exclusions.service.js';
     GroupsModule,
   ],
   controllers: [DrawsController],
-  providers: [ExclusionsService],
+  providers: [DrawsService, ExclusionsService],
 })
 export class DrawsModule {}

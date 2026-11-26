@@ -1,4 +1,5 @@
 import type {
+  DrawPanel,
   ExclusionPair,
   ExclusionsResponse,
   SessionUser,
@@ -24,6 +25,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { DrawsService } from './draws.service.js';
 import { ExclusionInputDto } from './dto/exclusion-input.dto.js';
 import { ExclusionsService } from './exclusions.service.js';
 
@@ -43,7 +45,24 @@ const LOCKED = {
 @ApiUnauthorizedResponse({ description: 'Sem sessão válida.' })
 @Controller('groups')
 export class DrawsController {
-  constructor(private readonly exclusions: ExclusionsService) {}
+  constructor(
+    private readonly draws: DrawsService,
+    private readonly exclusions: ExclusionsService,
+  ) {}
+
+  @Get(':id/draw')
+  @ApiOkResponse({
+    description:
+      'Painel de quem organiza: status, data da rodada ativa, aprovados, pendentes, se as restrições permitem o sorteio e os pares a revisar. Nunca traz par sorteado.',
+  })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse(NOT_FOUND)
+  panel(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<DrawPanel> {
+    return this.draws.panel(user.id, id);
+  }
 
   @Get(':id/exclusions')
   @ApiOkResponse({

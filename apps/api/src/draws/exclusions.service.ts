@@ -30,11 +30,11 @@ const APPROVED_SQL = `
 type ApprovedRow = { membershipId: string; userId: string; name: string };
 
 // Pessoa aprovada com a posição dela na ordem de nome.
-type RankedPerson = ApprovedRow & { rank: number };
+export type RankedPerson = ApprovedRow & { rank: number };
 
 export type ExclusionInput = { a?: string | null; b?: string | null };
 
-type ExclusionsState = {
+export type ExclusionsState = {
   people: RankedPerson[];
   pairs: ExclusionPair[];
 };
@@ -72,7 +72,10 @@ export class ExclusionsService {
 
   async list(userId: string, groupId: string): Promise<ExclusionsResponse> {
     await this.access.requireOrganizer(userId, groupId);
-    const { people, pairs } = await this.read(this.dataSource.manager, groupId);
+    const { people, pairs } = await this.state(
+      this.dataSource.manager,
+      groupId,
+    );
     return { participants: people.map(toPerson), pairs };
   }
 
@@ -89,7 +92,7 @@ export class ExclusionsService {
         lock: true,
       });
       assertEditable(group);
-      const { people, pairs } = await this.read(manager, groupId);
+      const { people, pairs } = await this.state(manager, groupId);
 
       const a = input.a ?? null;
       const b = input.b ?? null;
@@ -124,7 +127,7 @@ export class ExclusionsService {
   }
 
   // Só pares entre aprovados, em ordem de nome de `a`, depois de `b`.
-  private async read(
+  async state(
     manager: EntityManager,
     groupId: string,
   ): Promise<ExclusionsState> {
