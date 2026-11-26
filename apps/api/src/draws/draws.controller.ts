@@ -22,6 +22,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
+  ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
@@ -62,6 +63,28 @@ export class DrawsController {
     @Param('id') id: string,
   ): Promise<DrawPanel> {
     return this.draws.panel(user.id, id);
+  }
+
+  @Post(':id/draw')
+  @ApiCreatedResponse({
+    description:
+      'Rodada ativa criada com um par por participante aprovado, grupo SORTEADO e um e-mail de resultado por participante na fila. Devolve só a data, nunca um par sorteado.',
+  })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse(NOT_FOUND)
+  @ApiConflictResponse({
+    description:
+      'A primeira condição que falha, nesta ordem: Este grupo já fez o sorteio. ou Grupo encerrado não pode ser alterado.; O sorteio precisa de pelo menos 3 participantes aprovados.; Aprove ou recuse os pedidos pendentes antes do sorteio.; As restrições não permitem um sorteio válido., com `pairsToReview`.',
+  })
+  @ApiTooManyRequestsResponse({
+    description:
+      'O grupo já teve 5 sorteios nas últimas 24 horas; `Retry-After` em segundos.',
+  })
+  perform(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<{ drawnAt: string }> {
+    return this.draws.perform(user.id, id);
   }
 
   @Get(':id/exclusions')
