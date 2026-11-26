@@ -1,5 +1,6 @@
 import type {
   DrawPanel,
+  DrawResult,
   ExclusionPair,
   ExclusionsResponse,
   SessionUser,
@@ -9,6 +10,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   HttpCode,
   Param,
   Post,
@@ -104,6 +106,22 @@ export class DrawsController {
     @Param('id') id: string,
   ): Promise<void> {
     return this.draws.cancel(user.id, id);
+  }
+
+  @Get(':id/draw/result')
+  @Header('Cache-Control', 'no-store')
+  @ApiOkResponse({
+    description:
+      'Quem a pessoa que pede tirou na rodada ativa, com o nome atual. Só o próprio par; nunca o de outra pessoa.',
+  })
+  @ApiNotFoundResponse({
+    description: `${NOT_FOUND.description} Ou Sorteio não encontrado.: o grupo não tem rodada ativa.`,
+  })
+  result(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<DrawResult> {
+    return this.draws.result(user.id, id);
   }
 
   @Get(':id/exclusions')

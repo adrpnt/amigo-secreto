@@ -1,9 +1,14 @@
 import {
   DRAW_MESSAGES,
   type DrawPanel,
+  type DrawResult,
   type ExclusionPair,
 } from '@amigo-secreto/shared';
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource, type EntityManager, MoreThan } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
@@ -32,6 +37,13 @@ const ROUND_EMAILS_SQL = `
   SELECT u.email FROM assignment a
   JOIN "user" u ON u.id = a."giverUserId"
   WHERE a."drawId" = $1 AND a."giverUserId" <> $2`;
+
+// Só o par de quem pede, na rodada ativa, com o nome atual de quem foi tirado.
+const OWN_RESULT_SQL = `
+  SELECT receiver.name AS "receiverName" FROM assignment a
+  JOIN draw d ON d.id = a."drawId" AND d.status = 'ACTIVE'
+  JOIN "user" receiver ON receiver.id = a."receiverUserId"
+  WHERE d."groupId" = $1 AND a."giverUserId" = $2`;
 
 const MIN_PARTICIPANTS = 3;
 const MINUTE_MS = 60 * 1000;
@@ -204,6 +216,18 @@ export class DrawsService {
       hasExclusions: performed.hasExclusions,
     });
     return { drawnAt: performed.drawnAt.toISOString() };
+  }
+
+  // Cada participante lê só quem ele tirou; nenhuma entrada escolhe outra
+  // pessoa.
+  async result(userId: string, groupId: string): Promise<DrawResult> {
+    await this.access.requireMember(userId, groupId);
+    const [row] = await this.dataSource.query<DrawResult[]>(OWN_RESULT_SQL, [
+      groupId,
+      userId,
+    ]);
+    if (!row) throw new NotFoundException(DRAW_MESSAGES.drawNotFound);
+    return { receiverName: row.receiverName };
   }
 
   // A trava do grupo faz o segundo cancelamento simultâneo encontrar o grupo

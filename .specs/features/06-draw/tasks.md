@@ -342,9 +342,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-result.int-spec.ts`: `resultado do sorteio > devolve a cada participante só a pessoa que ele tirou`, `> devolve o nome atual da pessoa sorteada`, `> responde 404 Sorteio não encontrado. sem rodada ativa`, `> responde 404 Grupo não encontrado. a quem não participa`, `> responde com Cache-Control no-store`, `> nenhuma rota do sorteio devolve a quem organiza o par de outra pessoa`, `> depois da transferência quem organiza continua vendo só o próprio par`, `> o log de um sorteio, do resultado e do cancelamento não tem nomes nem ids de pessoa`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 606 tests pass na API
+- [x] Testes em `test/draw-result.int-spec.ts`: `resultado do sorteio > devolve a cada participante só a pessoa que ele tirou`, `> devolve o nome atual da pessoa sorteada`, `> responde 404 Sorteio não encontrado. sem rodada ativa`, `> responde 404 Grupo não encontrado. a quem não participa`, `> responde com Cache-Control no-store`, `> nenhuma rota do sorteio devolve a quem organiza o par de outra pessoa`, `> depois da transferência quem organiza continua vendo só o próprio par`, `> o log de um sorteio, do resultado e do cancelamento não tem nomes nem ids de pessoa`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 606 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
