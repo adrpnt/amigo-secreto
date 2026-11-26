@@ -363,10 +363,10 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-reminder-schedule.int-spec.ts`: `agendar lembrete > criar grupo com sorteio previsto agenda o lembrete para a data e hora`, `> editar o sorteio previsto troca o lembrete pendente pelo da data nova`, `> tirar o sorteio previsto apaga o lembrete pendente`, `> grupo sem sorteio previsto não agenda lembrete`
-- [ ] As suítes da `04-groups` passam; asserção que lê a tabela `job` inteira e muda é registrada em `**Settled mid-build:**`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 610 tests pass na API
+- [x] Testes em `test/draw-reminder-schedule.int-spec.ts`: `agendar lembrete > criar grupo com sorteio previsto agenda o lembrete para a data e hora`, `> editar o sorteio previsto troca o lembrete pendente pelo da data nova`, `> tirar o sorteio previsto apaga o lembrete pendente`, `> grupo sem sorteio previsto não agenda lembrete`
+- [x] As suítes da `04-groups` passam; asserção que lê a tabela `job` inteira e muda é registrada em `**Settled mid-build:**`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 610 tests pass na API
 
 **Tests**: integration
 **Gate**: Full

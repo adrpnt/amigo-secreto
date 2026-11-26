@@ -12,6 +12,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource, type EntityManager, QueryFailedError } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
+import { scheduleDrawReminder } from '../draws/draw-reminder.js';
 import { EmailService } from '../email/email.service.js';
 import { generateInviteCode } from '../invites/invite-code.js';
 import { approvedEmail } from '../invites/invite-emails.js';
@@ -223,6 +224,13 @@ export class GroupsService {
           userId: user.id,
           status: 'APPROVED',
         });
+        if (created.drawScheduledAt) {
+          await scheduleDrawReminder(
+            manager,
+            created.id,
+            created.drawScheduledAt,
+          );
+        }
         return created;
       });
 
@@ -316,6 +324,9 @@ export class GroupsService {
         if (changed.length > 0) {
           Object.assign(group, next);
           await manager.getRepository(Group).save(group);
+        }
+        if (changed.includes('drawScheduledAt')) {
+          await scheduleDrawReminder(manager, group.id, group.drawScheduledAt);
         }
 
         let approvedCount = 0;
