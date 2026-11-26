@@ -213,9 +213,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/exclusions.int-spec.ts`: `pares de restrição > lista participantes aprovados e pares em ordem de nome, sem id de pessoa`, `> quem organiza adiciona um par e a lista mostra os dois nomes`, `> recusa par sem uma das pessoas com 400 Escolha as duas pessoas do par.`, `> recusa a mesma pessoa duas vezes com 400 Escolha duas pessoas diferentes.`, `> recusa par repetido em qualquer ordem com 400 Esse par já está na lista.`, `> responde 404 Participante não encontrado. a pessoa que não é participante aprovada`, `> remove um par`, `> remover par que não existe responde 204`, `> responde 409 Para mudar as restrições, cancele o sorteio. com o grupo SORTEADO e não muda nada`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO e não muda nada`, `> responde 403 a participante que não organiza ao ler, criar ou apagar pares`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 550 tests pass na API
+- [x] Testes em `test/exclusions.int-spec.ts`: `pares de restrição > lista participantes aprovados e pares em ordem de nome, sem id de pessoa`, `> quem organiza adiciona um par e a lista mostra os dois nomes`, `> recusa par sem uma das pessoas com 400 Escolha as duas pessoas do par.`, `> recusa a mesma pessoa duas vezes com 400 Escolha duas pessoas diferentes.`, `> recusa par repetido em qualquer ordem com 400 Esse par já está na lista.`, `> responde 404 Participante não encontrado. a pessoa que não é participante aprovada`, `> remove um par`, `> remover par que não existe responde 204`, `> responde 409 Para mudar as restrições, cancele o sorteio. com o grupo SORTEADO e não muda nada`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO e não muda nada`, `> responde 403 a participante que não organiza ao ler, criar ou apagar pares`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 550 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -988,7 +988,7 @@ Proof: run web | ✓ ExclusionEditor > liga o erro ao campo por aria-describedby
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)".
+**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
