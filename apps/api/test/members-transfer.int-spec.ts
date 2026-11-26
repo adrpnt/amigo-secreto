@@ -5,6 +5,7 @@ import {
   type Cookies,
   type GroupSeed,
   type GroupsApi,
+  insertExclusion,
   insertGroup,
   insertMembership,
   insertUser,
@@ -502,5 +503,45 @@ describe('transferir organização', () => {
       ['Agora você organiza Família'],
     );
     expect(await emailJobsTo(other.email)).toEqual([]);
+  });
+
+  it('quem recebe passa a ver e editar os pares e quem passou deixa de ver', async () => {
+    const { owner, groupId, person } = await groupWith();
+    const carla = await joinAs(groupId, 'Carla Dias');
+    await insertExclusion(api.dataSource, groupId, person.id, carla.id);
+    const exclusions = (cookies: Cookies): request.Test =>
+      withSession(
+        request(api.server).get(`/groups/${groupId}/exclusions`),
+        cookies,
+      );
+
+    const transferred = await transfer(
+      owner.cookies,
+      groupId,
+      person.membershipId,
+    );
+    expect(transferred.status).toBe(200);
+
+    const newView = await exclusions(person.cookies);
+    expect(newView.status).toBe(200);
+    expect(newView.body).toMatchObject({
+      pairs: [
+        {
+          a: { membershipId: person.membershipId, name: 'Bia Lima' },
+          b: { membershipId: carla.membershipId, name: 'Carla Dias' },
+        },
+      ],
+    });
+    const added = await withSession(
+      request(api.server).post(`/groups/${groupId}/exclusions`),
+      person.cookies,
+    ).send({ a: owner.membershipId, b: carla.membershipId });
+    expect(added.status).toBe(201);
+    const oldView = await exclusions(owner.cookies);
+    expect(oldView.status).toBe(403);
+    expect(oldView.body).toMatchObject({
+      message: 'Só quem organiza pode alterar o grupo.',
+    });
+    expect(JSON.stringify(oldView.body)).not.toContain('Carla Dias');
   });
 });

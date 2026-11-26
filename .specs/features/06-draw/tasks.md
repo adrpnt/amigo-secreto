@@ -234,10 +234,10 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes: `remover participante > apaga os pares de restrição da pessoa` (`test/members-remove.int-spec.ts`), `sair do grupo > apaga os pares de restrição da pessoa` (`test/members-leave.int-spec.ts`), `transferir organização > quem recebe passa a ver e editar os pares e quem passou deixa de ver` (`test/members-transfer.int-spec.ts`)
-- [ ] Os testes existentes das três suítes passam sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 553 tests pass na API
+- [x] Testes: `remover participante > apaga os pares de restrição da pessoa` (`test/members-remove.int-spec.ts`), `sair do grupo > apaga os pares de restrição da pessoa` (`test/members-leave.int-spec.ts`), `transferir organização > quem recebe passa a ver e editar os pares e quem passou deixa de ver` (`test/members-transfer.int-spec.ts`)
+- [x] Os testes existentes das três suítes passam sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 553 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
