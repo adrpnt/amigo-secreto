@@ -27,6 +27,8 @@ const DARK = {
   primaryForeground: '#0b1120',
 };
 
+const PREVIEW_FILLER = '&#847;&zwnj;&nbsp;'.repeat(100);
+
 const HTML_ENTITIES: Record<string, string> = {
   '&': '&amp;',
   '<': '&lt;',
@@ -43,7 +45,7 @@ export function renderEmail(message: EmailMessage): RenderedEmail {
   return {
     to: message.to,
     subject: message.subject,
-    html: renderHtml(message.blocks),
+    html: renderHtml(message.blocks, message.preview),
     text: renderText(message.blocks),
   };
 }
@@ -55,7 +57,14 @@ function renderText(blocks: EmailBlock[]): string {
   return [BRAND, ...content, FOOTER].join('\n\n');
 }
 
-function renderHtml(blocks: EmailBlock[]): string {
+// Bloco oculto no topo do corpo. Os espaços invisíveis depois do texto
+// ocupam o resto da prévia, para o cliente não completá-la com o corpo.
+function renderPreview(preview: string | undefined): string {
+  if (preview === undefined) return '';
+  return `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:transparent;opacity:0;">${escapeHtml(preview)}${PREVIEW_FILLER}</div>\n`;
+}
+
+function renderHtml(blocks: EmailBlock[], preview?: string): string {
   const content = blocks.map(renderBlock).join('\n');
 
   return `<!doctype html>
@@ -77,7 +86,7 @@ function renderHtml(blocks: EmailBlock[]): string {
 </style>
 </head>
 <body class="email-bg" style="margin:0;padding:0;background-color:${LIGHT.background};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="email-bg" style="background-color:${LIGHT.background};">
+${renderPreview(preview)}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="email-bg" style="background-color:${LIGHT.background};">
 <tr><td align="center" style="padding:24px 16px;">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="email-card" style="width:100%;max-width:600px;background-color:${LIGHT.card};border:1px solid ${LIGHT.border};border-radius:12px;">
 <tr><td style="padding:32px;">

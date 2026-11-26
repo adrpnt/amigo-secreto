@@ -5,6 +5,9 @@ export type EmailBlock =
 export type EmailMessage = {
   to: string;
   subject: string;
+  // Texto que o cliente mostra na prévia da caixa de entrada; sem ele, a
+  // prévia é o começo do corpo.
+  preview?: string;
   blocks: EmailBlock[];
 };
 

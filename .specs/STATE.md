@@ -188,11 +188,11 @@
 ## Handoff
 
 - **Feature**: 06-draw (`.specs/features/06-draw/`), em execução
-- **Phase / Task**: fase 1 (T1 a T5) concluída na branch da PER-122; gate Build verde em `5dc5703` (shared 31, API 539, web 182, e2e 105)
-- **Completed**: T1 a T5; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (formato do `ExclusionPair` e `EmailSender.send(message, jobId)`)
+- **Phase / Task**: fase 2 (T6 a T10) concluída na branch da PER-123; gate Build no fim da fase (shared 31, API 587, web 182, e2e 105)
+- **Completed**: T1 a T10; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (ordem dos pares por nome, ordem das recusas dos pares e a pré-visualização oculta do e-mail do resultado)
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 1; depois, criar a branch da PER-123 a partir da `main` atualizada, mover a issue para In Progress e começar a T6
-- **Linear**: milestone `06 · Draw`; PER-122 com T1 a T5 marcadas e PR aberto; PER-123 a PER-126 em Backlog
+- **Next step**: revisão e merge do PR da fase 2; depois, criar a branch da PER-124 a partir da `main` atualizada, mover a issue para In Progress e começar a T11
+- **Linear**: milestone `06 · Draw`; PER-122 mergeada (PR #29); PER-123 com T6 a T10 marcadas e PR aberto; PER-124 a PER-126 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-122-fase-1-regras-algoritmo-e-banco
+- **Branch**: pntadr/per-123-fase-2-api-das-restricoes-e-do-sorteio

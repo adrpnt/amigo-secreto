@@ -15,6 +15,7 @@ import { ConfigService } from '@nestjs/config';
 import { isUUID } from 'class-validator';
 import { DataSource, type EntityManager } from 'typeorm';
 import type { EnvironmentVariables } from '../config/env.validation.js';
+import { Exclusion } from '../draws/exclusion.entity.js';
 import { EmailService } from '../email/email.service.js';
 import { GroupAccess } from '../groups/group-access.service.js';
 import { Group } from '../groups/group.entity.js';
@@ -137,6 +138,18 @@ function optionalText(value: unknown): string | undefined {
   if (value === undefined) return undefined;
   if (typeof value !== 'string') throw new BadRequestException(INVALID_DATA);
   return value;
+}
+
+// Quem sai do grupo ou é removido não fica em nenhum par de restrição; se
+// voltar, entra sem restrições.
+async function deleteExclusionsOf(
+  manager: EntityManager,
+  groupId: string,
+  userId: string,
+): Promise<void> {
+  const exclusions = manager.getRepository(Exclusion);
+  await exclusions.delete({ groupId, userAId: userId });
+  await exclusions.delete({ groupId, userBId: userId });
 }
 
 function toMemberItem(
@@ -310,6 +323,7 @@ export class MembersService {
       await manager
         .getRepository(Membership)
         .update({ id: member.id }, { status: 'REJECTED' });
+      await deleteExclusionsOf(manager, group.id, member.userId);
       await this.email.enqueue(
         removedEmail({
           to: member.email,
@@ -345,6 +359,7 @@ export class MembersService {
       }
 
       await manager.getRepository(Membership).delete({ id: membership.id });
+      await deleteExclusionsOf(manager, group.id, user.id);
       const organizer = await manager
         .getRepository(User)
         .findOneByOrFail({ id: group.ownerId });

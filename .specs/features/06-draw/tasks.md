@@ -213,9 +213,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/exclusions.int-spec.ts`: `pares de restrição > lista participantes aprovados e pares em ordem de nome, sem id de pessoa`, `> quem organiza adiciona um par e a lista mostra os dois nomes`, `> recusa par sem uma das pessoas com 400 Escolha as duas pessoas do par.`, `> recusa a mesma pessoa duas vezes com 400 Escolha duas pessoas diferentes.`, `> recusa par repetido em qualquer ordem com 400 Esse par já está na lista.`, `> responde 404 Participante não encontrado. a pessoa que não é participante aprovada`, `> remove um par`, `> remover par que não existe responde 204`, `> responde 409 Para mudar as restrições, cancele o sorteio. com o grupo SORTEADO e não muda nada`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO e não muda nada`, `> responde 403 a participante que não organiza ao ler, criar ou apagar pares`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 550 tests pass na API
+- [x] Testes em `test/exclusions.int-spec.ts`: `pares de restrição > lista participantes aprovados e pares em ordem de nome, sem id de pessoa`, `> quem organiza adiciona um par e a lista mostra os dois nomes`, `> recusa par sem uma das pessoas com 400 Escolha as duas pessoas do par.`, `> recusa a mesma pessoa duas vezes com 400 Escolha duas pessoas diferentes.`, `> recusa par repetido em qualquer ordem com 400 Esse par já está na lista.`, `> responde 404 Participante não encontrado. a pessoa que não é participante aprovada`, `> remove um par`, `> remover par que não existe responde 204`, `> responde 409 Para mudar as restrições, cancele o sorteio. com o grupo SORTEADO e não muda nada`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO e não muda nada`, `> responde 403 a participante que não organiza ao ler, criar ou apagar pares`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 550 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -234,10 +234,10 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes: `remover participante > apaga os pares de restrição da pessoa` (`test/members-remove.int-spec.ts`), `sair do grupo > apaga os pares de restrição da pessoa` (`test/members-leave.int-spec.ts`), `transferir organização > quem recebe passa a ver e editar os pares e quem passou deixa de ver` (`test/members-transfer.int-spec.ts`)
-- [ ] Os testes existentes das três suítes passam sem mudança
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 553 tests pass na API
+- [x] Testes: `remover participante > apaga os pares de restrição da pessoa` (`test/members-remove.int-spec.ts`), `sair do grupo > apaga os pares de restrição da pessoa` (`test/members-leave.int-spec.ts`), `transferir organização > quem recebe passa a ver e editar os pares e quem passou deixa de ver` (`test/members-transfer.int-spec.ts`)
+- [x] Os testes existentes das três suítes passam sem mudança
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 553 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -256,9 +256,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-panel.int-spec.ts`: `painel do sorteio > conta aprovados e pendentes`, `> grupo sem pares é viável e não lista pares a revisar`, `> 3 aprovados e um par não são viáveis e listam o par a revisar`, `> lista só os pares das pessoas bloqueadas`, `> devolve status e drawnAt depois do sorteio`, `> responde 403 a participante que não organiza`, `> não contém nenhum par sorteado`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 560 tests pass na API
+- [x] Testes em `test/draw-panel.int-spec.ts`: `painel do sorteio > conta aprovados e pendentes`, `> grupo sem pares é viável e não lista pares a revisar`, `> 3 aprovados e um par não são viáveis e listam o par a revisar`, `> lista só os pares das pessoas bloqueadas`, `> devolve status e drawnAt depois do sorteio`, `> responde 403 a participante que não organiza`, `> não contém nenhum par sorteado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 560 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -277,9 +277,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-perform.int-spec.ts`: `sortear > cria a rodada ativa com um par por aprovado, inclusive quem organiza, e passa o grupo a SORTEADO`, `> respeita os pares de restrição nos dois sentidos`, `> grava rodada, pares e status juntos ou nada`, `> responde 409 Este grupo já fez o sorteio. com o grupo SORTEADO`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO`, `> aceita 3 aprovados e recusa 2 com 409 O sorteio precisa de pelo menos 3 participantes aprovados.`, `> responde 409 Aprove ou recuse os pedidos pendentes antes do sorteio. com pedido pendente`, `> responde 409 As restrições não permitem um sorteio válido. com os pares a revisar`, `> responde a primeira condição que falha na ordem status, mínimo, pendentes, restrições`, `> responde 403 a participante que não organiza e 404 a quem não participa`, `> aceita o 5º sorteio em 24 horas e responde 429 ao 6º`, `> sorteia 1000 aprovados sem pares em menos de 2 segundos`, `> com o grupo sorteado, entrar, sair e remover respondem 409`, `> dois sorteios simultâneos criam uma rodada só e o outro recebe 409`, `> pedido de entrada simultâneo ao sorteio entra antes ou recebe 409`, `> par criado durante o sorteio entra antes ou recebe 409`, `> enfileira um job de resultado por participante, só com ids`, `> emite draw.performed com groupId, participants, singleCycle e hasExclusions`, `> não emite evento nem enfileira e-mail quando o sorteio é recusado`, `> a resposta não contém nenhum par sorteado`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 580 tests pass na API
+- [x] Testes em `test/draw-perform.int-spec.ts`: `sortear > cria a rodada ativa com um par por aprovado, inclusive quem organiza, e passa o grupo a SORTEADO`, `> respeita os pares de restrição nos dois sentidos`, `> grava rodada, pares e status juntos ou nada`, `> responde 409 Este grupo já fez o sorteio. com o grupo SORTEADO`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO`, `> aceita 3 aprovados e recusa 2 com 409 O sorteio precisa de pelo menos 3 participantes aprovados.`, `> responde 409 Aprove ou recuse os pedidos pendentes antes do sorteio. com pedido pendente`, `> responde 409 As restrições não permitem um sorteio válido. com os pares a revisar`, `> responde a primeira condição que falha na ordem status, mínimo, pendentes, restrições`, `> responde 403 a participante que não organiza e 404 a quem não participa`, `> aceita o 5º sorteio em 24 horas e responde 429 ao 6º`, `> sorteia 1000 aprovados sem pares em menos de 2 segundos`, `> com o grupo sorteado, entrar, sair e remover respondem 409`, `> dois sorteios simultâneos criam uma rodada só e o outro recebe 409`, `> pedido de entrada simultâneo ao sorteio entra antes ou recebe 409`, `> par criado durante o sorteio entra antes ou recebe 409`, `> enfileira um job de resultado por participante, só com ids`, `> emite draw.performed com groupId, participants, singleCycle e hasExclusions`, `> não emite evento nem enfileira e-mail quando o sorteio é recusado`, `> a resposta não contém nenhum par sorteado`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 580 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -298,9 +298,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-result-email.int-spec.ts`: `e-mail do resultado > envia a cada participante o assunto sem o nome e o nome só no corpo`, `> a pré-visualização do e-mail não contém o nome sorteado`, `> não envia depois que o sorteio é cancelado`, `> não envia depois que o grupo é excluído`, `> mostra nomes com marcação HTML como texto`, `> falha do transporte não leva nome nem e-mail ao log nem ao Sentry`, `> repete com a mesma chave depois de falha passageira`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 587 tests pass na API
+- [x] Testes em `test/draw-result-email.int-spec.ts`: `e-mail do resultado > envia a cada participante o assunto sem o nome e o nome só no corpo`, `> a pré-visualização do e-mail não contém o nome sorteado`, `> não envia depois que o sorteio é cancelado`, `> não envia depois que o grupo é excluído`, `> mostra nomes com marcação HTML como texto`, `> falha do transporte não leva nome nem e-mail ao log nem ao Sentry`, `> repete com a mesma chave depois de falha passageira`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 587 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -988,7 +988,7 @@ Proof: run web | ✓ ExclusionEditor > liga o erro ao campo por aria-describedby
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)".
+**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)". T10, pré-visualização: o layout de e-mail não tinha texto de pré-visualização e o cliente mostraria "Você tirou: {nome}" na prévia; o `EmailMessage` ganha o campo opcional `preview`, que o layout põe num bloco oculto no topo do HTML seguido de espaços invisíveis, e só o e-mail do resultado o usa, user: "Prévia oculta (Recomendado)"; o texto é "Abra num lugar reservado para ver quem você tirou.", user: "Abra num lugar reservado (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 

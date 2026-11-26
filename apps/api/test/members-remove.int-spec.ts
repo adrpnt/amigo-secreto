@@ -5,6 +5,7 @@ import {
   type Cookies,
   type GroupSeed,
   type GroupsApi,
+  insertExclusion,
   insertGroup,
   insertMembership,
   insertUser,
@@ -151,6 +152,18 @@ async function inviteCode(groupId: string): Promise<string> {
     [groupId],
   );
   return row.inviteCode;
+}
+
+// Pares de restrição do grupo como [nome, nome], cada par em ordem alfabética.
+async function pairNamesOf(groupId: string): Promise<string[][]> {
+  const rows = await api.dataSource.query<{ a: string; b: string }[]>(
+    `SELECT ua.name AS a, ub.name AS b FROM exclusion e
+     JOIN "user" ua ON ua.id = e."userAId"
+     JOIN "user" ub ON ub.id = e."userBId"
+     WHERE e."groupId" = $1`,
+    [groupId],
+  );
+  return rows.map((row) => [row.a, row.b].sort()).sort();
 }
 
 describe('remover participante', () => {
@@ -423,5 +436,38 @@ describe('remover participante', () => {
     expect(
       events.filter((record) => String(record.event).startsWith('membership.')),
     ).toEqual([]);
+  });
+
+  it('apaga os pares de restrição da pessoa', async () => {
+    const { owner, groupId, person } = await groupWith();
+    const carla = await joinAs(groupId, 'Carla Dias');
+    await insertExclusion(api.dataSource, groupId, person.id, owner.id);
+    await insertExclusion(api.dataSource, groupId, carla.id, person.id);
+    await insertExclusion(api.dataSource, groupId, owner.id, carla.id);
+    const other = await groupWith();
+    await insertMembership(
+      api.dataSource,
+      other.groupId,
+      person.id,
+      'APPROVED',
+    );
+    await insertExclusion(
+      api.dataSource,
+      other.groupId,
+      person.id,
+      other.owner.id,
+    );
+
+    const response = await removeMember(
+      owner.cookies,
+      groupId,
+      person.membershipId,
+    );
+
+    expect(response.status).toBe(204);
+    expect(await pairNamesOf(groupId)).toEqual([['Ana Souza', 'Carla Dias']]);
+    expect(await pairNamesOf(other.groupId)).toEqual([
+      ['Ana Souza', 'Bia Lima'],
+    ]);
   });
 });
