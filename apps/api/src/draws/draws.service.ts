@@ -4,14 +4,19 @@ import {
   type ExclusionPair,
 } from '@amigo-secreto/shared';
 import { ConflictException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DataSource, type EntityManager, MoreThan } from 'typeorm';
+import type { EnvironmentVariables } from '../config/env.validation.js';
+import { EmailService } from '../email/email.service.js';
 import { GroupAccess } from '../groups/group-access.service.js';
 import { Group } from '../groups/group.entity.js';
 import { JobQueue } from '../jobs/job-queue.service.js';
 import { BusinessEventsService } from '../observability/business-events.service.js';
 import { TooManyAttemptsException } from '../rate-limit/too-many-attempts.exception.js';
+import { User } from '../users/user.entity.js';
 import { Assignment } from './assignment.entity.js';
 import { drawAssignments, findBlocked } from './draw-algorithm.js';
+import { drawCancelledEmail } from './draw-emails.js';
 import { Draw } from './draw.entity.js';
 import {
   type ExclusionsState,
@@ -22,7 +27,14 @@ const PENDING_COUNT_SQL = `
   SELECT count(*)::int AS count FROM membership
   WHERE "groupId" = $1 AND status = 'PENDING'`;
 
+// E-mails de quem tira na rodada; quem cancela fica de fora do aviso.
+const ROUND_EMAILS_SQL = `
+  SELECT u.email FROM assignment a
+  JOIN "user" u ON u.id = a."giverUserId"
+  WHERE a."drawId" = $1 AND a."giverUserId" <> $2`;
+
 const MIN_PARTICIPANTS = 3;
+const MINUTE_MS = 60 * 1000;
 const DRAW_LIMIT = 5;
 const DRAW_WINDOW_MS = 24 * 60 * 60 * 1000;
 
@@ -91,7 +103,9 @@ export class DrawsService {
     private readonly access: GroupAccess,
     private readonly exclusions: ExclusionsService,
     private readonly jobs: JobQueue,
+    private readonly email: EmailService,
     private readonly events: BusinessEventsService,
+    private readonly config: ConfigService<EnvironmentVariables, true>,
   ) {}
 
   // Só contagens, a viabilidade e os pares de restrição; nunca par sorteado.
@@ -190,6 +204,68 @@ export class DrawsService {
       hasExclusions: performed.hasExclusions,
     });
     return { drawnAt: performed.drawnAt.toISOString() };
+  }
+
+  // A trava do grupo faz o segundo cancelamento simultâneo encontrar o grupo
+  // ABERTO. Rodada, pares, status e avisos vão juntos na transação; os
+  // e-mails de resultado ainda na fila não acham mais o par e não saem.
+  async cancel(userId: string, groupId: string): Promise<void> {
+    const webUrl: string = this.config.get('WEB_URL', { infer: true });
+    const drawnAt = await this.dataSource.transaction(
+      async (manager): Promise<Date> => {
+        const { group } = await this.access.requireOrganizer(userId, groupId, {
+          manager,
+          lock: true,
+        });
+        if (group.status === 'OPEN') {
+          throw new ConflictException(DRAW_MESSAGES.notDrawn);
+        }
+        if (group.status === 'CLOSED') {
+          throw new ConflictException(DRAW_MESSAGES.closedGroup);
+        }
+        const draw = await manager
+          .getRepository(Draw)
+          .findOneByOrFail({ groupId, status: 'ACTIVE' });
+        const organizer = await manager
+          .getRepository(User)
+          .findOneByOrFail({ id: userId });
+        const recipients = await manager.query<{ email: string }[]>(
+          ROUND_EMAILS_SQL,
+          [draw.id, userId],
+        );
+
+        await manager.getRepository(Assignment).delete({ drawId: draw.id });
+        await manager
+          .getRepository(Draw)
+          .update(
+            { id: draw.id },
+            { status: 'CANCELLED', cancelledAt: new Date() },
+          );
+        await manager
+          .getRepository(Group)
+          .update({ id: groupId }, { status: 'OPEN' });
+        await this.email.enqueueMany(
+          recipients.map(({ email }) =>
+            drawCancelledEmail({
+              to: email,
+              organizerName: organizer.name,
+              groupName: group.name,
+              groupId,
+              webUrl,
+            }),
+          ),
+          { manager },
+        );
+        return draw.createdAt;
+      },
+    );
+
+    this.events.record('draw.cancelled', {
+      groupId,
+      minutesSinceDraw: Math.floor(
+        (Date.now() - drawnAt.getTime()) / MINUTE_MS,
+      ),
+    });
   }
 
   // Até 5 rodadas por grupo em 24 horas, canceladas inclusive. A espera vai

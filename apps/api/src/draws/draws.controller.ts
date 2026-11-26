@@ -87,6 +87,25 @@ export class DrawsController {
     return this.draws.perform(user.id, id);
   }
 
+  @Delete(':id/draw')
+  @HttpCode(204)
+  @ApiNoContentResponse({
+    description:
+      'Rodada cancelada com a data, pares sorteados apagados, grupo ABERTO e um aviso na fila para cada participante da rodada, menos quem cancelou. E-mails de resultado ainda na fila não saem.',
+  })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse(NOT_FOUND)
+  @ApiConflictResponse({
+    description:
+      'Este grupo ainda não fez o sorteio. (grupo ABERTO) ou Grupo encerrado não pode ser alterado. (grupo ENCERRADO)',
+  })
+  cancel(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return this.draws.cancel(user.id, id);
+  }
+
   @Get(':id/exclusions')
   @ApiOkResponse({
     description:
