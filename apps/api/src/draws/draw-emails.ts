@@ -60,3 +60,26 @@ export function drawCancelledEmail({
     ],
   };
 }
+
+export function drawReminderEmail({
+  to,
+  groupName,
+  groupId,
+  webUrl,
+}: {
+  to: string;
+  groupName: string;
+  groupId: string;
+  webUrl: string;
+}): EmailMessage {
+  return {
+    to,
+    subject: `Chegou a hora do sorteio de ${groupName}`,
+    blocks: [
+      paragraph(
+        `O sorteio do amigo secreto ${groupName} estava previsto para agora. Confira quem já entrou e faça o sorteio.`,
+      ),
+      button('Ir para o sorteio', drawUrl(webUrl, groupId)),
+    ],
+  };
+}

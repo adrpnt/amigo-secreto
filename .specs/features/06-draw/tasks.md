@@ -385,9 +385,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-reminder.int-spec.ts`: `lembrete de sortear > na hora prevista envia a quem organiza agora o e-mail do lembrete`, `> não envia com o grupo SORTEADO ou ENCERRADO`, `> não envia se o sorteio previsto mudou depois do agendamento`, `> não envia se o grupo foi excluído`, `> mudar a data duas vezes envia um lembrete só, na data nova`, `> emite draw.reminder_sent com groupId`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 616 tests pass na API
+- [x] Testes em `test/draw-reminder.int-spec.ts`: `lembrete de sortear > na hora prevista envia a quem organiza agora o e-mail do lembrete`, `> não envia com o grupo SORTEADO ou ENCERRADO`, `> não envia se o sorteio previsto mudou depois do agendamento`, `> não envia se o grupo foi excluído`, `> mudar a data duas vezes envia um lembrete só, na data nova`, `> emite draw.reminder_sent com groupId`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 616 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
