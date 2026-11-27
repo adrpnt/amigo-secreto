@@ -35,3 +35,51 @@ export function drawResultEmail({
     ],
   };
 }
+
+export function drawCancelledEmail({
+  to,
+  organizerName,
+  groupName,
+  groupId,
+  webUrl,
+}: {
+  to: string;
+  organizerName: string;
+  groupName: string;
+  groupId: string;
+  webUrl: string;
+}): EmailMessage {
+  return {
+    to,
+    subject: `O sorteio de ${groupName} foi cancelado`,
+    blocks: [
+      paragraph(
+        `${organizerName} cancelou o sorteio do amigo secreto ${groupName}. O nome que você tirou não vale mais. Quando houver um novo sorteio, você recebe outro e-mail.`,
+      ),
+      button('Ver grupo', drawUrl(webUrl, groupId)),
+    ],
+  };
+}
+
+export function drawReminderEmail({
+  to,
+  groupName,
+  groupId,
+  webUrl,
+}: {
+  to: string;
+  groupName: string;
+  groupId: string;
+  webUrl: string;
+}): EmailMessage {
+  return {
+    to,
+    subject: `Chegou a hora do sorteio de ${groupName}`,
+    blocks: [
+      paragraph(
+        `O sorteio do amigo secreto ${groupName} estava previsto para agora. Confira quem já entrou e faça o sorteio.`,
+      ),
+      button('Ir para o sorteio', drawUrl(webUrl, groupId)),
+    ],
+  };
+}

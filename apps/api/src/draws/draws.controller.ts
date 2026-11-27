@@ -1,5 +1,6 @@
 import type {
   DrawPanel,
+  DrawResult,
   ExclusionPair,
   ExclusionsResponse,
   SessionUser,
@@ -9,6 +10,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   HttpCode,
   Param,
   Post,
@@ -85,6 +87,41 @@ export class DrawsController {
     @Param('id') id: string,
   ): Promise<{ drawnAt: string }> {
     return this.draws.perform(user.id, id);
+  }
+
+  @Delete(':id/draw')
+  @HttpCode(204)
+  @ApiNoContentResponse({
+    description:
+      'Rodada cancelada com a data, pares sorteados apagados, grupo ABERTO e um aviso na fila para cada participante da rodada, menos quem cancelou. E-mails de resultado ainda na fila não saem.',
+  })
+  @ApiForbiddenResponse(ORGANIZER_ONLY)
+  @ApiNotFoundResponse(NOT_FOUND)
+  @ApiConflictResponse({
+    description:
+      'Este grupo ainda não fez o sorteio. (grupo ABERTO) ou Grupo encerrado não pode ser alterado. (grupo ENCERRADO)',
+  })
+  cancel(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return this.draws.cancel(user.id, id);
+  }
+
+  @Get(':id/draw/result')
+  @Header('Cache-Control', 'no-store')
+  @ApiOkResponse({
+    description:
+      'Quem a pessoa que pede tirou na rodada ativa, com o nome atual. Só o próprio par; nunca o de outra pessoa.',
+  })
+  @ApiNotFoundResponse({
+    description: `${NOT_FOUND.description} Ou Sorteio não encontrado.: o grupo não tem rodada ativa.`,
+  })
+  result(
+    @CurrentUser() user: SessionUser,
+    @Param('id') id: string,
+  ): Promise<DrawResult> {
+    return this.draws.result(user.id, id);
   }
 
   @Get(':id/exclusions')

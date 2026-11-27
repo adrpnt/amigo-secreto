@@ -188,11 +188,11 @@
 ## Handoff
 
 - **Feature**: 06-draw (`.specs/features/06-draw/`), em execução
-- **Phase / Task**: fase 2 (T6 a T10) concluída na branch da PER-123; gate Build no fim da fase (shared 31, API 587, web 182, e2e 105)
-- **Completed**: T1 a T10; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (ordem dos pares por nome, ordem das recusas dos pares e a pré-visualização oculta do e-mail do resultado)
+- **Phase / Task**: fase 3 (T11 a T15) concluída na branch da PER-124; gate Build verde em `28419e8` (shared 31, API 617, web 182, e2e 105)
+- **Completed**: T1 a T15; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (minutos completos no `minutesSinceDraw`, `down` vazio na migration dos lembretes e a mensagem de commit encurtada da T15)
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 2; depois, criar a branch da PER-124 a partir da `main` atualizada, mover a issue para In Progress e começar a T11
-- **Linear**: milestone `06 · Draw`; PER-122 mergeada (PR #29); PER-123 com T6 a T10 marcadas e PR aberto; PER-124 a PER-126 em Backlog
+- **Next step**: revisão e merge do PR da fase 3; depois, criar a branch da PER-125 a partir da `main` atualizada, mover a issue para In Progress e começar a T16
+- **Linear**: milestone `06 · Draw`; PER-122 e PER-123 mergeadas (PRs #29 e #30); PER-124 com T11 a T15 marcadas e PR aberto; PER-125 e PER-126 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-123-fase-2-api-das-restricoes-e-do-sorteio
+- **Branch**: pntadr/per-124-fase-3-api-do-cancelamento-do-resultado-e-do

@@ -321,9 +321,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-cancel.int-spec.ts`: `cancelar sorteio > marca a rodada como cancelada com a data, apaga os pares e volta o grupo a ABERTO`, `> grupo cancelado volta a aceitar entrada, saída, remoção e pares`, `> sortear de novo cria outra rodada`, `> responde 409 Este grupo ainda não fez o sorteio. com o grupo ABERTO`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO`, `> responde 403 a participante que não organiza`, `> enfileira o aviso a cada participante da rodada menos quem cancelou`, `> e-mails de resultado ainda na fila não saem depois do cancelamento`, `> emite draw.cancelled com groupId e minutesSinceDraw`, `> não emite evento nem aviso quando o cancelamento é recusado`, `> dois cancelamentos simultâneos cancelam uma vez e o outro recebe 409`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 598 tests pass na API
+- [x] Testes em `test/draw-cancel.int-spec.ts`: `cancelar sorteio > marca a rodada como cancelada com a data, apaga os pares e volta o grupo a ABERTO`, `> grupo cancelado volta a aceitar entrada, saída, remoção e pares`, `> sortear de novo cria outra rodada`, `> responde 409 Este grupo ainda não fez o sorteio. com o grupo ABERTO`, `> responde 409 Grupo encerrado não pode ser alterado. com o grupo ENCERRADO`, `> responde 403 a participante que não organiza`, `> enfileira o aviso a cada participante da rodada menos quem cancelou`, `> e-mails de resultado ainda na fila não saem depois do cancelamento`, `> emite draw.cancelled com groupId e minutesSinceDraw`, `> não emite evento nem aviso quando o cancelamento é recusado`, `> dois cancelamentos simultâneos cancelam uma vez e o outro recebe 409`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 598 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -342,9 +342,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-result.int-spec.ts`: `resultado do sorteio > devolve a cada participante só a pessoa que ele tirou`, `> devolve o nome atual da pessoa sorteada`, `> responde 404 Sorteio não encontrado. sem rodada ativa`, `> responde 404 Grupo não encontrado. a quem não participa`, `> responde com Cache-Control no-store`, `> nenhuma rota do sorteio devolve a quem organiza o par de outra pessoa`, `> depois da transferência quem organiza continua vendo só o próprio par`, `> o log de um sorteio, do resultado e do cancelamento não tem nomes nem ids de pessoa`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 606 tests pass na API
+- [x] Testes em `test/draw-result.int-spec.ts`: `resultado do sorteio > devolve a cada participante só a pessoa que ele tirou`, `> devolve o nome atual da pessoa sorteada`, `> responde 404 Sorteio não encontrado. sem rodada ativa`, `> responde 404 Grupo não encontrado. a quem não participa`, `> responde com Cache-Control no-store`, `> nenhuma rota do sorteio devolve a quem organiza o par de outra pessoa`, `> depois da transferência quem organiza continua vendo só o próprio par`, `> o log de um sorteio, do resultado e do cancelamento não tem nomes nem ids de pessoa`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 606 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -363,10 +363,10 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-reminder-schedule.int-spec.ts`: `agendar lembrete > criar grupo com sorteio previsto agenda o lembrete para a data e hora`, `> editar o sorteio previsto troca o lembrete pendente pelo da data nova`, `> tirar o sorteio previsto apaga o lembrete pendente`, `> grupo sem sorteio previsto não agenda lembrete`
-- [ ] As suítes da `04-groups` passam; asserção que lê a tabela `job` inteira e muda é registrada em `**Settled mid-build:**`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 610 tests pass na API
+- [x] Testes em `test/draw-reminder-schedule.int-spec.ts`: `agendar lembrete > criar grupo com sorteio previsto agenda o lembrete para a data e hora`, `> editar o sorteio previsto troca o lembrete pendente pelo da data nova`, `> tirar o sorteio previsto apaga o lembrete pendente`, `> grupo sem sorteio previsto não agenda lembrete`
+- [x] As suítes da `04-groups` passam; asserção que lê a tabela `job` inteira e muda é registrada em `**Settled mid-build:**`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 610 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -385,9 +385,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-reminder.int-spec.ts`: `lembrete de sortear > na hora prevista envia a quem organiza agora o e-mail do lembrete`, `> não envia com o grupo SORTEADO ou ENCERRADO`, `> não envia se o sorteio previsto mudou depois do agendamento`, `> não envia se o grupo foi excluído`, `> mudar a data duas vezes envia um lembrete só, na data nova`, `> emite draw.reminder_sent com groupId`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 616 tests pass na API
+- [x] Testes em `test/draw-reminder.int-spec.ts`: `lembrete de sortear > na hora prevista envia a quem organiza agora o e-mail do lembrete`, `> não envia com o grupo SORTEADO ou ENCERRADO`, `> não envia se o sorteio previsto mudou depois do agendamento`, `> não envia se o grupo foi excluído`, `> mudar a data duas vezes envia um lembrete só, na data nova`, `> emite draw.reminder_sent com groupId`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 616 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
@@ -406,14 +406,14 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `test/draw-reminder-backfill.int-spec.ts`: `lembretes de grupos existentes > a migration agenda o lembrete dos grupos ABERTOS com sorteio previsto no futuro e só deles`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
-- [ ] Test count: 617 tests pass na API
+- [x] Testes em `test/draw-reminder-backfill.int-spec.ts`: `lembretes de grupos existentes > a migration agenda o lembrete dos grupos ABERTOS com sorteio previsto no futuro e só deles`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/api lint && pnpm --filter @amigo-secreto/api typecheck && pnpm --filter @amigo-secreto/web typecheck && pnpm test`
+- [x] Test count: 617 tests pass na API
 
 **Tests**: integration
 **Gate**: Full
 
-**Commit**: `feat(api): schedule reminders for groups created before reminders existed`
+**Commit**: `feat(api): schedule reminders for groups that already exist`
 
 ---
 
@@ -988,7 +988,7 @@ Proof: run web | ✓ ExclusionEditor > liga o erro ao campo por aria-describedby
 
 The feature's live state, written as it happens - a compaction gives no warning.
 
-**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)". T10, pré-visualização: o layout de e-mail não tinha texto de pré-visualização e o cliente mostraria "Você tirou: {nome}" na prévia; o `EmailMessage` ganha o campo opcional `preview`, que o layout põe num bloco oculto no topo do HTML seguido de espaços invisíveis, e só o e-mail do resultado o usa, user: "Prévia oculta (Recomendado)"; o texto é "Abra num lugar reservado para ver quem você tirou.", user: "Abra num lugar reservado (Recomendado)".
+**Settled mid-build:** T1, formato do par: cada lado do `ExclusionPair` é `{ membershipId, name }`, o mesmo tipo dos participantes do editor; `pairsToReview` do painel usa o mesmo `ExclusionPair`, user: "a e b com id e nome (Recomendado)". T5, assinatura do sender: `EmailSender.send(message, jobId)` monta a chave `email/{jobId}` e emite `email.sent` com o `jobId`, em vez do `send(message, key)` do design, porque o evento precisa do id do job; os handlers passam `job.id`, user: "send(message, jobId) (Recomendado)". T6, ordem dos pares: em cada par, `a` é o nome que vem primeiro (sem acento nem maiúsculas, como a lista de participantes) e a lista ordena por nome de `a`, depois de `b`, user: "Nome dentro e fora (Recomendado)"; o 201 do POST segue a mesma regra, user: "Mesma regra do GET (Recomendado)". T6, recusas: criar par responde 404 do grupo, 403, 409 de status, 400 dos campos e depois 404 "Participante não encontrado."; apagar responde 404, 403, 409 e 204 para par inexistente, id que não é UUID ou par de outro grupo, user: "Confirmo (Recomendado)". T10, pré-visualização: o layout de e-mail não tinha texto de pré-visualização e o cliente mostraria "Você tirou: {nome}" na prévia; o `EmailMessage` ganha o campo opcional `preview`, que o layout põe num bloco oculto no topo do HTML seguido de espaços invisíveis, e só o e-mail do resultado o usa, user: "Prévia oculta (Recomendado)"; o texto é "Abra num lugar reservado para ver quem você tirou.", user: "Abra num lugar reservado (Recomendado)". T11, `minutesSinceDraw`: minutos completos entre o sorteio e o cancelamento, arredondados para baixo (59 s dá 0), user: "Minutos completos (Recomendado)". T15, `down` da migration dos lembretes: não faz nada, porque depois do deploy o app também grava lembretes e não dá para separar os da migration, user: "Não fazer nada (Recomendado)". T15, mensagem de commit encurtada para 72 caracteres ou menos: "feat(api): schedule reminders for groups that already exist", user: "Encurtar (Recomendado)".
 **Dispatched:** none
 **Walked:** none
 
