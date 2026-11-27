@@ -28,6 +28,32 @@ describe('GroupTabs', () => {
     expect(tabs().group).not.toHaveAttribute('aria-current');
   });
 
+  it('mostra Grupo, Participantes e Sorteio e marca a atual', () => {
+    const paths = [
+      `/grupos/${GROUP_ID}`,
+      `/grupos/${GROUP_ID}/participantes`,
+      `/grupos/${GROUP_ID}/sorteio`,
+    ];
+
+    for (const current of paths) {
+      vi.mocked(usePathname).mockReturnValue(current);
+      const { unmount } = render(<GroupTabs groupId={GROUP_ID} />);
+      const nav = screen.getByRole('navigation', { name: 'Seções do grupo' });
+      const links = within(nav).getAllByRole('link');
+
+      expect(links.map((link) => link.textContent)).toEqual([
+        'Grupo',
+        'Participantes',
+        'Sorteio',
+      ]);
+      expect(links.map((link) => link.getAttribute('href'))).toEqual(paths);
+      expect(links.map((link) => link.getAttribute('aria-current'))).toEqual(
+        paths.map((path) => (path === current ? 'page' : null)),
+      );
+      unmount();
+    }
+  });
+
   it('cada aba leva à sua rota', () => {
     vi.mocked(usePathname).mockReturnValue(`/grupos/${GROUP_ID}`);
     render(<GroupTabs groupId={GROUP_ID} />);
