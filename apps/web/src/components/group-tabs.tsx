@@ -10,6 +10,7 @@ export function GroupTabs({ groupId }: { groupId: string }) {
   const tabs = [
     { label: 'Grupo', href: `/grupos/${groupId}` },
     { label: 'Participantes', href: `/grupos/${groupId}/participantes` },
+    { label: 'Sorteio', href: `/grupos/${groupId}/sorteio` },
   ];
 
   return (
