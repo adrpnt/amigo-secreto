@@ -188,11 +188,11 @@
 ## Handoff
 
 - **Feature**: 06-draw (`.specs/features/06-draw/`), em execução
-- **Phase / Task**: fase 3 (T11 a T15) concluída na branch da PER-124; gate Build verde em `28419e8` (shared 31, API 617, web 182, e2e 105)
-- **Completed**: T1 a T15; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (minutos completos no `minutesSinceDraw`, `down` vazio na migration dos lembretes e a mensagem de commit encurtada da T15)
+- **Phase / Task**: fase 4 (T16 a T20) concluída na branch da PER-125; gate Build verde em `a6f9a0d` (shared 31, API 617, web 222, e2e 109); depois dele, `8e38daa` acrescentou um teste do web (223), com o gate Web verde
+- **Completed**: T1 a T20; decisões do meio da execução no `**Settled mid-build:**` do `tasks.md` (formato das funções de texto, aviso do participante, botões e padrões do painel e do editor, e o teste novo do erro ao remover par)
 - **In-progress** (file:line): none
-- **Next step**: revisão e merge do PR da fase 3; depois, criar a branch da PER-125 a partir da `main` atualizada, mover a issue para In Progress e começar a T16
-- **Linear**: milestone `06 · Draw`; PER-122 e PER-123 mergeadas (PRs #29 e #30); PER-124 com T11 a T15 marcadas e PR aberto; PER-125 e PER-126 em Backlog
+- **Next step**: revisão e merge do PR da fase 4; depois, criar a branch da PER-126 a partir da `main` atualizada, mover a issue para In Progress e começar a T21; a fase 5 é a última, então o fechamento da feature roda antes do PR
+- **Linear**: milestone `06 · Draw`; PER-122, PER-123 e PER-124 mergeadas (PRs #29, #30 e #31); PER-125 com T16 a T20 marcadas e PR aberto; PER-126 em Backlog
 - **Blockers**: none
 - **Uncommitted files**: none
-- **Branch**: pntadr/per-124-fase-3-api-do-cancelamento-do-resultado-e-do
+- **Branch**: pntadr/per-125-fase-4-base-do-site-painel-e-restricoes
