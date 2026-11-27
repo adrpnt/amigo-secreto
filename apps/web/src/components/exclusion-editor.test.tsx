@@ -240,6 +240,57 @@ describe('ExclusionEditor', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
+  it('mostra o erro da API ao remover o par', async () => {
+    const cases: [() => Promise<Response>, string][] = [
+      [
+        () =>
+          Promise.resolve(
+            jsonResponse(409, {
+              statusCode: 409,
+              message: 'Para mudar as restrições, cancele o sorteio.',
+            }),
+          ),
+        'Para mudar as restrições, cancele o sorteio.',
+      ],
+      [
+        () =>
+          Promise.resolve(
+            jsonResponse(403, {
+              statusCode: 403,
+              message: 'Só quem organiza pode alterar o grupo.',
+            }),
+          ),
+        'Não foi possível concluir. Tente de novo.',
+      ],
+      [
+        () => Promise.resolve(jsonResponse(500, { statusCode: 500 })),
+        'Não foi possível concluir. Tente de novo.',
+      ],
+      [
+        () => Promise.reject(new TypeError('Failed to fetch')),
+        'Não foi possível concluir. Tente de novo.',
+      ],
+    ];
+
+    for (const [failure, message] of cases) {
+      vi.mocked(apiFetch).mockImplementationOnce(failure);
+      const { unmount } = renderEditor();
+      await userEvent.click(
+        screen.getByRole('button', {
+          name: 'Remover par Ana Souza e Bruno Lima',
+        }),
+      );
+
+      expect(await within(section()).findByRole('alert')).toHaveTextContent(
+        message,
+      );
+      expect(pairItems()).toEqual(['Ana Souza e Bruno Lima']);
+      expect(personField()).not.toHaveAttribute('aria-invalid');
+      expect(refresh).not.toHaveBeenCalled();
+      unmount();
+    }
+  });
+
   it('mostra Nenhum par cadastrado. sem pares', () => {
     renderEditor(NO_PAIRS);
 
