@@ -429,9 +429,9 @@ T21 → T22 → T23
 
 **Done when**:
 
-- [ ] Testes em `src/lib/draws.test.ts`: `getDrawPanel > devolve o painel`, `> devolve null no 404`, `> lança em outro status`; `getExclusions > devolve participantes e pares`, `> devolve null no 404`
-- [ ] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
-- [ ] Test count: 187 tests pass no web
+- [x] Testes em `src/lib/draws.test.ts`: `getDrawPanel > devolve o painel`, `> devolve null no 404`, `> lança em outro status`; `getExclusions > devolve participantes e pares`, `> devolve null no 404`
+- [x] Gate check passes: `pnpm --filter @amigo-secreto/web lint && pnpm --filter @amigo-secreto/web typecheck && pnpm --filter @amigo-secreto/web test`
+- [x] Test count: 187 tests pass no web
 
 **Tests**: unit
 **Gate**: Web
